@@ -1,0 +1,63 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  background: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background: #1f3b4d;
+  color: #fff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+
+header p {
+  font-weight: 300;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  background: #00b894;
+  color: white;
+  padding: 12px 25px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #019170;
+}
+
+section {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+section h2 {
+  color: #1f3b4d;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #1f3b4d;
+  color: white;
+}
