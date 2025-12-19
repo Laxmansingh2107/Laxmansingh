@@ -17,16 +17,6 @@ html{scroll-behavior:smooth}
 --border:#e5e7eb;
 }
 
-.dark{
---bg:#0f172a;
---card:#1e293b;
---text:#e5e7eb;
---muted:#9ca3af;
---accent:#84a98c;
---border:#334155;
-}
-
-*{box-sizing:border-box}
 body{
 margin:0;
 font-family:Inter,Arial,sans-serif;
@@ -35,44 +25,46 @@ color:var(--text);
 line-height:1.7;
 }
 
+*{box-sizing:border-box}
+
+/* ===== STICKY HEADER ===== */
+header{
+position:fixed;
+top:0;
+width:100%;
+z-index:100;
+background:#ffffff;
+border-bottom:1px solid var(--border);
+}
+.header-inner{
+max-width:1100px;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:14px 20px;
+}
+.header-inner h1{
+font-size:20px;
+margin:0;
+}
+.nav a{
+margin-left:18px;
+text-decoration:none;
+font-weight:600;
+color:var(--text);
+font-size:14px;
+}
+.nav a:hover{color:var(--accent)}
+
+/* ===== LAYOUT ===== */
 .wrapper{
 max-width:1100px;
 margin:auto;
-padding:40px 20px;
+padding:120px 20px 40px;
 }
 
-header{text-align:center;border-bottom:1px solid var(--border);padding-bottom:30px}
-header h1{font-size:38px}
-header p{color:var(--muted)}
-
-.nav{
-margin-top:18px;
-display:flex;
-justify-content:center;
-gap:18px;
-flex-wrap:wrap;
-}
-.nav a{
-text-decoration:none;
-color:var(--accent);
-font-weight:600;
-font-size:15px;
-}
-
-.download-btn{
-display:inline-block;
-margin-top:18px;
-padding:12px 28px;
-background:var(--accent);
-color:#fff;
-border-radius:8px;
-text-decoration:none;
-font-weight:600;
-cursor:pointer;
-}
-
-/* SECTIONS */
-section{margin-top:50px}
+section{margin-top:60px}
 .section-title{
 font-size:26px;
 border-left:6px solid var(--accent);
@@ -80,41 +72,81 @@ padding-left:12px;
 margin-bottom:25px;
 }
 
-/* CARD */
+/* ===== CARD ===== */
 .card{
 background:var(--card);
 border:1px solid var(--border);
 border-radius:14px;
-padding:22px;
+padding:24px;
 margin-bottom:20px;
 }
 
-/* GRID */
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+/* ===== PROFILE ===== */
+.profile-text{
+font-size:16px;
+color:#374151;
+}
 
-/* TIMELINE */
+/* ===== SKILLS ===== */
+.skills-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px;
+}
+.skill{
+background:#eef2f7;
+padding:10px 14px;
+border-radius:8px;
+font-weight:600;
+}
+
+/* ===== TOOLS ===== */
+.tool{
+display:flex;
+align-items:center;
+gap:16px;
+margin-bottom:14px;
+}
+.tool img{
+width:46px;
+height:46px;
+object-fit:contain;
+}
+
+/* ===== EXPERIENCE ===== */
 .timeline-item{
 border-left:4px solid var(--accent);
 padding-left:20px;
-margin-bottom:30px;
+margin-bottom:34px;
 }
-.role{font-weight:700;font-size:18px}
+.role{font-size:18px;font-weight:700}
 .company{color:var(--accent);font-weight:600}
 .duration{font-size:14px;color:var(--muted)}
 
-/* SKILLS */
-.skill-chip{
-background:var(--accent);
-color:#fff;
-padding:8px 14px;
-border-radius:999px;
-font-size:14px;
-font-weight:600;
+/* ===== CERTIFICATIONS ===== */
+.cert-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:18px;
+}
+.cert-card{
+border:1px solid var(--border);
+border-radius:12px;
+padding:14px;
 text-align:center;
+background:#fff;
+}
+.cert-card img{
+width:100%;
+height:140px;
+object-fit:contain;
+}
+.cert-id{
+font-size:13px;
+color:var(--muted);
 }
 
-/* FORM */
+/* ===== CONTACT ===== */
 form input{
 width:100%;
 padding:12px;
@@ -129,81 +161,95 @@ background:var(--accent);
 color:#fff;
 border:none;
 border-radius:8px;
-font-weight:600;
+font-weight:700;
 cursor:pointer;
 }
 
-/* FLOATING BUTTONS */
+/* ===== FLOATING BUTTONS ===== */
 .fab{
 position:fixed;
-bottom:20px;
 right:20px;
+bottom:20px;
 display:flex;
 flex-direction:column;
 gap:12px;
-z-index:99;
+z-index:200;
 }
 .fab a{
-width:48px;
-height:48px;
+width:50px;
+height:50px;
 border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
-background:var(--accent);
-color:#fff;
-font-size:22px;
-text-decoration:none;
+box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+.fab img{
+width:26px;
 }
 
-/* TOGGLE */
-.toggle{
-position:fixed;
-top:15px;
-right:15px;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:50px;
-padding:8px 14px;
-font-size:18px;
-cursor:pointer;
-}
-
-/* FOOTER */
-footer{text-align:center;margin-top:60px;color:var(--muted)}
-
-@media(max-width:700px){
-.grid-2{grid-template-columns:1fr}
+/* ===== FOOTER ===== */
+footer{
+text-align:center;
+margin-top:60px;
+color:var(--muted);
 }
 </style>
 </head>
 
 <body>
 
-<button class="toggle" onclick="toggleDark()" id="themeToggle">🌙</button>
+<header>
+  <div class="header-inner">
+    <h1>Laxman Singh Jadon</h1>
+    <nav class="nav">
+      <a href="#profile">Profile</a>
+      <a href="#skills">Skills</a>
+      <a href="#tools">Software Tools</a>
+      <a href="#experience">Work Experience</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
 
 <div class="wrapper">
 
-<header id="top">
-<h1>Laxman Singh Jadon</h1>
-<p>HR Manager | Operations | Compliance | Project Coordination</p>
-
-<div class="nav">
-<a href="#profile">Profile</a>
-<a href="#experience">Experience</a>
-<a href="#skills">Skills</a>
-<a href="#contact">Contact</a>
-</div>
-
-<a class="download-btn" onclick="openForm()">Download Resume</a>
-</header>
-
 <section id="profile">
 <h2 class="section-title">Professional Profile</h2>
+<div class="card profile-text">
+HR & Operations professional with extensive experience across multi-sector environments involving infrastructure, engineering plants, education, and large-scale event projects. My journey has been shaped by hands-on workforce management, statutory compliance, HRMS implementation, and strategic project coordination.
+
+My background as a UPSC aspirant has strengthened my analytical thinking, policy orientation, and people-centric administrative approach. Beyond core HR, I have successfully led high-impact initiatives such as the Mahakumbh 2025 Tent City Project, requiring meticulous planning, inter-departmental coordination, and execution under challenging timelines.
+
+Currently pursuing an MBA in HR & Operations, I focus on integrating compliance-driven HR systems with operational excellence to deliver sustainable, value-driven organizational outcomes.
+</div>
+</section>
+
+<section id="skills">
+<h2 class="section-title">Core Skills</h2>
+<div class="skills-grid">
+<div class="skill">Statutory Compliance (PF, ESIC, CLRA, POSH, Factory Laws)</div>
+<div class="skill">HR Operations & Workforce Administration</div>
+<div class="skill">Recruitment, Screening & Onboarding</div>
+<div class="skill">Payroll & Attendance Management</div>
+<div class="skill">Contract Labour & Vendor Coordination</div>
+<div class="skill">HR Documentation & Audit Readiness</div>
+<div class="skill">MIS Reporting & People Analytics</div>
+<div class="skill">Project Coordination & Site Operations</div>
+<div class="skill">Tender Documentation & RFP Support</div>
+</div>
+</section>
+
+<section id="tools">
+<h2 class="section-title">Software Tools</h2>
 <div class="card">
-HR & Operations professional with extensive exposure to workforce management,
-statutory compliance, HRMS, and execution of large-scale infrastructure
-and event-based projects including Mahakumbh 2025 Tent City.
+<div class="tool"><img src="assets/assets/tools/keka.png">Keka HRMS</div>
+<div class="tool"><img src="assets/assets/tools/qandle.png">Qandle HRMS</div>
+<div class="tool"><img src="assets/assets/tools/hrone.png">HR One</div>
+<div class="tool"><img src="assets/assets/tools/excel.png">MS Excel (Dashboards, MIS)</div>
+<div class="tool"><img src="assets/assets/tools/tally.png">Tally</div>
+<div class="tool"><img src="assets/assets/tools/udhyog.png">UDYOG ERP</div>
 </div>
 </section>
 
@@ -212,36 +258,77 @@ and event-based projects including Mahakumbh 2025 Tent City.
 
 <div class="timeline-item">
 <div class="role">Plant Manager – HR & Admin</div>
-<div class="company">Kasper Engineering Pvt. Ltd.</div>
+<div class="company">Kasper Engineering Pvt. Ltd., Hapur</div>
 <div class="duration">Jul 2025 – Oct 2025</div>
+<ul>
+<li>Managed 60+ plant employees with complete statutory compliance.</li>
+<li>Strengthened PF, ESIC, WC, and Factory Law adherence.</li>
+<li>Streamlined gate operations, security coordination, and hygiene systems.</li>
+</ul>
 </div>
 
 <div class="timeline-item">
 <div class="role">HR Manager & Project Coordinator</div>
-<div class="company">Kosher Infrastructure Pvt. Ltd.</div>
+<div class="company">Kosher Infrastructure Pvt. Ltd., Noida</div>
 <div class="duration">Jul 2024 – Jul 2025</div>
+<ul>
+<li>Handled 600+ workforce across multi-state projects.</li>
+<li>Executed Mahakumbh 2025 Tent City Project (200 luxury tents).</li>
+<li>Improved compliance score from 30% to 100%.</li>
+<li>Supported tendering and NHAI project acquisition.</li>
+</ul>
 </div>
+
+<div class="timeline-item">
+<div class="role">HR Officer</div>
+<div class="company">Tricornio Technologies Pvt. Ltd., Ghaziabad</div>
+<div class="duration">Dec 2019 – Jan 2024</div>
+<ul>
+<li>End-to-end HR operations, payroll, MIS, and audits.</li>
+<li>Awarded “Best Employee of the Year”.</li>
+</ul>
+</div>
+
+<div class="timeline-item">
+<div class="role">Director – Faculty</div>
+<div class="company">Success Point Academy, Sabalgarh</div>
+<div class="duration">Jan 2018 – Oct 2019</div>
+<ul>
+<li>Directed academic operations and faculty coordination.</li>
+<li>Designed curriculum and delivered classroom training.</li>
+</ul>
+</div>
+
 </section>
 
-<section id="skills">
-<h2 class="section-title">Core Skills</h2>
-<div class="grid-3">
-<span class="skill-chip">HR Operations</span>
-<span class="skill-chip">Payroll</span>
-<span class="skill-chip">PF & ESIC</span>
-<span class="skill-chip">Labour Laws</span>
-<span class="skill-chip">HRMS</span>
-<span class="skill-chip">Project Coordination</span>
+<section id="certifications">
+<h2 class="section-title">Certifications</h2>
+<div class="cert-grid">
+<div class="cert-card">
+<img src="assets/assets/certificates/six-sigma.jpg">
+<h3>Lean Six Sigma White Belt</h3>
+<div class="cert-id">ID: djQ3NzowMi0yOTg</div>
+</div>
+<div class="cert-card">
+<img src="assets/assets/certificates/ai-hr.jpg">
+<h3>AI in HR</h3>
+<div class="cert-id">ID: 12D1828E4</div>
+</div>
+<div class="cert-card">
+<img src="assets/assets/certificates/posh.jpg">
+<h3>POSH Certification</h3>
+<div class="cert-id">Keka Academy</div>
+</div>
 </div>
 </section>
 
 <section id="contact">
-<h2 class="section-title">Resume Access Form</h2>
+<h2 class="section-title">Contact & Resume Access</h2>
 <div class="card">
-<form onsubmit="submitForm(event)">
-<input type="text" id="name" placeholder="Your Name" required>
-<input type="text" id="org" placeholder="Organisation Name" required>
-<input type="tel" id="mobile" placeholder="Mobile Number" required>
+<form onsubmit="downloadResume(event)">
+<input type="text" placeholder="Your Name" required>
+<input type="text" placeholder="Organisation Name" required>
+<input type="tel" placeholder="Mobile Number" required>
 <button type="submit">Submit & Download Resume</button>
 </form>
 </div>
@@ -250,41 +337,25 @@ and event-based projects including Mahakumbh 2025 Tent City.
 <footer>© Laxman Singh Jadon</footer>
 </div>
 
-<!-- FLOATING ACTION BUTTONS -->
+<!-- FLOATING BUTTONS -->
 <div class="fab">
-<a href="https://www.linkedin.com/in/YOUR_LINKEDIN_ID" target="_blank">in</a>
-<a href="https://wa.me/918383842382" target="_blank">💬</a>
+<a href="https://www.linkedin.com/in/YOUR_LINKEDIN_ID" target="_blank" style="background:#0A66C2">
+<img src="assets/assets/icons/linkedin.png">
+</a>
+<a href="https://wa.me/918383842382" target="_blank" style="background:#25D366">
+<img src="assets/assets/icons/whatsapp.png">
+</a>
 </div>
 
 <script>
-function toggleDark(){
-document.body.classList.toggle('dark');
-localStorage.setItem('theme',
-document.body.classList.contains('dark')?'dark':'light');
-}
-
-if(localStorage.getItem('theme')!=='light'){
-document.body.classList.add('dark');
-}
-
-function openForm(){
-document.getElementById('contact').scrollIntoView();
-}
-
-function submitForm(e){
+function downloadResume(e){
 e.preventDefault();
-const name=document.getElementById('name').value;
-const org=document.getElementById('org').value;
-const mobile=document.getElementById('mobile').value;
-
-if(name && org && mobile){
 const link=document.createElement('a');
 link.href='resume.pdf';
 link.download='Laxman_Singh_Jadon_Resume.pdf';
 document.body.appendChild(link);
 link.click();
 document.body.removeChild(link);
-}
 }
 </script>
 
