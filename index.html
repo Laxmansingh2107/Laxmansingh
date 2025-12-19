@@ -4,95 +4,181 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Laxman Singh Jadon | HR & Operations Professional</title>
-
-<meta name="description" content="Laxman Singh Jadon – HR & Operations professional with experience in compliance, payroll, workforce management, and large-scale project execution.">
-<meta name="keywords" content="HR Manager, Operations, Compliance, Payroll, Project Coordination, Laxman Singh Jadon">
+<title>Laxman Singh Jadon | HR & Operations</title>
 
 <style>
-:root {
-  --bg:#f6f7fb; --card:#fff; --text:#1f2933;
-  --muted:#4b5563; --accent:#354f52;
+:root{
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#1f2933;
+  --muted:#4b5563;
+  --accent:#354f52;
 }
-.dark {
-  --bg:#0f172a; --card:#1e293b; --text:#e5e7eb;
-  --muted:#9ca3af; --accent:#84a98c;
+.dark{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#84a98c;
 }
 
 body{
-  margin:0;font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);color:var(--text);line-height:1.65;
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
 }
-.wrapper{max-width:900px;margin:auto;padding:30px 20px}
+.wrapper{
+  max-width:900px;
+  margin:auto;
+  padding:30px 20px;
+}
 
 /* Header */
-header{text-align:center;border-bottom:1px solid #d1d5db;padding-bottom:24px}
+header{
+  text-align:center;
+  border-bottom:1px solid #d1d5db;
+  padding-bottom:24px;
+}
 header h1{margin:0;font-size:32px}
 header p{margin:6px 0;color:var(--muted)}
 .download-btn{
-  display:inline-block;margin-top:16px;padding:12px 26px;
-  background:var(--accent);color:#fff;text-decoration:none;
-  border-radius:4px;font-weight:bold
+  display:inline-block;
+  margin-top:16px;
+  padding:12px 26px;
+  background:var(--accent);
+  color:#fff;
+  text-decoration:none;
+  border-radius:6px;
+  font-weight:bold;
 }
 
 /* Sections */
-section{margin-top:35px;background:var(--card);padding:24px;border-radius:6px}
-h2{border-bottom:2px solid var(--accent);display:inline-block;padding-bottom:4px}
+section{
+  margin-top:35px;
+  background:var(--card);
+  padding:24px;
+  border-radius:10px;
+}
+h2{
+  border-bottom:2px solid var(--accent);
+  display:inline-block;
+  padding-bottom:4px;
+}
 
 /* Accordion */
 .accordion-btn{
-  width:100%;padding:14px;font-size:18px;
-  background:var(--accent);color:#fff;border:none;
-  border-radius:4px;cursor:pointer;text-align:left
+  width:100%;
+  padding:14px;
+  font-size:18px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  text-align:left;
 }
-.accordion-content{display:none;padding-top:12px}
-.role{font-style:italic;color:var(--muted)}
-ul{padding-left:18px}
+.accordion-content{
+  display:none;
+  padding-top:15px;
+}
 
-/* Contact */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.whatsapp img{max-width:140px}
+/* Skill Badges */
+.skill-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:20px;
+}
+.skill-badge{
+  background:var(--accent);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:600;
+}
+
+/* Tools */
+.tool-card{
+  display:flex;
+  gap:15px;
+  background:var(--bg);
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+.tool-card img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+}
+.tool-card h4{
+  margin:0 0 6px 0;
+}
+.tool-card p{
+  margin:0;
+  font-size:14px;
+  color:var(--muted);
+}
 
 /* Floating Menu */
 .fab{
-  position:fixed;bottom:20px;right:20px;
-  background:var(--accent);color:#fff;
-  width:50px;height:50px;border-radius:50%;
-  font-size:24px;border:none;cursor:pointer
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:var(--accent);
+  color:#fff;
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  font-size:24px;
+  border:none;
+  cursor:pointer;
 }
 .menu{
-  position:fixed;bottom:80px;right:20px;
-  background:var(--card);border-radius:8px;
+  position:fixed;
+  bottom:80px;
+  right:20px;
+  background:var(--card);
+  border-radius:10px;
   box-shadow:0 5px 15px rgba(0,0,0,.25);
-  display:none
+  display:none;
 }
 .menu button{
-  display:block;width:100%;padding:10px 14px;
-  border:none;background:none;text-align:left;
-  cursor:pointer;color:var(--text)
+  display:block;
+  width:100%;
+  padding:10px 14px;
+  border:none;
+  background:none;
+  text-align:left;
+  cursor:pointer;
 }
-.menu button:hover{background:var(--accent);color:#fff}
+.menu button:hover{
+  background:var(--accent);
+  color:#fff;
+}
 
-/* Dark Toggle */
+/* Dark Mode */
 .toggle{
-  position:fixed;top:15px;right:15px;
-  background:var(--accent);color:#fff;
-  border:none;border-radius:50%;
-  padding:10px 14px;cursor:pointer
+  position:fixed;
+  top:15px;
+  right:15px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:50%;
+  padding:10px 14px;
+  cursor:pointer;
 }
 
 /* Footer */
-footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px}
-
-/* Print Mode */
-@media print{
-  .fab,.menu,.toggle,.whatsapp img,.download-btn{display:none}
-  body{background:#fff;color:#000}
-  section{box-shadow:none;border:none}
-}
-
-@media(max-width:600px){
-  .contact-grid{grid-template-columns:1fr;text-align:center}
+footer{
+  text-align:center;
+  margin-top:40px;
+  color:var(--muted);
+  font-size:14px;
 }
 </style>
 </head>
@@ -105,105 +191,70 @@ footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px}
 
 <header id="summary">
 <h1>Laxman Singh Jadon</h1>
-<p>HR Manager | Operations | Project Coordination</p>
+<p>HR Manager | Operations | Compliance</p>
 <p>Greater Noida, Uttar Pradesh</p>
 <a class="download-btn" href="resume.pdf" download>Download Resume</a>
 </header>
 
 <section>
 <h2>Professional Summary</h2>
-<p>HR and Operations professional with extensive experience in compliance-driven, multi-site environments, payroll administration, workforce planning, and large-scale project execution.</p>
-<p>UPSC background brings disciplined analytical thinking and policy-oriented decision-making. Successfully contributed to high-impact initiatives including the Mahakumbh 2025 Tent City Project.</p>
-</section>
-
-<section id="experience">
-<button class="accordion-btn" onclick="toggleSection(this)">Work Experience</button>
-<div class="accordion-content">
-<h3>Kasper Engineering Pvt. Ltd.</h3>
-<p class="role">Plant Manager – HR & Admin | Jul 2025 – Oct 2025</p>
-<ul>
-<li>Managed recruitment, onboarding, and statutory compliance for 60+ employees.</li>
-<li>Ensured 100% compliance under PF, ESIC, WC Policy, Factory Laws.</li>
-</ul>
-
-<h3>Kosher Infrastructure Pvt. Ltd.</h3>
-<p class="role">HR Manager & Project Coordinator | Jul 2024 – Jul 2025</p>
-<ul>
-<li>Handled 600+ employees nationwide.</li>
-<li>Executed Mahakumbh 2025 Tent City Project (200 luxury tents).</li>
-<li>Improved compliance accuracy from 30% to 100%.</li>
-</ul>
-</div>
-</section>
-
-<section id="education">
-<button class="accordion-btn" onclick="toggleSection(this)">Education</button>
-<div class="accordion-content">
-<ul>
-<li>MBA – HR & Operations, LPU (2026)</li>
-<li>MA – Rural Development, IGNOU (2018)</li>
-<li>BA – Economics, Sociology, English – Jiwaji University (2016)</li>
-<li>Diploma in Computer Applications (2014)</li>
-</ul>
-</div>
+<p>HR & Operations professional experienced in large-scale workforce management, statutory compliance, payroll administration, and project coordination.</p>
 </section>
 
 <section id="skills">
-<button class="accordion-btn" onclick="toggleSection(this)">Skills & Tools</button>
+<button class="accordion-btn" onclick="toggleSection(this)">Skills</button>
 <div class="accordion-content">
-<ul>
-<li>HR Operations, Payroll & Compliance</li>
-<li>PF, ESIC, CLRA, POSH, Factory Laws</li>
-<li>HRMS: Keka, Qandle, HR One</li>
-<li>MIS & Workforce Analytics</li>
-<li>Project Coordination & Tender Documentation</li>
-</ul>
+
+<h3>Core HR</h3>
+<div class="skill-grid">
+<span class="skill-badge">HR Operations</span>
+<span class="skill-badge">Payroll</span>
+<span class="skill-badge">Compliance</span>
+<span class="skill-badge">Workforce Planning</span>
+</div>
+
+<h3>Compliance & Laws</h3>
+<div class="skill-grid">
+<span class="skill-badge">PF</span>
+<span class="skill-badge">ESIC</span>
+<span class="skill-badge">CLRA</span>
+<span class="skill-badge">POSH</span>
+</div>
+
 </div>
 </section>
 
-<section id="certifications">
-<button class="accordion-btn" onclick="toggleSection(this)">Certifications</button>
+<section id="tools">
+<button class="accordion-btn" onclick="toggleSection(this)">Tools</button>
 <div class="accordion-content">
-<ul>
-<li>Lean Six Sigma White Belt – CSSC</li>
-<li>AI in HR – Keka Academy</li>
-<li>POSH, Payroll, Compensation & Benefits</li>
-<li>People Analytics & Employee Engagement</li>
-</ul>
-</div>
-</section>
 
-<section id="contact">
-<h2>Contact</h2>
-<div class="contact-grid">
+<div class="tool-card">
+<img src="assets/tools/keka.png">
 <div>
-<p><strong>Phone:</strong> +91 8383842382</p>
-<p><strong>Email:</strong> luckysingh0508.lsj@gmail.com</p>
-<p><strong>LinkedIn:</strong><br>
-<a href="https://www.linkedin.com/in/laxman-singh-jadon-635421109" target="_blank">
-linkedin.com/in/laxman-singh-jadon
-</a></p>
+<h4>Keka HR</h4>
+<p>Used for payroll processing, attendance tracking, HR analytics, and statutory compliance.</p>
 </div>
-<div class="whatsapp">
-<p><strong>WhatsApp</strong></p>
-<img src="whatsapp-qr.jpg" alt="WhatsApp QR">
 </div>
+
+<div class="tool-card">
+<img src="assets/tools/excel.png">
+<div>
+<h4>Microsoft Excel</h4>
+<p>Essential for MIS reports, payroll reconciliation, workforce analytics, and dashboards.</p>
+</div>
+</div>
+
 </div>
 </section>
 
-<footer>© Laxman Singh Jadon | HR & Operations Professional</footer>
+<footer>© Laxman Singh Jadon</footer>
 </div>
 
-<!-- Floating Menu -->
 <button class="fab" onclick="toggleMenu()">☰</button>
 <div class="menu" id="menu">
 <button onclick="go('summary')">Summary</button>
-<button onclick="go('experience')">Experience</button>
-<button onclick="go('education')">Education</button>
 <button onclick="go('skills')">Skills</button>
-<button onclick="go('certifications')">Certifications</button>
-<button onclick="go('contact')">Contact</button>
-<button onclick="window.print()">Print</button>
+<button onclick="go('tools')">Tools</button>
 </div>
 
 <script>
