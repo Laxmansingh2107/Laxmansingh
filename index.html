@@ -7,43 +7,82 @@
 
 <style>
 :root{
---bg:#f6f7fb;--card:#fff;--text:#1f2933;
---muted:#4b5563;--accent:#354f52;
+--bg:#f4f6fa;--card:#fff;--text:#1f2933;
+--muted:#6b7280;--accent:#2f5d62;--border:#e5e7eb;
 }
 .dark{
 --bg:#0f172a;--card:#1e293b;--text:#e5e7eb;
---muted:#9ca3af;--accent:#84a98c;
+--muted:#9ca3af;--accent:#84a98c;--border:#334155;
 }
-body{margin:0;font-family:Arial;background:var(--bg);color:var(--text);}
-.wrapper{max-width:900px;margin:auto;padding:30px 20px}
-section{margin-top:30px;background:var(--card);padding:22px;border-radius:10px}
-h2{border-bottom:2px solid var(--accent);display:inline-block}
-.accordion-btn{width:100%;padding:14px;background:var(--accent);color:#fff;
-border:none;border-radius:6px;font-size:18px;text-align:left;cursor:pointer}
-.accordion-content{display:none;padding-top:15px}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+.wrapper{max-width:1100px;margin:auto;padding:40px 20px}
+h1,h2,h3{margin-top:0}
 
-/* Skills */
-.skill-grid{display:flex;flex-wrap:wrap;gap:10px}
-.skill-badge{background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;font-size:14px}
+/* HEADER */
+header{text-align:center;border-bottom:1px solid var(--border);padding-bottom:30px}
+header h1{font-size:38px}
+header p{color:var(--muted)}
+.download-btn{display:inline-block;margin-top:16px;padding:12px 28px;
+background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:600}
 
-/* Tools */
-.tool-card{display:flex;gap:15px;background:var(--bg);padding:15px;border-radius:10px;margin-bottom:12px}
-.tool-card img{width:48px;height:48px;object-fit:contain}
+/* SECTIONS */
+section{margin-top:50px}
+.section-title{font-size:26px;border-left:6px solid var(--accent);padding-left:12px;margin-bottom:25px}
 
-/* Contact */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.whatsapp img{max-width:140px}
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);
+border-radius:14px;padding:22px;margin-bottom:20px}
 
-/* Floating */
-.fab{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;
-width:52px;height:52px;border-radius:50%;font-size:24px;border:none}
-.menu{position:fixed;bottom:80px;right:20px;background:var(--card);
-border-radius:10px;display:none}
-.menu button{display:block;width:100%;padding:10px;border:none;background:none;text-align:left}
-.toggle{position:fixed;top:15px;right:15px;background:var(--accent);color:#fff;
-border:none;border-radius:50%;padding:10px}
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
 
-footer{text-align:center;margin-top:40px;color:var(--muted)}
+/* TIMELINE */
+.timeline{position:relative;padding-left:30px}
+.timeline::before{content:"";position:absolute;left:10px;top:0;bottom:0;width:3px;background:var(--accent)}
+.timeline-item{position:relative;margin-bottom:30px}
+.timeline-item::before{
+content:"";position:absolute;left:-2px;top:6px;width:14px;height:14px;
+background:var(--accent);border-radius:50%
+}
+.role{font-weight:700;font-size:18px}
+.company{color:var(--accent);font-weight:600}
+.duration{font-size:14px;color:var(--muted)}
+
+/* SKILLS */
+.skill-chip{background:var(--accent);color:#fff;padding:8px 14px;
+border-radius:999px;font-size:14px;font-weight:600}
+
+/* TOOLS */
+.tool{display:flex;gap:15px}
+.tool img{width:48px;height:48px;object-fit:contain}
+
+/* CERTIFICATES */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.cert-card{cursor:pointer;text-align:center}
+.cert-card img{width:100%;border-radius:10px;border:1px solid var(--border)}
+.cert-id{font-size:13px;color:var(--muted);margin-top:6px}
+
+/* MODAL */
+.modal{display:none;position:fixed;z-index:99;left:0;top:0;width:100%;height:100%;
+background:rgba(0,0,0,.7);align-items:center;justify-content:center}
+.modal img{max-width:90%;max-height:90%;border-radius:10px}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+.whatsapp img{max-width:160px}
+
+/* TOGGLE */
+.toggle{position:fixed;top:15px;right:15px;background:var(--accent);
+color:#fff;border:none;border-radius:50%;padding:10px 14px;cursor:pointer}
+
+/* FOOTER */
+footer{text-align:center;margin-top:60px;color:var(--muted)}
+
+/* MOBILE */
+@media(max-width:700px){
+.grid-2,.contact-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 
@@ -53,153 +92,154 @@ footer{text-align:center;margin-top:40px;color:var(--muted)}
 
 <div class="wrapper">
 
-<header id="summary" style="text-align:center">
+<header>
 <h1>Laxman Singh Jadon</h1>
 <p>HR Manager | Operations | Compliance | Project Coordination</p>
 <p>Greater Noida, Uttar Pradesh</p>
-<a href="resume.pdf" download>Download Resume</a>
+<a class="download-btn" href="resume.pdf" download>Download Complete Resume (PDF)</a>
 </header>
 
 <section>
-<h2>Professional Profile</h2>
-<p>HR & Operations professional with extensive experience in compliance-driven, multi-site workforce management, payroll, HRMS, and large-scale project execution including Mahakumbh 2025 Tent City Project.</p>
+<h2 class="section-title">Professional Profile</h2>
+<div class="card">
+<p>
+HR & Operations professional experienced in large-scale workforce management,
+statutory compliance, payroll, HRMS, and high-impact project execution including
+<strong>Mahakumbh 2025 Tent City Project</strong>.
+</p>
+</div>
 </section>
 
-<section id="experience">
-<button class="accordion-btn" onclick="toggleSection(this)">Work Experience</button>
-<div class="accordion-content">
+<section>
+<h2 class="section-title">Work Experience</h2>
+<div class="timeline">
 
-<h3>Kasper Engineering Pvt. Ltd. (Jul 2025 – Oct 2025)</h3>
-<p><em>Plant Manager – HR & Admin</em></p>
+<div class="timeline-item">
+<div class="role">Plant Manager – HR & Admin</div>
+<div class="company">Kasper Engineering Pvt. Ltd.</div>
+<div class="duration">Jul 2025 – Oct 2025</div>
 <ul>
-<li>Managed 60+ employees with complete statutory compliance (PF, ESIC, WC, Factory Act).</li>
-<li>Handled recruitment, onboarding, payroll inputs, audits & vendor coordination.</li>
+<li>Managed 60+ employees with 100% statutory compliance.</li>
+<li>Recruitment, onboarding, payroll, audits.</li>
 </ul>
+</div>
 
-<h3>Kosher Infrastructure Pvt. Ltd. (Jul 2024 – Jul 2025)</h3>
-<p><em>HR Manager & Project Coordinator</em></p>
+<div class="timeline-item">
+<div class="role">HR Manager & Project Coordinator</div>
+<div class="company">Kosher Infrastructure Pvt. Ltd.</div>
+<div class="duration">Jul 2024 – Jul 2025</div>
 <ul>
 <li>Managed 600+ workforce across multi-state projects.</li>
 <li>Executed Mahakumbh 2025 Tent City Project (200 luxury tents).</li>
-<li>Improved compliance score from 30% to 100%.</li>
+<li>Improved compliance from 30% to 100%.</li>
 </ul>
-
-<h3>Tricornio Technologies Pvt. Ltd. (Dec 2019 – Jan 2024)</h3>
-<p><em>HR Officer</em></p>
-<ul>
-<li>Payroll, compliance, MIS, audit readiness.</li>
-<li>Awarded “Best Employee of the Year”.</li>
-</ul>
+</div>
 
 </div>
 </section>
 
-<section id="education">
-<button class="accordion-btn" onclick="toggleSection(this)">Education</button>
-<div class="accordion-content">
-<ul>
-<li><strong>MBA – HR & Operations</strong>, LPU (2026)</li>
-<li><strong>MA – Rural Development</strong>, IGNOU (2018)</li>
-<li><strong>BA – Economics, Sociology, English</strong>, Jiwaji University (2016)</li>
-<li><strong>DCA</strong>, MMYVV (2014)</li>
-</ul>
+<section>
+<h2 class="section-title">Education</h2>
+<div class="grid-2">
+
+<div class="card">
+<h3>MBA – HR & Operations</h3>
+<p class="duration">LPU | 2026</p>
+<p>HR strategy, operations, labour laws, analytics.</p>
+</div>
+
+<div class="card">
+<h3>MA – Rural Development</h3>
+<p class="duration">IGNOU | 2018</p>
+<p>Policy planning, development economics.</p>
+</div>
+
 </div>
 </section>
 
-<section id="skills">
-<button class="accordion-btn" onclick="toggleSection(this)">Skills</button>
-<div class="accordion-content">
-<div class="skill-grid">
-<span class="skill-badge">HR Operations</span>
-<span class="skill-badge">Payroll Management</span>
-<span class="skill-badge">PF & ESIC</span>
-<span class="skill-badge">POSH</span>
-<span class="skill-badge">Compliance Audits</span>
-<span class="skill-badge">Project Coordination</span>
-<span class="skill-badge">MIS & Analytics</span>
-</div>
+<section>
+<h2 class="section-title">Core Skills</h2>
+<div class="grid-3">
+<span class="skill-chip">HR Operations</span>
+<span class="skill-chip">Payroll Management</span>
+<span class="skill-chip">PF & ESIC</span>
+<span class="skill-chip">POSH</span>
+<span class="skill-chip">Compliance Audits</span>
+<span class="skill-chip">Project Coordination</span>
+<span class="skill-chip">MIS & Analytics</span>
 </div>
 </section>
 
-<section id="tools">
-<button class="accordion-btn" onclick="toggleSection(this)">Tools</button>
-<div class="accordion-content">
+<section>
+<h2 class="section-title">Tools & Platforms</h2>
 
-<div class="tool-card">
+<div class="card tool">
 <img src="assets/tools/keka.png">
-<div><strong>Keka HR</strong><br>Payroll, HRMS, compliance automation.</div>
+<div><h3>Keka HRMS</h3><p>Payroll, HRMS, compliance automation.</p></div>
 </div>
 
-<div class="tool-card">
+<div class="card tool">
 <img src="assets/tools/excel.png">
-<div><strong>MS Excel</strong><br>MIS, payroll reconciliation, dashboards.</div>
+<div><h3>Microsoft Excel</h3><p>MIS, payroll reconciliation, dashboards.</p></div>
 </div>
 
-<div class="tool-card">
-<img src="assets/tools/qandle.png">
-<div><strong>Qandle HRMS</strong><br>Attendance, leave, workforce tracking.</div>
+</section>
+
+<section>
+<h2 class="section-title">Certifications</h2>
+
+<div class="cert-grid">
+
+<div class="card cert-card" onclick="openModal('assets/certificates/six-sigma.jpg')">
+<img src="assets/certificates/six-sigma.jpg">
+<h3>Lean Six Sigma White Belt</h3>
+<div class="cert-id">ID: djQ3NzowMi0yOTg</div>
+</div>
+
+<div class="card cert-card" onclick="openModal('assets/certificates/ai-hr.jpg')">
+<img src="assets/certificates/ai-hr.jpg">
+<h3>AI in HR</h3>
+<div class="cert-id">ID: 12D1828E4-1276EE272</div>
 </div>
 
 </div>
 </section>
 
-<section id="certifications">
-<button class="accordion-btn" onclick="toggleSection(this)">Certifications</button>
-<div class="accordion-content">
-<ul>
-<li>Lean Six Sigma White Belt – CSSC | ID: djQ3NzowMi0yOTg</li>
-<li>AI in HR – Keka Academy | ID: 12D1828E4-1276EE272</li>
-<li>POSH – Keka Academy | ID: 12D187894-1276EE272</li>
-<li>People Analytics – Keka Academy | ID: 12D178D08-1276EE272</li>
-</ul>
-</div>
-</section>
-
-<section id="contact">
-<h2>Contact</h2>
-<div class="contact-grid">
+<section>
+<h2 class="section-title">Contact</h2>
+<div class="card contact-grid">
 <div>
 <p>📞 +91 8383842382</p>
 <p>✉️ luckysingh0508.lsj@gmail.com</p>
 </div>
 <div class="whatsapp">
-<img src="assets/assets/images/whatsapp-qr.JPG">
+<img src="assets/images/whatsapp-qr.jpg">
 </div>
 </div>
 </section>
 
 <footer>© Laxman Singh Jadon</footer>
+
 </div>
 
-<button class="fab" onclick="toggleMenu()">☰</button>
-<div class="menu" id="menu">
-<button onclick="go('summary')">Summary</button>
-<button onclick="go('experience')">Experience</button>
-<button onclick="go('skills')">Skills</button>
-<button onclick="go('tools')">Tools</button>
-<button onclick="go('certifications')">Certifications</button>
-<button onclick="go('contact')">Contact</button>
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal()">
+<img id="modalImg">
 </div>
 
 <script>
-function toggleSection(btn){
-document.querySelectorAll('.accordion-content').forEach(c=>{
-if(c!==btn.nextElementSibling)c.style.display='none'})
-const c=btn.nextElementSibling
-c.style.display=c.style.display==='block'?'none':'block'
-}
 function toggleDark(){
 document.body.classList.toggle('dark')
 localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light')
 }
 if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark')}
-function toggleMenu(){
-const m=document.getElementById('menu')
-m.style.display=m.style.display==='block'?'none':'block'
+
+function openModal(src){
+document.getElementById('modalImg').src=src
+document.getElementById('modal').style.display='flex'
 }
-function go(id){
-document.getElementById(id).scrollIntoView({behavior:'smooth'})
-document.getElementById('menu').style.display='none'
+function closeModal(){
+document.getElementById('modal').style.display='none'
 }
 </script>
 
