@@ -1,77 +1,261 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Laxman Singh Jadon | HR Manager & Project Coordinator</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Laxman Singh | HR & Operations Leader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ICONS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root {
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #1f2933;
+    --accent: #2563eb;
+}
+
+.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #e5e7eb;
+}
+
+* {
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+header {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 34px;
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+section {
+    background: var(--card);
+    margin-bottom: 25px;
+    padding: 30px;
+    border-radius: 10px;
+    animation: fadeUp 0.8s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: inline-block;
+    margin: 8px 5px;
+    padding: 12px 18px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.btn i {
+    margin-right: 6px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+ul {
+    padding-left: 18px;
+}
+
+.whatsapp-box {
+    text-align: center;
+}
+
+.whatsapp-box img {
+    max-width: 180px;
+    margin-top: 10px;
+}
+
+.toggle {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+</style>
 </head>
+
 <body>
-  <header>
+
+<header>
     <h1>Laxman Singh Jadon</h1>
-    <p>HR Manager | Project Coordinator | Tendering & Compliance Expert</p>
-    <a href=".Laxman_Singh_CV_Resume_2311.pdf" class="btn" download>Download Resume</a>
-  </header>
+    <p>HR Manager | Operations | Project Coordination</p>
+    <p>Greater Noida, Uttar Pradesh</p>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>
-      I am a versatile and dynamic Human Resources Manager and Multi-Project Coordinator with over five years of experience across various Indian states including Odisha, Andhra Pradesh, Uttar Pradesh, Uttarakhand, and Bihar. I specialize in HR operations, compliance, workforce management, and stakeholder collaboration. I am currently pursuing an MBA in HR and Operations Management.
-    </p>
-    <p>
-      A key highlight of my career has been leading the premium Tent City Project during Mahakumbh 2025 — overseeing 200+ tents, vendor management, logistics, and execution under tight deadlines.
-    </p>
-  </section>
+    <a class="btn" href="resume.pdf" download><i class="fa-solid fa-file-pdf"></i>Download Resume</a>
+    <a class="btn" href="https://www.linkedin.com/in/laxman-singh-jadon-635421109" target="_blank">
+        <i class="fa-brands fa-linkedin"></i>LinkedIn
+    </a>
+</header>
 
-  <section id="career">
-    <h2>Career Timeline</h2>
-    <ul>
-      <li><strong>Jul 2024 – Present:</strong> HR Manager & Project Coordinator, Kosher Infrastructure Pvt. Ltd.</li>
-      <li><strong>Dec 2019 – Jan 2024:</strong> HR Officer & Backend Admin, Tricornio Technologies</li>
-      <li><strong>Jan 2018 – Oct 2019:</strong> Managing Director & Faculty, Success Point Academy</li>
-    </ul>
-  </section>
+<div class="container">
 
-  <section id="skills">
-    <h2>Key Skills</h2>
-    <ul>
-      <li>End-to-end Recruitment, Grievance Handling, Payroll & Statutory Compliance</li>
-      <li>Project Coordination, Site Supervision, Vendor & Tender Management</li>
-      <li>Labour Law Compliance (EPF, ESIC, Minimum Wages Act)</li>
-      <li>Training & Development, MIS & HR Dashboard Reporting</li>
-      <li>Stakeholder Engagement & Conflict Resolution</li>
-    </ul>
-  </section>
+<section>
+<h2>Professional Profile</h2>
+<p>
+HR professional with extensive experience in dynamic, multi-site environments requiring strategic clarity and hands-on execution. Strong understanding of organizational behavior, compliance frameworks, and workforce management.
+</p>
+<p>
+Background as a UPSC aspirant enhances analytical thinking, discipline, and policy-driven problem-solving, enabling effective leadership and conflict resolution.
+</p>
+<p>
+Proven project coordination expertise demonstrated through execution of the Mahakumbh 2025 Tent City Project, involving large-scale planning and stakeholder management.
+</p>
+</section>
 
-  <section id="education">
-    <h2>Education & Certifications</h2>
-    <ul>
-      <li><strong>MBA (HR & Operations)</strong> – Lovely Professional University (2024–26)</li>
-      <li><strong>MA (Rural Development)</strong> – IGNOU (2017)</li>
-      <li><strong>BA (Economics, English Lit, Sociology)</strong> – Jiwaji University (2013–16)</li>
-      <li><strong>Diploma in Computer Applications</strong> – MMYVV, MP (2014)</li>
-    </ul>
-  </section>
+<section>
+<h2>Work Experience</h2>
 
-  <section id="quote">
-    <h2>My Motto</h2>
-    <blockquote>
-      “Efficiency and integrity in administration, with a human touch — that’s my commitment.”
-    </blockquote>
-  </section>
+<h3>Kasper Engineering Pvt. Ltd. – Plant Manager (HR & Admin)</h3>
+<p><strong>Jul 2025 – Oct 2025</strong></p>
+<ul>
+<li>Managed 60+ employees including recruitment, onboarding, and compliance.</li>
+<li>Ensured 100% compliance under PF, ESIC, WC Policy, and Factory Laws.</li>
+<li>Improved gate operations, hygiene, and vendor coordination.</li>
+</ul>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:luckysingh0508.lsj@gmail.com">luckysingh0508.lsj@gmail.com</a></p>
-    <p>Phone: +91 8383842382</p>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/laxman-singh-jadon-635421109" target="_blank">linkedin.com/in/laxman-singh-jadon</a></p>
-  </section>
+<h3>Kosher Infrastructure Pvt. Ltd. – HR Manager & Project Coordinator</h3>
+<p><strong>Jul 2024 – Jul 2025</strong></p>
+<ul>
+<li>Handled 600+ employees across national projects.</li>
+<li>Executed Mahakumbh 2025 Tent City Project (200 luxury tents).</li>
+<li>Raised compliance accuracy from 30% to 100%.</li>
+<li>Supported tendering for NHAI & UPSTDC projects.</li>
+</ul>
 
-  <footer>
-    <p>© 2025 Laxman Singh Jadon. All rights reserved.</p>
-  </footer>
+<h3>Tricornio Technologies Pvt. Ltd. – HR Officer</h3>
+<p><strong>Dec 2019 – Jan 2024</strong></p>
+<ul>
+<li>Recognized as Best Employee of the Year.</li>
+<li>Maintained flawless payroll and statutory compliance.</li>
+</ul>
+
+<h3>Success Point Academy – Director & Faculty</h3>
+<p><strong>Jan 2018 – Oct 2019</strong></p>
+<ul>
+<li>Led academic operations and General Studies programs.</li>
+</ul>
+</section>
+
+<section>
+<h2>Education</h2>
+<ul>
+<li>MBA – HR & Operations, LPU (2026)</li>
+<li>MA – Rural Development, IGNOU (2018)</li>
+<li>BA – Economics, Sociology, English, Jiwaji University (2016)</li>
+<li>Diploma in Computer Applications (2014)</li>
+</ul>
+</section>
+
+<section>
+<h2>Skills & Expertise</h2>
+<div class="grid">
+<ul>
+<li>HR Operations & Compliance</li>
+<li>Payroll & Attendance</li>
+<li>Contract Labour Management</li>
+<li>Recruitment & Onboarding</li>
+</ul>
+<ul>
+<li>HRMS (Keka, Qandle, HR One)</li>
+<li>MIS & People Analytics</li>
+<li>Project Coordination</li>
+<li>Tender & RFP Documentation</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Certifications</h2>
+<ul>
+<li>Lean Six Sigma White Belt – CSSC</li>
+<li>AI in HR – Keka Academy</li>
+<li>POSH, Payroll, C&B, People Analytics</li>
+<li>Emergency Preparedness – Knights of Safety Academy</li>
+</ul>
+</section>
+
+<section class="whatsapp-box">
+<h2>Contact via WhatsApp</h2>
+<p>Scan QR code or click below</p>
+<img src="whatsapp-qr.jpg" alt="WhatsApp QR Code">
+<br><br>
+<a class="btn" href="https://wa.me/918383842382" target="_blank">
+<i class="fa-brands fa-whatsapp"></i>Chat on WhatsApp
+</a>
+</section>
+
+</div>
+
+<footer>
+© Laxman Singh Jadon | HR & Operations Professional
+</footer>
+
+<button class="toggle" onclick="document.body.classList.toggle('dark')">
+🌙
+</button>
+
 </body>
 </html>
