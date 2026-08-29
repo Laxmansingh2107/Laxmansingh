@@ -1,0 +1,12 @@
+/* Premium hero visual: replaces the decorative character treatment with a restrained operations dashboard. */
+.deadpool-character{display:none!important}
+.hero-visual{min-height:500px}
+.hero-box{overflow:hidden;isolation:isolate}
+.hero-box:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 18%,rgba(34,211,238,.12),transparent 34%),linear-gradient(135deg,transparent 0 48%,rgba(255,255,255,.025) 48.2%,transparent 48.5%);pointer-events:none}
+.hero-box:after{content:"OPERATING SYSTEM / 2026";position:absolute;right:26px;bottom:22px;color:#34404d;font:800 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.18em}
+.hero-box>*{position:relative;z-index:1}
+.position-card{position:relative;overflow:hidden}
+.position-card:after{content:"";position:absolute;right:-28px;top:-28px;width:105px;height:105px;border:1px solid rgba(34,211,238,.18);border-radius:50%;box-shadow:0 0 0 18px rgba(34,211,238,.025),0 0 0 38px rgba(34,211,238,.015)}
+.console-stats>div{position:relative;overflow:hidden}
+.console-stats>div:after{content:"";position:absolute;left:18px;right:18px;bottom:11px;height:1px;background:linear-gradient(90deg,#22d3ee 0 64%,transparent 64%)}
+@media(max-width:850px){.hero-visual{min-height:430px}.hero-box{top:40px}}
