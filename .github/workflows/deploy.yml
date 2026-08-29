@@ -31,12 +31,13 @@ jobs:
       - name: Install Python PDF dependency
         run: python -m pip install reportlab
 
-      - name: Generate current CV PDF
+      - name: Generate CV PDF
         run: python scripts/build_cv.py
 
-      - name: Assemble supplied Deadpool image
+      - name: Assemble Deadpool image
         run: |
-          cat public/assets/deadpool-sleeping.webp.b64.part1 public/assets/deadpool-sleeping.webp.b64.part2 public/assets/deadpool-sleeping.webp.b64.part3 public/assets/deadpool-sleeping.webp.b64.part4 | base64 -d > public/assets/deadpool-sleeping.webp
+          base64 -d public/assets/deadpool-sleeping.b64 > public/assets/deadpool-sleeping.webp
+          file public/assets/deadpool-sleeping.webp
 
       - name: Install dependencies
         run: npm ci
