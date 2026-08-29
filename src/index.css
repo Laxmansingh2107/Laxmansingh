@@ -8,9 +8,13 @@ body { margin: 0; min-width: 320px; font-family: Inter, ui-sans-serif, system-ui
 
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @keyframes pulseGlow { 0%,100% { opacity: .35; transform: scale(1); } 50% { opacity: .65; transform: scale(1.08); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes droneTravel { 0% { transform: translateX(-8vw) translateY(0); } 45% { transform: translateX(42vw) translateY(-18px); } 100% { transform: translateX(108vw) translateY(8px); } }
 
 .float-slow { animation: float 6s ease-in-out infinite; }
 .glow-pulse { animation: pulseGlow 5s ease-in-out infinite; }
+.animate-in { animation: fadeUp .7s cubic-bezier(.22,1,.36,1) both; }
+.drone-unit { animation: droneTravel 18s linear infinite; }
 
 .bg-grid-pattern {
   background-image: linear-gradient(rgba(100,116,139,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(100,116,139,.08) 1px, transparent 1px);
