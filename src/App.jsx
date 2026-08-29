@@ -1,519 +1,212 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Briefcase, 
-  Award, 
-  Lock, 
-  Unlock, 
-  User, 
-  Mail, 
-  Linkedin, 
-  MapPin, 
-  FileText,
-  Moon,
-  Sun,
-  X,
-  Eye,
-  EyeOff,
-  Building,
-  CheckCircle,
-  TrendingUp,
-  Shield,
-  Target,
-  Share2,
-  QrCode,
-  Download,
-  MessageCircle,
-  Send,
-  Loader2
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  ArrowDown, ArrowUpRight, Award, BarChart3, BriefcaseBusiness, CheckCircle2,
+  ChevronRight, Code2, GraduationCap, Mail, MapPin, Menu, Moon, Network,
+  Phone, ShieldCheck, Sparkles, Sun, Target, Users, X, Zap
 } from 'lucide-react';
 
-// --- CONFIGURATION ---
-// Your Formspree ID is set here:
-const FORMSPREE_ID = "mykzaonl"; 
-
-// --- DATA SECTIONS ---
-const EXPERIENCE_DATA = [
+const CAREER = [
   {
-    id: 1,
-    role: "Plant Manager, HR & Admin",
-    company: "Kasper Engineering Pvt Ltd",
-    location: "Hapur",
-    period: "Jul 2025 - Oct 2025",
-    description: "Managed 60+ plant employees and streamlined gate operations. Strengthened statutory compliance (PF, ESIC, Factory Laws) by ensuring 100% documentation accuracy. Enhanced workplace hygiene and introduced structured communication policies.",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2070", 
-    tags: ["Factory Laws", "Workforce Admin", "Compliance", "Safety"]
+    date: '2014 – 2018',
+    title: 'Foundations — Learning How People & Systems Work',
+    org: 'Education & UPSC foundation',
+    text: 'Bachelor’s studies in Economics, Sociology and English Literature, followed by an MA in Rural Development and a UPSC-oriented foundation. This built a systems-oriented lens for people, policy and institutions.',
+    metric: 'Systems thinking'
   },
   {
-    id: 2,
-    role: "HR Manager & Project Coordinator",
-    company: "Kosher Infrastructure Pvt Ltd",
-    location: "Noida",
-    period: "Jul 2024 - Jul 2025",
-    description: "Led HR operations for 600+ employees nationwide. Key player in the Mahakumbh 2025 Tent City Project. Improved compliance score from 30% to 93%. Managed payroll, recruitment, and tender documentation for NHAI & UPSTDC contracts.",
-    image: "https://images.unsplash.com/photo-1565619624098-e64bd2229442?auto=format&fit=crop&q=80&w=2070", 
-    tags: ["Project Mgmt", "Large Scale Ops", "Tendering", "HRMS"]
+    date: 'Dec 2019 – Jan 2024',
+    title: 'First Steps — Building Discipline in HR',
+    org: 'Tricornio Technologies Pvt Ltd · HR Officer',
+    text: 'Built HR fundamentals through employee records, payroll and statutory documentation. Maintained zero compliance deviations and earned Best Employee of the Year recognition.',
+    metric: '4+ years of HR fundamentals'
   },
   {
-    id: 3,
-    role: "HR Officer",
-    company: "Tricornio Technologies Pvt Ltd",
-    location: "Ghaziabad",
-    period: "Jan 2018 - Jan 2024",
-    description: "Maintained error-free employee records and 100% payroll accuracy for 120+ employees. Led structured onboarding for technical hires and delivered periodic HR analytics/MIS reports to leadership.",
-    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=2032", 
-    tags: ["Payroll", "Recruitment", "HR Analytics", "Audit Readiness"]
-  }
-];
-
-const CERTIFICATES_DATA = [
-  {
-    id: 1,
-    title: "Lean Six Sigma White Belt",
-    issuer: "Council For Six Sigma Certification",
-    date: "Certified",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
-    credentialId: "djQ3NzowMi0yOTg"
+    date: 'Jul 2024 – Jul 2025',
+    title: 'Scaling Up — Multi-State Operations',
+    org: 'Kasper Infrastructure Pvt Ltd · HR Manager & Project Coordinator',
+    text: 'Led HR operations across 600+ employees on multi-state infrastructure projects and coordinated HR/operations for the Mahakumbh 2025 Tent City Project involving 200 luxury tents and multiple stakeholders.',
+    metric: '600+ workforce'
   },
   {
-    id: 2,
-    title: "AI in HR",
-    issuer: "Keka Academy",
-    date: "Certified",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800",
-    credentialId: "12D1828E4-1276EE272"
+    date: 'Jul 2025 – Oct 2025',
+    title: 'Full Ownership — Running a Plant End to End',
+    org: 'Kasper Engineering Pvt Ltd · Plant Manager, HR & Admin',
+    text: 'Owned HR, administration, security, vendors, housekeeping and discipline at plant level — extending operational ownership beyond conventional HR responsibilities.',
+    metric: 'End-to-end plant operations'
   },
   {
-    id: 3,
-    title: "POSH Certification",
-    issuer: "Keka Academy",
-    date: "Certified",
-    image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80&w=800",
-    credentialId: "12D187894-1276EE272"
+    date: 'Jan 2026 – Jun 2026',
+    title: 'A Fast Rise — Trust Earned in Months',
+    org: 'IG Strategic Systems Pvt Ltd (IG Defence)',
+    text: 'Joined as HR Associate-II in January 2026, promoted to HR Associate-III in April and HR Lead in June — a rapid progression reflecting expanding responsibility and organisational trust.',
+    metric: '3 role levels in 6 months'
   },
   {
-    id: 4,
-    title: "Master of Business Administration",
-    issuer: "LPU (Pursuing)",
-    date: "2026",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
-    credentialId: "HR & Operations"
-  }
-];
-
-const SECURE_DOCS_DATA = [
-  {
-    id: 1,
-    title: "Aadhar / National ID",
-    type: "Identity",
-    previewIcon: User,
-    secretImage: "https://images.unsplash.com/photo-1633265486064-086b219458ec?auto=format&fit=crop&q=80&w=1000", 
-    fileName: "aadhar_sample.pdf", 
-    description: "Govt issued ID."
-  },
-  {
-    id: 2,
-    title: "PAN Card",
-    type: "Financial",
-    previewIcon: FileText,
-    secretImage: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1000", 
-    fileName: "pan_sample.jpg", 
-    description: "Tax ID Document."
-  },
-  {
-    id: 3,
-    title: "Driving License",
-    type: "Personal",
-    previewIcon: FileText,
-    secretImage: "https://images.unsplash.com/photo-1544306316-c5675f91d035?auto=format&fit=crop&q=80&w=1000", 
-    fileName: "license_sample.pdf",
-    description: "Valid until 2030."
+    date: 'Aug 2026 – Present',
+    title: 'Today — Where HR Meets Project Delivery',
+    org: 'HR Lead + Project Delivery Department HOD · IG Defence',
+    text: 'Leading HR and organisational policy while coordinating with Business Development on demos, trials, on-site delivery, ATP and client training for defence products.',
+    metric: 'People + Delivery'
   }
 ];
 
 const SKILLS = [
-  "Statutory Compliance (PF/ESIC)", "HR Operations", "Talent Acquisition", 
-  "POSH Compliance", "Payroll Management", "Grievance Handling", 
-  "Manpower Planning", "MIS Reporting", "Project Coordination", 
-  "Tendering (GeM)", "HRMS (Keka, Qandle)", "Employee Engagement"
+  ['HR Operations', 'End-to-end HR administration, workforce coordination and policy execution.'],
+  ['Talent Acquisition', 'Hiring across niche technical, white-collar and blue-collar roles.'],
+  ['Compliance & Governance', 'Statutory documentation, audit readiness, POSH and policy governance.'],
+  ['Payroll & MIS', 'Payroll coordination, HR analytics, records and management reporting.'],
+  ['Project Coordination', 'Demos, trials, product showcases, delivery, ATP and client training.'],
+  ['Operations Management', 'Administration, facilities, security, vendors and movement control.'],
+  ['Workforce Development', 'Training-led workforce models and repeatable operating systems.'],
+  ['HR Technology & AI', 'HRMS implementation, automation and practical AI-in-HR exploration.']
 ];
 
-const AWARDS = [
-  {
-    title: "Best Employee of the Year",
-    company: "Tricornio Technologies",
-    desc: "Recognized for 100% statutory documentation accuracy and seamless payroll administration."
-  },
-  {
-    title: "HR Excellence Recognition",
-    company: "Kosher Infrastructure",
-    desc: "Awarded for leading multi-state HR operations and executing the Mahakumbh 2025 Tent City Project."
-  }
+const CERTS = [
+  'Lean Six Sigma White Belt · CSSC', 'AI in HR · Keka Academy', 'POSH Certification · Keka Academy',
+  'Crafting Payroll in India · Keka Academy', 'Compensation & Benefits · Keka Academy',
+  'Employee Engagement Course · Keka Academy', 'People Analytics · Keka Academy',
+  'Emergency Preparedness · Knights of Safety Academy'
 ];
 
-// --- COMPONENTS ---
+const EDUCATION = [
+  ['MBA, HR & Operations Management', 'LPU · 2026 · In progress'],
+  ['MA, Rural Development', 'IGNOU · 2018'],
+  ['BA, Economics, Sociology & English Literature', 'JU · 2016'],
+  ['Diploma in Computer Application', 'MMYVV, M.P. · 2014']
+];
 
-const Section = ({ title, children, id, className = "" }) => (
-  <section id={id} className={`py-24 px-6 md:px-12 max-w-7xl mx-auto ${className}`}>
-    {title && (
-      <div className="mb-16">
-        <h2 className="text-3xl md:text-5xl font-bold text-slate-800 dark:text-slate-100 mb-4 tracking-tight">
-          {title}
-        </h2>
-        <div className="h-1.5 w-24 bg-blue-600 rounded-full"></div>
-      </div>
-    )}
-    {children}
-  </section>
-);
+const DASHBOARD = {
+  People: { value: '600+', label: 'largest workforce managed', icon: Users, copy: 'Experience scaling people operations across multi-state infrastructure projects.' },
+  Compliance: { value: '93%+', label: 'pre-deadline compliance level', icon: ShieldCheck, copy: 'Built audit-ready processes and pushed compliance from 30% to 93%+ at Kasper Infrastructure.' },
+  Delivery: { value: '200', label: 'luxury tents coordinated', icon: Target, copy: 'Mahakumbh 2025 became an early bridge between HR operations and project delivery.' },
+  Operations: { value: '11+', label: 'functional areas overseen', icon: Network, copy: 'Current HR leadership spans IT, Admin, TA, HR Operations, Governance, Payroll, Facilities, Security and more.' }
+};
 
-const ExperienceCard = ({ item }) => (
-  <div className="group relative bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-xl border border-slate-100 dark:border-slate-800 transition-all duration-500 hover:shadow-2xl mb-24 last:mb-0">
-    <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
-      <div className="relative h-64 lg:h-auto overflow-hidden">
-        <div className="absolute inset-0 bg-blue-900/20 group-hover:bg-transparent transition-colors z-10" />
-        <img src={item.image} alt={item.role} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent z-20 lg:hidden">
-             <h3 className="text-2xl font-bold text-white">{item.role}</h3>
-             <p className="text-blue-200">{item.company}</p>
-        </div>
-      </div>
-      <div className="p-8 lg:p-12 flex flex-col justify-center">
-        <div className="hidden lg:block mb-6">
-          <h3 className="text-3xl font-bold text-slate-800 dark:text-white mb-2">{item.role}</h3>
-          <div className="flex items-center gap-2 text-xl text-blue-600 dark:text-blue-400 font-medium">
-            <Building className="w-5 h-5" />
-            {item.company}
+function Reveal({ children, className = '' }) {
+  return <div className={`animate-in fade-in slide-in-from-bottom-4 duration-700 ${className}`}>{children}</div>;
+}
+
+function MovingDrone() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div className="absolute -right-16 top-28 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl glow-pulse" />
+      <div className="absolute left-[8%] top-[26%] h-px w-[84%] bg-gradient-to-r from-transparent via-blue-400/25 to-transparent" />
+      <div className="drone-track absolute left-0 top-[25%] w-full">
+        <div className="drone-unit float-slow ml-[6vw] flex items-center gap-2 text-blue-500">
+          <div className="relative h-7 w-12 rounded-full border border-blue-400/70 bg-slate-950/80 shadow-[0_0_30px_rgba(59,130,246,.35)]">
+            <span className="absolute -left-2 top-2 h-2 w-2 rounded-full bg-blue-400" />
+            <span className="absolute -right-2 top-2 h-2 w-2 rounded-full bg-blue-400" />
+            <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-300" />
           </div>
-        </div>
-        <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-6 font-mono border-b border-slate-100 dark:border-slate-800 pb-6">
-           <span className="flex items-center gap-1"><MapPin className="w-4 h-4"/> {item.location}</span>
-           <span className="flex items-center gap-1"><TrendingUp className="w-4 h-4"/> {item.period}</span>
-        </div>
-        <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg mb-8">{item.description}</p>
-        <div className="flex flex-wrap gap-2 mt-auto">
-          {item.tags.map((tag, idx) => (
-            <span key={idx} className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold tracking-wide">
-              {tag}
-            </span>
-          ))}
+          <span className="text-[10px] font-mono uppercase tracking-[.25em] text-blue-300/60">delivery.signal</span>
         </div>
       </div>
+      <div className="absolute bottom-16 right-10 text-[9px] font-mono tracking-[.35em] text-slate-400/40">PEOPLE · PROCESS · DELIVERY</div>
     </div>
-  </div>
-);
+  );
+}
 
-const FeatureProject = () => (
-    <div className="my-12 relative rounded-3xl overflow-hidden bg-slate-900 text-white shadow-2xl">
-        <div className="absolute inset-0">
-            <img src="https://images.unsplash.com/photo-1533630654593-b26c7e0dd074?auto=format&fit=crop&q=80&w=2070" alt="Mahakumbh Tent City" className="w-full h-full object-cover opacity-40" />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
-        </div>
-        <div className="relative z-10 p-10 md:p-16 max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-sm font-bold mb-6">
-                <Target className="w-4 h-4" /> FEATURED PROJECT
-            </div>
-            <h3 className="text-4xl md:text-5xl font-bold mb-6">Mahakumbh 2025 Tent City</h3>
-            <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-                Led end-to-end planning and operations for <strong>200 Luxury Tents</strong>. 
-                Managed stakeholder coordination, on-ground operations, and ensured compliance under challenging timelines.
-            </p>
-            <div className="flex flex-wrap gap-8">
-                <div><div className="text-3xl font-bold text-white mb-1">600+</div><div className="text-sm text-slate-400 uppercase tracking-wider">Workforce Managed</div></div>
-                <div><div className="text-3xl font-bold text-white mb-1">93%</div><div className="text-sm text-slate-400 uppercase tracking-wider">Compliance Score</div></div>
-                <div><div className="text-3xl font-bold text-white mb-1">200</div><div className="text-sm text-slate-400 uppercase tracking-wider">Luxury Units</div></div>
-            </div>
-        </div>
-    </div>
-);
-
-// --- VISITOR FORM COMPONENT (UPDATED FOR DATA COLLECTION) ---
-const VisitorFormModal = ({ onClose }) => {
-  const [showSkip, setShowSkip] = useState(false);
-  const [formData, setFormData] = useState({ name: '', designation: '', org: '' });
-  const [status, setStatus] = useState('idle'); // idle | submitting | success | error
+function App() {
+  const [dark, setDark] = useState(() => window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false);
+  const [menu, setMenu] = useState(false);
+  const [careerIndex, setCareerIndex] = useState(CAREER.length - 1);
+  const [dashboardTab, setDashboardTab] = useState('People');
+  const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => { setShowSkip(true); }, 3000);
-    return () => clearTimeout(timer);
+    const onScroll = () => setShowTop(window.scrollY > 600);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!FORMSPREE_ID) {
-        alert("Please configure your Formspree ID in the code first.");
-        return;
-    }
-    setStatus('submitting');
-    
-    try {
-        const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        });
-        
-        if (response.ok) {
-            setStatus('success');
-            setTimeout(onClose, 2000); // Close after 2 seconds
-        } else {
-            setStatus('error');
-        }
-    } catch (err) {
-        setStatus('error');
-    }
-  };
+  const activeCareer = CAREER[careerIndex];
+  const dashboard = DASHBOARD[dashboardTab];
+  const DashboardIcon = dashboard.icon;
+  const navItems = ['Journey', 'Impact', 'Expertise', 'Projects', 'Education', 'Contact'];
 
-  if (status === 'success') {
-      return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
-                  <CheckCircle size={32} />
+  const years = useMemo(() => new Date().getFullYear() - 2019, []);
+
+  return (
+    <div className={dark ? 'dark' : ''}>
+      <main className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-500 dark:bg-[#070b14] dark:text-slate-100">
+        <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-[#070b14]/80">
+          <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-8">
+            <a href="#home" className="flex items-center gap-3" onClick={() => setMenu(false)}>
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-slate-950 text-white shadow-lg dark:bg-white dark:text-slate-950"><BriefcaseBusiness size={19} /></div>
+              <div><div className="font-bold tracking-tight">Laxman Singh Jadon</div><div className="text-[10px] font-semibold uppercase tracking-[.2em] text-blue-600 dark:text-blue-400">HR · Operations · Delivery</div></div>
+            </a>
+            <nav className="hidden items-center gap-7 lg:flex">
+              {navItems.map((item) => <a key={item} href={`#${item.toLowerCase()}`} className="text-sm font-medium text-slate-600 transition hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400">{item}</a>)}
+            </nav>
+            <div className="flex items-center gap-2">
+              <a href="mailto:luckysingh0508.lsj@gmail.com" className="hidden rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold hover:border-blue-300 hover:text-blue-600 sm:block dark:border-white/10 dark:hover:border-blue-500/50">Let's connect</a>
+              <button aria-label="Toggle theme" onClick={() => setDark(!dark)} className="rounded-full border border-slate-200 p-2.5 hover:bg-slate-100 dark:border-white/10 dark:hover:bg-white/10">{dark ? <Sun size={17} /> : <Moon size={17} />}</button>
+              <button aria-label="Open menu" onClick={() => setMenu(!menu)} className="rounded-full border border-slate-200 p-2.5 lg:hidden dark:border-white/10">{menu ? <X size={18} /> : <Menu size={18} />}</button>
+            </div>
+          </div>
+          {menu && <div className="border-t border-slate-200 bg-white px-5 py-5 dark:border-white/10 dark:bg-[#070b14] lg:hidden">{navItems.map((item) => <a onClick={() => setMenu(false)} key={item} href={`#${item.toLowerCase()}`} className="block py-2 font-medium">{item}</a>)}</div>}
+        </header>
+
+        <section id="home" className="relative flex min-h-screen items-center overflow-hidden bg-grid-pattern px-5 pb-20 pt-32 md:px-8">
+          <MovingDrone />
+          <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1.2fr_.8fr]">
+            <Reveal>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/80 px-4 py-2 text-xs font-bold uppercase tracking-[.18em] text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300"><span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" /> Currently leading HR + Project Delivery</div>
+              <h1 className="max-w-5xl text-5xl font-black leading-[.98] tracking-[-.05em] md:text-7xl xl:text-8xl">A career built around <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent">people, systems & purpose.</span></h1>
+              <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 md:text-xl">HR Lead and Project Delivery Department HOD at IG Strategic Systems Pvt Ltd (IG Defence), bringing together people strategy, compliance discipline and hands-on delivery.</p>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <a href="#journey" className="group inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3.5 font-bold text-white shadow-xl transition hover:-translate-y-1 dark:bg-white dark:text-slate-950">Explore the journey <ArrowDown size={17} className="transition group-hover:translate-y-1" /></a>
+                <a href="mailto:luckysingh0508.lsj@gmail.com" className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/70 px-6 py-3.5 font-bold transition hover:-translate-y-1 hover:border-blue-400 dark:border-white/15 dark:bg-white/5">Contact <ArrowUpRight size={17} /></a>
               </div>
-              <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">Thank You!</h3>
-              <p className="text-slate-500 text-sm">Your details have been recorded.</p>
-          </div>
-        </div>
-      );
-  }
+              <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-slate-500 dark:text-slate-400"><span className="flex items-center gap-2"><MapPin size={15} /> Greater Noida, India</span><span className="flex items-center gap-2"><Zap size={15} /> {years}+ years of professional experience since 2019</span></div>
+            </Reveal>
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-in fade-in duration-500">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in slide-in-from-bottom-10 duration-500 relative">
-        <div className="p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-600 dark:text-blue-400">
-              <User size={24} />
-            </div>
-            <div>
-              <h3 className="font-bold text-xl text-slate-800 dark:text-white">Visitor Book</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Let Laxman know you stopped by!</p>
-            </div>
+            <Reveal className="hidden lg:block">
+              <div className="relative mx-auto max-w-sm rounded-[2rem] border border-slate-200 bg-white/75 p-6 shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-white/[.04]">
+                <div className="mb-7 flex items-center justify-between"><span className="font-mono text-xs uppercase tracking-[.2em] text-slate-400">professional.system</span><span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]" /></div>
+                <div className="space-y-3 font-mono text-sm"><div className="rounded-xl bg-slate-950 p-4 text-slate-300 dark:bg-black/40"><span className="text-blue-400">role</span>: HR Lead + Project Delivery HOD</div><div className="rounded-xl bg-slate-100 p-4 dark:bg-white/5"><span className="text-blue-500">focus</span>: People → Process → Delivery</div><div className="rounded-xl bg-slate-100 p-4 dark:bg-white/5"><span className="text-blue-500">approach</span>: Train → Systemise → Scale</div><div className="rounded-xl bg-slate-100 p-4 dark:bg-white/5"><span className="text-blue-500">mindset</span>: Curious + rigorous</div></div>
+                <div className="mt-7 grid grid-cols-2 gap-3"><div className="rounded-xl border border-slate-200 p-4 dark:border-white/10"><div className="text-2xl font-black">600+</div><div className="text-[10px] uppercase tracking-wider text-slate-400">workforce</div></div><div className="rounded-xl border border-slate-200 p-4 dark:border-white/10"><div className="text-2xl font-black">93%+</div><div className="text-[10px] uppercase tracking-wider text-slate-400">compliance</div></div></div>
+              </div>
+            </Reveal>
           </div>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Your Name</label>
-              <input required type="text" className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="Ex. John Doe" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Designation</label>
-              <input required type="text" className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="Ex. HR Manager" value={formData.designation} onChange={e => setFormData({...formData, designation: e.target.value})} />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Organization</label>
-              <input required type="text" className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="Ex. Company Ltd." value={formData.org} onChange={e => setFormData({...formData, org: e.target.value})} />
-            </div>
-            
-            <button disabled={status === 'submitting'} type="submit" className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-xl font-bold text-lg shadow-lg shadow-blue-500/30 flex justify-center items-center gap-2 transition-all hover:-translate-y-1">
-              {status === 'submitting' ? <Loader2 className="animate-spin" /> : <Send size={20} />}
-              {status === 'submitting' ? 'Saving...' : 'Connect'}
-            </button>
-            {status === 'error' && <p className="text-red-500 text-xs text-center mt-2">Something went wrong. Please try again.</p>}
-          </form>
+        </section>
 
-          <div className={`mt-6 text-center transition-opacity duration-1000 ${showSkip ? 'opacity-100' : 'opacity-0'}`}>
-            <button onClick={onClose} className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 underline decoration-slate-300 underline-offset-4">
-              Skip & Continue Browsing
-            </button>
+        <section id="impact" className="border-y border-slate-200 bg-white px-5 py-8 dark:border-white/10 dark:bg-white/[.02] md:px-8">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-5 md:grid-cols-4">
+            {[['600+', 'employees managed'], ['93%+', 'compliance achieved'], ['200', 'luxury tents coordinated'], ['3', 'promotions in 6 months']].map(([n, l]) => <div key={l} className="border-l border-slate-200 pl-4 dark:border-white/10"><div className="text-2xl font-black md:text-3xl">{n}</div><div className="mt-1 text-[10px] font-semibold uppercase tracking-[.16em] text-slate-500 dark:text-slate-400">{l}</div></div>)}
           </div>
-        </div>
-      </div>
+        </section>
+
+        <section id="journey" className="mx-auto max-w-7xl px-5 py-24 md:px-8">
+          <Reveal><div className="mb-12 max-w-3xl"><p className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-600">01 · The Journey</p><h2 className="text-4xl font-black tracking-tight md:text-6xl">Every chapter added a new layer of scale.</h2><p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-400">From understanding people and systems to leading HR and project delivery together.</p></div></Reveal>
+          <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr]">
+            <div className="space-y-2">{CAREER.map((item, i) => <button key={item.date} onClick={() => setCareerIndex(i)} className={`group flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition ${careerIndex === i ? 'border-blue-400 bg-blue-50 shadow-lg shadow-blue-500/10 dark:border-blue-400/40 dark:bg-blue-400/10' : 'border-transparent hover:border-slate-200 dark:hover:border-white/10'}`}><span className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${careerIndex === i ? 'bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,.7)]' : 'bg-slate-300 dark:bg-slate-700'}`} /><span><span className="block text-xs font-bold uppercase tracking-wider text-slate-400">{item.date}</span><span className="mt-1 block font-bold">{item.title}</span></span><ChevronRight className={`ml-auto mt-1 transition ${careerIndex === i ? 'translate-x-1 text-blue-500' : 'text-slate-300'}`} size={17} /></button>)}</div>
+            <div className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-xl dark:border-white/10 dark:bg-white/[.035] md:p-10"><div className="flex items-center justify-between gap-4"><div><div className="text-xs font-bold uppercase tracking-[.2em] text-blue-600">{activeCareer.date}</div><h3 className="mt-3 text-2xl font-black md:text-4xl">{activeCareer.title}</h3><p className="mt-2 font-medium text-slate-500 dark:text-slate-400">{activeCareer.org}</p></div><div className="hidden rounded-2xl bg-slate-950 p-3 text-white dark:bg-white dark:text-slate-950 sm:block"><BriefcaseBusiness size={22} /></div></div><p className="mt-8 text-lg leading-8 text-slate-600 dark:text-slate-300">{activeCareer.text}</p><div className="mt-8 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-bold text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-300"><CheckCircle2 size={15} /> {activeCareer.metric}</div></div>
+          </div>
+        </section>
+
+        <section id="expertise" className="bg-slate-950 px-5 py-24 text-white dark:bg-black md:px-8">
+          <div className="mx-auto max-w-7xl"><Reveal><p className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-400">02 · Expertise</p><h2 className="max-w-3xl text-4xl font-black tracking-tight md:text-6xl">The operating toolkit behind the work.</h2></Reveal><div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{SKILLS.map(([title, copy], i) => <div key={title} className="group rounded-2xl border border-white/10 bg-white/[.04] p-6 transition hover:-translate-y-1 hover:border-blue-400/40 hover:bg-blue-400/[.06]"><div className="mb-10 flex items-center justify-between"><span className="font-mono text-xs text-white/35">0{i + 1}</span><ArrowUpRight size={17} className="text-white/30 transition group-hover:text-blue-400" /></div><h3 className="text-lg font-bold">{title}</h3><p className="mt-3 text-sm leading-6 text-slate-400">{copy}</p></div>)}</div></div>
+        </section>
+
+        <section id="projects" className="mx-auto max-w-7xl px-5 py-24 md:px-8">
+          <Reveal><p className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-600">03 · Interactive Impact Lab</p><h2 className="max-w-3xl text-4xl font-black tracking-tight md:text-6xl">See the role from four operating angles.</h2><p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-400">An interactive snapshot of the scale, governance and delivery responsibilities described in the CV.</p></Reveal>
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-2xl dark:border-white/10 dark:bg-white/[.035]"><div className="flex flex-wrap border-b border-slate-200 dark:border-white/10">{Object.keys(DASHBOARD).map(tab => <button key={tab} onClick={() => setDashboardTab(tab)} className={`flex-1 px-5 py-4 text-sm font-bold transition ${dashboardTab === tab ? 'bg-blue-600 text-white' : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-white/5'}`}>{tab}</button>)}</div><div className="grid gap-10 p-7 md:grid-cols-[.7fr_1.3fr] md:p-12"><div><div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400"><DashboardIcon size={27} /></div><div className="text-6xl font-black tracking-tight">{dashboard.value}</div><div className="mt-2 font-bold text-slate-500 dark:text-slate-400">{dashboard.label}</div></div><div className="flex flex-col justify-center"><div className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-[.2em] text-slate-400"><BarChart3 size={15} /> operating insight</div><p className="max-w-2xl text-xl leading-9 text-slate-700 dark:text-slate-200">{dashboard.copy}</p><div className="mt-7 h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-white/10"><div className="h-full w-[78%] animate-pulse rounded-full bg-gradient-to-r from-blue-600 to-cyan-400" /></div></div></div></div>
+          <div className="mt-8 grid gap-6 lg:grid-cols-[1.3fr_.7fr]"><div className="rounded-[2rem] border border-slate-200 bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white shadow-xl md:p-10"><div className="mb-4 inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wider"><Target size={14} className="mr-2" /> Turning point</div><h3 className="text-3xl font-black">Building IG Defence's Production & Manufacturing function from scratch.</h3><p className="mt-5 max-w-3xl text-base leading-7 text-blue-100">The model shifted routine assembly toward a trained blue-collar workforce while reserving engineers for testing and quality control. The CV describes the outcome as a repeatable training system, sharply lower production costs and a workforce producing highly technical drones without compromising quality.</p></div><div className="rounded-[2rem] border border-slate-200 bg-white p-8 dark:border-white/10 dark:bg-white/[.035]"><Sparkles className="text-blue-500" /><h3 className="mt-5 text-xl font-black">Working principle</h3><p className="mt-3 leading-7 text-slate-600 dark:text-slate-400">Train the workforce. Systemise the process. Keep specialists focused where precision matters. Scale what works.</p></div></div>
+        </section>
+
+        <section id="education" className="border-y border-slate-200 bg-slate-100 px-5 py-24 dark:border-white/10 dark:bg-white/[.025] md:px-8">
+          <div className="mx-auto max-w-7xl"><div className="grid gap-16 lg:grid-cols-2"><div><p className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-600">04 · Education & Credentials</p><h2 className="text-4xl font-black tracking-tight md:text-5xl">Formal learning, continuously connected to practice.</h2><div className="mt-10 space-y-4">{EDUCATION.map(([name, meta]) => <div key={name} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-white/[.035]"><div className="mt-1 text-blue-600"><GraduationCap size={21} /></div><div><h3 className="font-bold">{name}</h3><p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{meta}</p></div></div>)}</div></div><div><p className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-blue-600">Certifications</p><div className="grid gap-3 sm:grid-cols-2">{CERTS.map(cert => <div key={cert} className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm font-semibold dark:border-white/10 dark:bg-white/[.035]"><Award size={17} className="mt-0.5 shrink-0 text-amber-500" />{cert}</div>)}</div><div className="mt-10 rounded-2xl border border-dashed border-slate-300 p-6 dark:border-white/15"><div className="flex items-center gap-3"><Code2 size={19} className="text-blue-500" /><div><div className="font-bold">Beyond work</div><div className="mt-1 text-sm text-slate-500 dark:text-slate-400">Chess & puzzles · cinema & documentaries · badminton & cricket · coding & AI exploration</div></div></div></div></div></div></div>
+        </section>
+
+        <section id="contact" className="relative overflow-hidden px-5 py-28 md:px-8"><div className="absolute inset-0 bg-grid-pattern opacity-60" /><div className="relative mx-auto max-w-5xl text-center"><Reveal><p className="mb-4 text-xs font-bold uppercase tracking-[.22em] text-blue-600">05 · Connect</p><h2 className="text-5xl font-black tracking-[-.04em] md:text-7xl">People. Process. Delivery.<br /><span className="text-slate-400">Let's build what comes next.</span></h2><p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-400">For professional conversations, opportunities or collaboration, reach out directly.</p><div className="mt-9 flex flex-wrap justify-center gap-3"><a href="mailto:luckysingh0508.lsj@gmail.com" className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 font-bold text-white shadow-xl shadow-blue-500/20 hover:bg-blue-700"><Mail size={18} /> Email</a><a href="tel:+918383842382" className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-6 py-3.5 font-bold dark:border-white/15"><Phone size={18} /> +91 83838 42382</a></div><div className="mt-8 text-sm text-slate-500">Greater Noida, India · English · Hindi</div></Reveal></div></section>
+
+        <footer className="border-t border-slate-200 px-5 py-8 dark:border-white/10 md:px-8"><div className="mx-auto flex max-w-7xl flex-col gap-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between"><span>© {new Date().getFullYear()} Laxman Singh Jadon</span><span>A journey through people, policy and purpose.</span></div></footer>
+
+        {showTop && <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top" className="fixed bottom-6 right-6 z-40 rounded-full bg-slate-950 p-3 text-white shadow-2xl dark:bg-white dark:text-slate-950"><ArrowUp size={18} /></button>}
+      </main>
     </div>
   );
-};
-
-const ShareModal = ({ isOpen, onClose }) => {
-  const [copied, setCopied] = useState(false);
-  const url = typeof window !== 'undefined' ? window.location.href : 'https://laxman-singh-portfolio.com';
-
-  useEffect(() => { if (isOpen) setCopied(false); }, [isOpen]);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  if (!isOpen) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 duration-200 relative">
-        <button onClick={onClose} className="absolute top-4 right-4 p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors text-slate-500"><X className="w-5 h-5" /></button>
-        <div className="p-8 flex flex-col items-center text-center">
-          <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mb-4"><QrCode size={32} /></div>
-          <h3 className="font-bold text-xl text-slate-800 dark:text-white mb-2">Share Profile</h3>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">Scan to visit profile.</p>
-          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-inner mb-6">
-            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`} alt="Profile QR Code" className="w-48 h-48" />
-          </div>
-          <div className="w-full flex gap-2">
-            <input type="text" readOnly value={url} className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-600 dark:text-slate-400 truncate" />
-            <button onClick={handleCopy} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">{copied ? 'Copied!' : 'Copy'}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const PasswordModal = ({ isOpen, onClose, onSuccess, docTitle }) => {
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => { if (isOpen) { setPassword(''); setError(false); } }, [isOpen]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password === '1234') { onSuccess(); onClose(); } else { setError(true); }
-  };
-
-  if (!isOpen) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
-        <div className="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
-          <h3 className="font-bold text-lg flex items-center gap-2 text-slate-800 dark:text-white"><Lock className="w-5 h-5 text-amber-500" /> Identity Verification</h3>
-          <button onClick={onClose} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors"><X className="w-5 h-5 text-slate-500" /></button>
-        </div>
-        <div className="p-8">
-          <p className="text-slate-600 dark:text-slate-300 mb-6 text-sm">Access to <strong>"{docTitle}"</strong> is restricted.</p>
-          <form onSubmit={handleSubmit}>
-            <div className="relative mb-4">
-              <input type={showPassword ? "text" : "password"} className={`w-full px-4 py-3 rounded-lg border ${error ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 dark:border-slate-600 focus:ring-blue-200'} bg-slate-50 dark:bg-slate-900 dark:text-white focus:outline-none focus:ring-4 transition-all`} placeholder="Enter Access PIN" value={password} onChange={(e) => setPassword(e.target.value)} autoFocus />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600">{showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}</button>
-            </div>
-            {error && <p className="text-red-500 text-xs mb-4">Incorrect PIN. Please try again.</p>}
-            <button type="submit" className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex justify-center items-center gap-2 mb-4"><Unlock className="w-4 h-4" /> Unlock Document</button>
-            <div className="text-center pt-4 border-t border-slate-100 dark:border-slate-700">
-              <p className="text-xs text-slate-500 mb-2">Don't have the code?</p>
-              <a href="https://wa.me/918383842382?text=Hello%20Mr.%20Singh,%20I%20would%20like%20to%20request%20access%20to%20your%20secure%20documents." target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium"><MessageCircle className="w-4 h-4" /> Request Access via WhatsApp</a>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SecureDocViewer = ({ isOpen, onClose, doc }) => {
-  if (!isOpen || !doc) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative max-w-5xl w-full h-[85vh] bg-slate-900 rounded-xl overflow-hidden shadow-2xl flex flex-col border border-slate-700">
-         <div className="absolute top-4 right-4 z-10">
-            <button onClick={onClose} className="p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md transition-all"><X className="w-6 h-6" /></button>
-         </div>
-         <div className="flex-grow flex items-center justify-center p-4 bg-dots-pattern relative">
-            <img src={doc.secretImage} alt="Confidential" className="max-w-full max-h-full object-contain rounded-md shadow-2xl" />
-         </div>
-         <div className="bg-slate-950 p-6 border-t border-slate-800 flex justify-between items-center text-white">
-            <div><h3 className="font-bold text-lg">{doc.title}</h3><p className="text-sm text-slate-400">Restricted Access • Confidential</p></div>
-            <div className="flex gap-4">
-                <a href={`./${doc.fileName}`} download className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"><Download className="w-4 h-4" /> Download</a>
-                <div className="flex items-center gap-2 text-green-500 bg-green-500/10 px-3 py-1 rounded-full text-sm font-medium"><CheckCircle className="w-4 h-4" /> Authenticated</div>
-            </div>
-         </div>
-      </div>
-    </div>
-  );
-};
-
-// --- MAIN APP ---
-const App = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [secureDocToUnlock, setSecureDocToUnlock] = useState(null);
-  const [unlockedDoc, setUnlockedDoc] = useState(null);
-  const [isShareOpen, setIsShareOpen] = useState(false);
-  const [isVisitorModalOpen, setIsVisitorModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setIsDarkMode(true);
-    }
-    const timer = setTimeout(() => { setIsVisitorModalOpen(true); }, 4000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
-  const handleDocClick = (doc) => setSecureDocToUnlock(doc);
-  const handleUnlockSuccess = () => {
-    setUnlockedDoc(secureDocToUnlock);
-    setSecureDocToUnlock(null);
-  };
-
-  return (
-    <div className={`min-h-screen transition-colors duration-300 font-sans selection:bg-blue-200 selection:text-blue-900 ${isDarkMode ? 'dark bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="font-bold text-2xl tracking-tight flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30"><Briefcase size={22} /></div>
-            <div className="leading-tight"><span className="block">Laxman Singh</span><span className="text-xs text-blue-600 dark:text-blue-400 font-medium uppercase tracking-wider">HR & Operations</span></div>
-          </div>
-          <div className="flex items-center gap-2 md:gap-6">
-            <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300">
-              {['Experience', 'Skills', 'Certificates', 'Vault'].map((item) => (<a key={item} href={`#${item.toLowerCase()}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative group">{item}<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span></a>))}
-            </div>
-            <div className="flex items-center gap-2 pl-2 md:pl-6 md:border-l border-slate-200 dark:border-slate-800">
-                <button onClick={() => setIsShareOpen(true)} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors text-sm font-medium shadow-lg shadow-blue-500/20"><Share2 size={16} /><span className="hidden sm:inline">Share</span></button>
-                <button onClick={toggleTheme} className="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300">{isDarkMode ? <Sun size={20} /> : <Moon size={20} />}</button>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <div id="home" className="pt-40 pb-20 px-6 max-w-7xl mx-auto min-h-[90vh] flex flex-col justify-center">
-        <div className="max-w-4xl animate-in slide-in-from-bottom-10 fade-in duration-700">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-full text-sm font-bold mb-8 border border-blue-100 dark:border-blue-900/50"><span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span></span>HR Manager | Project Coordinator | Compliance Expert</div>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1]">Bridging People, Process, <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">& Operational Excellence.</span></h1>
-          <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-10 leading-relaxed max-w-2xl">HR professional with a unique blend of strategic clarity and hands-on execution. Leveraging a UPSC background to approach workplace complexities with a broader socio-administrative lens.</p>
-          <div className="flex flex-wrap gap-4 mb-16">
-            <a href="#experience" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-500/30 flex items-center gap-2 transform hover:-translate-y-1"><Briefcase size={20} /> View Experience</a>
-            <a href="./resume.pdf" download className="px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold transition-all flex items-center gap-2 transform hover:-translate-y-1 hover:shadow-xl"><Download size={20} /> Download Resume</a>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             {AWARDS.map((award, index) => (<div key={index} className="flex gap-4 p-4 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30"><div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-lg h-fit text-amber-600 dark:text-amber-400"><Award size={24} /></div><div><h4 className="font-bold text-slate-900 dark:text-slate-100">{award.title}</h4><p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{award.desc}</p></div></div>))}
-          </div>
-        </div>
-      </div>
-      <Section id="experience" title="Professional Journey" className="bg-slate-50 dark:bg-slate-900/50"><FeatureProject /><div className="mt-20">{EXPERIENCE_DATA.map((item) => (<ExperienceCard key={item.id} item={item} />))}</div></Section>
-      <Section id="skills" title="Core Competencies"><div className="flex flex-wrap gap-3 mb-12">{SKILLS.map(skill => (<div key={skill} className="px-5 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm flex items-center gap-2 hover:border-blue-500 transition-colors"><CheckCircle className="w-4 h-4 text-blue-500" /><span className="font-semibold text-slate-700 dark:text-slate-300">{skill}</span></div>))}</div></Section>
-      <Section id="certificates" title="Certifications & Education" className="bg-slate-50 dark:bg-slate-900/50">
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {CERTIFICATES_DATA.map((cert) => (<div key={cert.id} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-md border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-all hover:-translate-y-1"><div className="aspect-[4/3] bg-slate-100 dark:bg-slate-700 rounded-xl mb-4 overflow-hidden"><img src={cert.image} alt="Certificate" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" /></div><h4 className="font-bold text-lg text-slate-800 dark:text-slate-100 mb-1 leading-snug">{cert.title}</h4><p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-3">{cert.issuer}</p><div className="pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-xs text-slate-500"><span>{cert.date}</span><span className="font-mono bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">{cert.credentialId.slice(0, 10)}...</span></div></div>))}
-         </div>
-      </Section>
-      <Section id="vault" title="Secure Document Vault" className="relative my-20">
-        <div className="bg-slate-900 text-white rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-          <div className="relative z-10">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6"><div><div className="inline-flex items-center gap-2 text-blue-300 font-bold mb-3 bg-blue-900/50 px-3 py-1 rounded-full text-sm"><Lock className="w-4 h-4" /> ENCRYPTED STORAGE</div><h3 className="text-3xl md:text-4xl font-bold mb-4">Personal Identity Vault</h3><p className="text-slate-400 max-w-xl text-lg">A secured repository for sensitive documentation. Access is restricted to authorized personnel via PIN authentication.</p></div></div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {SECURE_DOCS_DATA.map((doc) => {
-                const Icon = doc.previewIcon;
-                return (<button key={doc.id} onClick={() => handleDocClick(doc)} className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-500/50 rounded-2xl p-6 transition-all text-left flex flex-col h-56 justify-between relative overflow-hidden backdrop-blur-sm"><div className="absolute inset-0 bg-gradient-to-br from-blue-600/0 to-blue-600/0 group-hover:to-blue-600/20 transition-all duration-500" /><div className="flex justify-between items-start z-10"><div className="p-4 bg-slate-800 rounded-xl group-hover:bg-blue-600 transition-colors shadow-lg"><Icon className="w-8 h-8 text-white" /></div><div className="p-2 bg-black/20 rounded-lg"><Lock className="w-4 h-4 text-slate-400 group-hover:text-blue-300" /></div></div><div className="z-10"><h4 className="text-xl font-bold text-white mb-1 group-hover:translate-x-1 transition-transform">{doc.title}</h4><p className="text-sm text-slate-400">{doc.type} • Secured</p></div></button>);
-              })}
-            </div>
-          </div>
-        </div>
-      </Section>
-      <footer className="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-16 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <div><h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Laxman Singh Jadon</h2><p className="text-slate-500 dark:text-slate-400">luckysingh0508.lsj@gmail.com • +91 8383842382</p><p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Greater Noida, U.P.</p></div>
-          <div className="flex items-center gap-4">
-             <a href="https://www.linkedin.com/in/laxman-singh-jadon-2107" target="_blank" rel="noreferrer" className="p-3 bg-white dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:shadow-lg transition-all"><Linkedin size={24} /></a>
-             <a href="mailto:luckysingh0508.lsj@gmail.com" className="p-3 bg-white dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:shadow-lg transition-all"><Mail size={24} /></a>
-             <a href="https://wa.me/918383842382" target="_blank" rel="noreferrer" className="p-3 bg-white dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 hover:text-green-500 hover:shadow-lg transition-all"><MessageCircle size={24} /></a>
-          </div>
-        </div>
-        <div className="text-center text-slate-400 text-sm mt-12 border-t border-slate-200 dark:border-slate-800 pt-8">© {new Date().getFullYear()} Laxman Singh Jadon. All rights reserved.</div>
-      </footer>
-      {isVisitorModalOpen && <VisitorFormModal onClose={() => setIsVisitorModalOpen(false)} />}
-      <PasswordModal isOpen={!!secureDocToUnlock} onClose={() => setSecureDocToUnlock(null)} docTitle={secureDocToUnlock?.title} onSuccess={handleUnlockSuccess} />
-      <SecureDocViewer isOpen={!!unlockedDoc} onClose={() => setUnlockedDoc(null)} doc={unlockedDoc} />
-      <ShareModal isOpen={isShareOpen} onClose={() => setIsShareOpen(false)} />
-    </div>
-  );
-};
+}
 
 export default App;
