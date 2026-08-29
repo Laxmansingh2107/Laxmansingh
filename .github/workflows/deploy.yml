@@ -31,9 +31,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify CV asset
+      - name: Prepare CV asset
         run: |
-          test -f public/assets/Laxman_Singh_Jadon_CV.pdf
+          if [ ! -f public/assets/Laxman_Singh_Jadon_CV.pdf ]; then
+            gzip -dc public/assets/Laxman_Singh_Jadon_CV_Portfolio.pdf.gz > public/assets/Laxman_Singh_Jadon_CV.pdf
+          fi
           file public/assets/Laxman_Singh_Jadon_CV.pdf
 
       - name: Build
