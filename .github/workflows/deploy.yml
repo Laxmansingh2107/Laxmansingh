@@ -34,6 +34,11 @@ jobs:
       - name: Generate CV PDF
         run: python scripts/build_cv.py
 
+      - name: Restore exact CV PDF
+        run: |
+          gzip -dc public/assets/Laxman_Singh_Jadon_CV_Portfolio.pdf.gz > public/assets/Laxman_Singh_Jadon_CV.pdf
+          sha256sum public/assets/Laxman_Singh_Jadon_CV.pdf
+
       - name: Assemble Deadpool image
         run: |
           base64 -d public/assets/deadpool-sleeping.b64 > public/assets/deadpool-sleeping.webp
