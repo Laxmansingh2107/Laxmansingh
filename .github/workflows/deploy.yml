@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install Python PDF dependency
@@ -33,6 +33,10 @@ jobs:
 
       - name: Generate current CV PDF
         run: python scripts/build_cv.py
+
+      - name: Assemble supplied Deadpool image
+        run: |
+          cat public/assets/deadpool-sleeping.webp.b64.part1 public/assets/deadpool-sleeping.webp.b64.part2 public/assets/deadpool-sleeping.webp.b64.part3 public/assets/deadpool-sleeping.webp.b64.part4 | base64 -d > public/assets/deadpool-sleeping.webp
 
       - name: Install dependencies
         run: npm ci
