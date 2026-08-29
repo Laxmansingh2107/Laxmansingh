@@ -28,24 +28,13 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Install Python PDF dependency
-        run: python -m pip install reportlab
-
-      - name: Generate CV PDF
-        run: python scripts/build_cv.py
-
-      - name: Restore exact CV PDF
-        run: |
-          gzip -dc public/assets/Laxman_Singh_Jadon_CV_Portfolio.pdf.gz > public/assets/Laxman_Singh_Jadon_CV.pdf
-          sha256sum public/assets/Laxman_Singh_Jadon_CV.pdf
-
-      - name: Assemble Deadpool image
-        run: |
-          base64 -d public/assets/deadpool-sleeping.b64 > public/assets/deadpool-sleeping.webp
-          file public/assets/deadpool-sleeping.webp
-
       - name: Install dependencies
         run: npm ci
+
+      - name: Verify CV asset
+        run: |
+          test -f public/assets/Laxman_Singh_Jadon_CV.pdf
+          file public/assets/Laxman_Singh_Jadon_CV.pdf
 
       - name: Build
         run: npm run build
