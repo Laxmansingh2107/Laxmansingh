@@ -1,76 +1,453 @@
-import React, { useEffect, useState } from 'react';
-import { Award, BookOpen, BriefcaseBusiness, CheckCircle2, ChevronRight, Download, GraduationCap, Mail, MapPin, Menu, Network, Phone, ShieldCheck, Sparkles, Target, Users, X, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  Award, BookOpen, Briefcase, BrainCircuit, Building2, ChevronRight, Clapperboard, Code2, Compass,
+  Crown, Download, Factory, GraduationCap, Home, Layers, Mail, MapPin, Menu, Moon, Network,
+  Phone, Quote, Send, ShieldCheck, Sparkles, Sun, Target, Tent, Trophy, Users, X,
+} from 'lucide-react';
+import {
+  PROFILE, NAV, CAREER, LADDER, FUNCTIONS, DELIVERY_FLOW, SKILLS, EDU, CERTS, BEYOND, QUOTES,
+} from './data';
+import {
+  HeroVenn, GrowthStairs, ComplianceBars, WorkforceGrid, FunctionWheel, ProductionModel, DroneArt, TentCity,
+} from './Illustrations';
 
-const CV = '/Laxmansingh/assets/Laxman_Singh_Jadon_CV.pdf';
+const CV = `${import.meta.env.BASE_URL}assets/Laxman_Singh_Jadon_CV.pdf`;
+const NAV_ICONS = { home: Home, journey: Compass, impact: Target, 'case-studies': Factory, expertise: Layers, education: GraduationCap, beyond: Sparkles, contact: Mail };
+const SKILL_ICONS = [Users, Briefcase, ShieldCheck, Network, Target, Building2, Factory, BrainCircuit];
+const BEYOND_ICONS = [Crown, Clapperboard, Trophy, Code2];
 
-const CAREER = [
-  ['2014–2018','FOUNDATIONS','Learning How People & Systems Work','Education & UPSC foundation',
-   'The story begins with a broad academic foundation rather than a conventional HR path. A BA spanning Economics, Sociology and English Literature, followed by an MA in Rural Development and an UPSC-oriented preparation phase, built an interest in how people, institutions, policy and systems interact. This became the underlying way of looking at organisations: people and process are connected, not separate problems.'],
-  ['Dec 2019–Jan 2024','FIRST STEPS','Building Discipline in HR','Tricornio Technologies · HR Officer',
-   'The first professional chapter was about mastering the fundamentals that keep an organisation dependable: employee records, payroll coordination and statutory documentation. Four years of disciplined execution created a strong compliance record, with zero compliance deviations and recognition as Best Employee of the Year. The lesson was simple but foundational: credibility in HR is built through accuracy, consistency and trust in the details.'],
-  ['Jul 2024–Jul 2025','SCALING UP','From HR to Multi-State Operations','Kasper Infrastructure · HR Manager & Project Coordinator',
-   'The scale changed from individual HR administration to workforce systems across 600+ employees and multiple project sites. Recruitment, deployment, attendance, documentation, employee coordination and compliance had to work consistently across operationally different locations. Alongside this, the Mahakumbh 2025 Tent City Project introduced a second dimension: HR decisions increasingly had direct consequences for a live project involving 200 luxury tents and many stakeholders. HR and project delivery began to sit side by side.'],
-  ['Jul 2025–Oct 2025','FULL OWNERSHIP','Running a Plant End to End','Kasper Engineering · Plant Manager, HR & Admin',
-   'This was a compressed lesson in operational ownership. Responsibility extended beyond HR into administration, security, vendors, housekeeping and discipline at plant level. The significance of the role was not the title alone; it was the shift in perspective from managing one business function to understanding how the whole operating environment holds together, and how people, facilities, vendors, security and discipline affect productivity.'],
-  ['Jan 2026–Jun 2026','FAST RISE','Trust Earned in Months','IG Strategic Systems · IG Defence',
-   'Joining IG Strategic Systems in January 2026 began the fastest progression in the journey. Starting as HR Associate-II, the role progressed to HR Associate-III in April and HR Lead by June. The progression matters because it reflects accumulated trust from earlier chapters: the discipline of HR operations, experience with scale and the ability to take ownership were now being applied in a technology-led environment.'],
-  ['Aug 2026–Present','CONVERGENCE','Where HR Meets Project Delivery','HR Lead + Project Delivery HOD · IG Defence',
-   'In August 2026, Project Delivery Department HOD responsibility was added alongside HR Lead. This is the point where the earlier chapters converge. Current work spans technical, white-collar and blue-collar hiring, HR policy and governance, administration, payroll and compliance, facilities, security, assets and vendors, while also coordinating with Business Development on demos, TEC, trials, product showcases, on-site delivery, testing, ATP and client training. HR and delivery are now one operating story.']
-];
+/* ---------- hooks ---------- */
 
-const THREADS = [
-  ['People First','The sociology and rural-development foundation continues to influence how people problems are approached: understand the person, then design the process.'],
-  ['Discipline & Compliance','The early HR years built a bias toward documentation, accuracy and audit readiness; that discipline later helped move project compliance from 30% to 93%+ before deadline and 100% on time by project close.'],
-  ['Operations at Scale','The journey expanded from foundational HR work to plant-level ownership, 600+ multi-state employees and now a combined HR-and-delivery responsibility. Each chapter increased the scale and complexity of the operating system.'],
-  ['Curiosity & Improvement','Coding, chess, AI in HR, HRMS, Lean Six Sigma and automation reflect a consistent instinct: understand the system, find the friction, and make the work more repeatable.']
-];
-
-const SKILLS = [
-  ['HR Operations','End-to-end HR administration, workforce coordination and policy execution.'],
-  ['Talent Acquisition','Hiring across technical, white-collar and blue-collar roles.'],
-  ['Compliance & Governance','Statutory documentation, audit readiness, POSH and policy governance.'],
-  ['Payroll & MIS','Payroll coordination, HR analytics, records and management reporting.'],
-  ['Project Coordination','Demos, trials, product showcases, delivery, ATP and client training.'],
-  ['Operations Management','Administration, facilities, security, vendors and movement control.'],
-  ['Workforce Development','Training-led workforce models and repeatable operating systems.'],
-  ['HR Technology & AI','HRMS implementation, automation and practical AI-in-HR exploration.']
-];
-
-const IMPACT = {
-  People:['600+','employees managed',Users,'Experience scaling people operations across multi-state infrastructure projects.'],
-  Compliance:['93%+','compliance before deadline',ShieldCheck,'Strengthened statutory compliance accuracy from 30% to 93% before deadline and reached 100% on-time compliance by project close.'],
-  Delivery:['200','luxury tents coordinated',Target,'Mahakumbh 2025 connected HR operations with live project delivery and multi-stakeholder coordination.'],
-  Operations:['11+','functional areas',Network,'Current responsibilities span HR, admin, talent acquisition, governance, payroll, facilities, security and project delivery.']
-};
-
-const EDU = [
-  ['MBA, HR & Operations Management','LPU · 2026 · In progress'],
-  ['MA, Rural Development','IGNOU · 2018'],
-  ['BA, Economics, Sociology & English Literature','JU · 2016'],
-  ['Diploma in Computer Application','MMYVV, M.P. · 2014']
-];
-const CERTS = ['Lean Six Sigma White Belt · CSSC','AI in HR · Keka Academy','POSH Certification · Keka Academy','Crafting Payroll in India · Keka Academy','Compensation & Benefits · Keka Academy','Employee Engagement Course · Keka Academy','People Analytics · Keka Academy','Emergency Preparedness · Knights of Safety Academy'];
-
-function downloadCV(){ window.location.href = CV; }
-function VisitorBook({open,onClose}){const [name,setName]=useState('');const [message,setMessage]=useState('');const [saved,setSaved]=useState(false);const submit=e=>{e.preventDefault();if(!name.trim()||!message.trim())return;const entries=JSON.parse(localStorage.getItem('laxman-visitor-book')||'[]');entries.push({name:name.trim(),message:message.trim(),date:new Date().toLocaleDateString('en-IN')});localStorage.setItem('laxman-visitor-book',JSON.stringify(entries));setSaved(true);setName('');setMessage('');};if(!open)return null;return <div className="visitor-overlay" onMouseDown={onClose}><div className="visitor-modal" onMouseDown={e=>e.stopPropagation()}><button className="visitor-close" onClick={onClose}><X size={18}/></button><BookOpen className="text-red-500" size={25}/><h3>Visitor Book</h3><p>Leave a short note for Laxman. Entries are stored locally in this browser.</p>{saved?<div className="visitor-success"><CheckCircle2 size={22}/><b>Entry saved.</b><button onClick={()=>setSaved(false)}>Write another</button></div>:<form onSubmit={submit}><input required value={name} onChange={e=>setName(e.target.value)} placeholder="Your name"/><textarea required value={message} onChange={e=>setMessage(e.target.value)} placeholder="Your message" rows="4"/><button type="submit">SIGN THE BOOK</button></form>}</div></div>}
-
-function HeroSignal(){return <div className="hero-signal" aria-hidden="true"><div className="signal-grid"/><div className="signal-orbit orbit-a"/><div className="signal-orbit orbit-b"/><div className="signal-core"><span>LSJ</span><small>PEOPLE · SYSTEMS · DELIVERY</small></div><div className="signal-node node-a">HR</div><div className="signal-node node-b">OPS</div><div className="signal-node node-c">PROJECT</div></div>}
-
-function StorySection(){
-  const [active,setActive]=useState(0);
-  const [showMore,setShowMore]=useState(false);
-  const chapter=CAREER[active];
-  return <section id="story" className="story-section section">
-    <div className="story-intro"><div><p className="eyebrow">01 · THE STORY</p><h2>Not a list of jobs. A progression of responsibility.</h2><p className="section-lead">Each chapter changed the size of the problem being solved — from learning HR fundamentals, to managing scale, to owning complete operations, and finally to connecting people strategy with live project delivery.</p></div><div className="story-rule"><span>THE THROUGH-LINE</span><strong>People → Process → Scale → Ownership → Delivery</strong></div></div>
-    <div className="story-layout">
-      <div className="chapter-rail">{CAREER.map((x,i)=><button key={x[0]} className={i===active?'active':''} onClick={()=>{setActive(i);setShowMore(false)}}><span>{String(i+1).padStart(2,'0')}</span><div><small>{x[0]}</small><b>{x[1]}</b><em>{x[2]}</em></div><ChevronRight size={16}/></button>)}</div>
-      <article className="story-card"><div className="story-card-top"><span>{chapter[0]}</span><b>{chapter[1]}</b></div><h3>{chapter[2]}</h3><strong>{chapter[3]}</strong><p>{chapter[4]}</p><div className="story-meaning"><span>WHY THIS CHAPTER MATTERS</span><p>{active===0?'It established the intellectual lens: organisations are human systems shaped by incentives, institutions, policy and behaviour.':active===1?'It created the reliability layer: accurate records, payroll and compliance are the infrastructure on which employee trust and organisational governance depend.':active===2?'It introduced scale and project reality: workforce decisions had to support mobilisation, site continuity, stakeholder expectations and a live delivery environment.':active===3?'It broadened the operating lens from HR to the whole system — people, security, vendors, facilities and discipline all influencing execution.':active===4?'It demonstrated that earlier operating discipline could translate into accelerated responsibility in a fast-moving technology environment.':'It brings the journey together: people systems on one side and product/project execution on the other, with both required to deliver the outcome.'}</p></div>{active===5&&<div className="current-scope"><span>CURRENT SCOPE</span><div className="scope-grid"><b>Hiring & Workforce</b><b>Policy & Governance</b><b>Payroll & Compliance</b><b>Admin & Facilities</b><b>Security & Movement</b><b>Demos & Trials</b><b>On-site Delivery</b><b>ATP & Training</b></div></div>}<div className="story-next"><span>CHAPTER {active+1} / {CAREER.length}</span><button onClick={()=>setActive((active+1)%CAREER.length)}>Continue the story <ChevronRight size={15}/></button></div></article>
-    </div>
-    <div className="turning-point"><div><p className="eyebrow">THE TURNING POINT</p><h3>Building from scratch.</h3><p>The Production & Manufacturing story is where the profile moves from competent execution to operating design. Instead of defaulting to a high-cost engineering-heavy assembly model, the approach used a trained blue-collar production workforce for assembly and retained engineers for testing and quality control. The early adjustment period became a repeatable training model, reducing production cost without compromising quality.</p></div><div className="turning-metrics"><span><b>MODEL</b><strong>Train → Systemise → Scale</strong></span><span><b>RESULT</b><strong>Lower cost · Quality retained</strong></span></div></div>
-    <div className="threads"><div className="threads-head"><p className="eyebrow">THE THREADS THAT CONNECT</p><h3>The same ideas keep returning.</h3></div><div className="thread-grid">{THREADS.map(([t,c],i)=><article key={t}><span>0{i+1}</span><h4>{t}</h4><p>{c}</p></article>)}</div></div>
-    <button className="story-toggle" onClick={()=>setShowMore(!showMore)}>{showMore?'Hide the detail':'Read the deeper context'} <ChevronRight size={15}/></button>
-    {showMore&&<div className="deep-context"><h3>Where the story is now</h3><p>Today, the role combines end-to-end HR responsibility with project delivery leadership. That means the work is not confined to employee administration: it includes building the workforce, setting policy and governance, maintaining operational controls, coordinating functions and vendors, and then carrying that people-and-process discipline into demos, trials, delivery, acceptance testing and client training. The current MBA in HR & Operations Management is a deliberate continuation of the same trajectory — formalising the lessons already being learned through practice.</p><p>The profile is therefore best understood as a progression from <b>accuracy</b>, to <b>scale</b>, to <b>ownership</b>, and finally to <b>integration</b>.</p></div>}
-  </section>
+function useActiveSection(ids) {
+  const [active, setActive] = useState(ids[0]);
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: '-40% 0px -55% 0px' },
+    );
+    ids.forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    return () => io.disconnect();
+  }, [ids]);
+  return active;
 }
 
-export default function App(){const [tab,setTab]=useState('People');const [visitor,setVisitor]=useState(false);const [menu,setMenu]=useState(false);const [top,setTop]=useState(false);useEffect(()=>{const f=()=>setTop(window.scrollY>700);window.addEventListener('scroll',f,{passive:true});return()=>window.removeEventListener('scroll',f)},[]);const impact=IMPACT[tab],ImpactIcon=impact[2];const nav=['Story','Impact','Expertise','Projects','Education','Contact'];return <main className="site-shell"><div className="ambient-red red-one"/><div className="ambient-red red-two"/><header className="site-nav"><div className="nav-inner"><a href="#home" className="brand"><span className="brand-mark"><BriefcaseBusiness size={18}/></span><span><b>Laxman Singh Jadon</b><small>HR · OPERATIONS · DELIVERY</small></span></a><nav>{nav.map(n=><a key={n} href={'#'+n.toLowerCase()}>{n}</a>)}</nav><div className="nav-actions"><button className="nav-button" onClick={()=>setVisitor(true)}>Visitor Book</button><button className="cv-button" onClick={downloadCV}><Download size={15}/> CV</button><button className="menu-button" onClick={()=>setMenu(!menu)} aria-label="Menu">{menu?<X size={18}/>:<Menu size={18}/>}</button></div></div>{menu&&<div className="mobile-menu"><button onClick={downloadCV}><Download size={16}/> Download CV</button><button onClick={()=>setVisitor(true)}>Visitor Book</button>{nav.map(n=><a key={n} href={'#'+n.toLowerCase()} onClick={()=>setMenu(false)}>{n}</a>)}</div>}</header><section id="home" className="hero"><div className="hero-grid"><div className="hero-copy"><div className="status-pill"><span/> HR LEAD + PROJECT DELIVERY HOD</div><h1>People. Systems.<br/><span>Purpose.</span></h1><p>A professional journey from HR fundamentals and multi-state operations to leading HR and project delivery for a defence technology organisation.</p><div className="hero-actions"><a className="primary-action" href="#story">Explore the story <ChevronRight size={18}/></a><button className="secondary-action" onClick={downloadCV}><Download size={17}/> Download CV</button></div><div className="hero-meta"><span><MapPin size={15}/> Greater Noida, India</span><span><Zap size={15}/> 6+ years since 2019</span></div></div><div className="hero-visual"><div className="hero-box"><div className="console-top"><span>CAREER.QUEST / CURRENT</span><b>● ONLINE</b></div><div className="position-card"><small>CURRENT POSITION</small><strong>HR Lead</strong><span>+ Project Delivery Department HOD</span></div><div className="console-stats"><div><strong>600+</strong><small>WORKFORCE</small></div><div><strong>93%+</strong><small>COMPLIANCE</small></div></div><HeroSignal/></div></div></div></section><section id="impact" className="impact-strip"><div><strong>600+</strong><span>employees managed</span></div><div><strong>93%+</strong><span>compliance achieved</span></div><div><strong>200</strong><span>luxury tents coordinated</span></div><div><strong>3</strong><span>promotions in 6 months</span></div></section><StorySection/><section id="expertise" className="dark-section section"><p className="eyebrow">02 · EXPERTISE</p><h2>The toolkit behind the work.</h2><div className="skill-grid">{SKILLS.map(([t,c],i)=><article key={t}><small>0{i+1}</small><Sparkles size={16}/><h3>{t}</h3><p>{c}</p></article>)}</div></section><section id="projects" className="section"><p className="eyebrow">03 · INTERACTIVE IMPACT LAB</p><h2>Choose a lens. Explore the impact.</h2><p className="section-lead">Switch between people, compliance, delivery and operations.</p><div className="impact-lab"><div className="impact-tabs">{Object.keys(IMPACT).map(t=><button key={t} className={tab===t?'active':''} onClick={()=>setTab(t)}>{t}</button>)}</div><div className="impact-content"><div><ImpactIcon size={27}/><strong>{impact[0]}</strong><small>{impact[1]}</small></div><article><span>OPERATING INSIGHT</span><p>{impact[3]}</p><div className="impact-line"><i/></div></article></div></div><div className="project-grid"><article className="featured-project"><span><Target size={15}/> TURNING POINT</span><h3>Building IG Defence's Production & Manufacturing function from scratch.</h3><p>A trained blue-collar production workforce handled assembly while engineers focused on testing and quality control, creating a repeatable and more cost-efficient operating model.</p></article><article className="principle"><ShieldCheck size={24}/><h3>Operating principle</h3><p>Train the workforce. Systemise the process. Keep specialists focused where precision matters. Scale what works.</p></article></div></section><section id="education" className="section muted-section"><p className="eyebrow">04 · EDUCATION & CREDENTIALS</p><div className="two-col"><div><h2>Formal learning connected to practice.</h2><div className="education-list">{EDU.map(x=><div key={x[0]}><GraduationCap size={20}/><span><b>{x[0]}</b><small>{x[1]}</small></span></div>)}</div></div><div><h3 className="subhead">Certifications</h3><div className="cert-grid">{CERTS.map(c=><div key={c}><Award size={16}/>{c}</div>)}</div></div></div></section><section id="contact" className="contact section"><p className="eyebrow">05 · CONNECT</p><h2>People. Process. Delivery.</h2><p>For professional conversations, opportunities or collaboration, reach out directly.</p><div className="contact-actions"><button onClick={downloadCV}><Download size={17}/> Download CV</button><button onClick={()=>setVisitor(true)}><BookOpen size={17}/> Visitor Book</button><a href="mailto:luckysingh0508.lsj@gmail.com"><Mail size={17}/> Email</a><a href="tel:+918383842382"><Phone size={17}/> Call</a></div><div className="contact-meta">Greater Noida, India · English · Hindi</div></section><footer>© {new Date().getFullYear()} Laxman Singh Jadon <span>· Career Quest · People, Systems & Purpose.</span></footer>{top&&<button className="back-top" onClick={()=>window.scrollTo({top:0,behavior:'smooth'})}>↑</button>}<VisitorBook open={visitor} onClose={()=>setVisitor(false)}/></main>}
+function useScrollProgress() {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    const f = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setP(max > 0 ? Math.min(1, window.scrollY / max) : 0);
+    };
+    f();
+    window.addEventListener('scroll', f, { passive: true });
+    window.addEventListener('resize', f);
+    return () => { window.removeEventListener('scroll', f); window.removeEventListener('resize', f); };
+  }, []);
+  return p;
+}
+
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+      { threshold: 0.15 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
+
+function useTheme() {
+  const [theme, setTheme] = useState(() => {
+    try { return localStorage.getItem('lsj-theme') || 'dark'; } catch { return 'dark'; }
+  });
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('lsj-theme', theme); } catch { /* storage unavailable */ }
+  }, [theme]);
+  return [theme, () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))];
+}
+
+/* ---------- navigation ---------- */
+
+function NavList({ active, onGo }) {
+  return (
+    <ol className="nav-list">
+      {NAV.map((n, i) => {
+        const Icon = NAV_ICONS[n.id];
+        return (
+          <li key={n.id}>
+            <a href={'#' + n.id} className={active === n.id ? 'active' : ''} onClick={onGo} aria-current={active === n.id ? 'true' : undefined}>
+              <span className="nav-num">{String(i + 1).padStart(2, '0')}</span>
+              <Icon size={16} />
+              <span>{n.label}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function Sidebar({ active, progress, theme, toggleTheme }) {
+  return (
+    <aside className="sidebar" aria-label="Section navigation">
+      <a href="#home" className="brand">
+        <span className="brand-mark">{PROFILE.short}</span>
+        <span><b>{PROFILE.name}</b><small>HR · OPS · DELIVERY</small></span>
+      </a>
+      <nav className="side-nav">
+        <div className="side-progress"><i style={{ height: `${progress * 100}%` }} /></div>
+        <NavList active={active} />
+      </nav>
+      <div className="side-foot">
+        <a className="btn btn-solid" href={CV} download><Download size={15} /> Download CV</a>
+        <button className="btn btn-ghost icon-only" onClick={toggleTheme} aria-label="Toggle light / dark mode">
+          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
+      </div>
+    </aside>
+  );
+}
+
+function MobileBar({ active, progress, theme, toggleTheme }) {
+  const [open, setOpen] = useState(false);
+  const label = NAV.find((n) => n.id === active)?.label;
+  useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; }, [open]);
+  return (
+    <>
+      <header className="mobile-bar">
+        <a href="#home" className="brand compact"><span className="brand-mark">{PROFILE.short}</span></a>
+        <span className="mobile-where">{label}</span>
+        <button className="btn btn-ghost icon-only" onClick={toggleTheme} aria-label="Toggle light / dark mode">
+          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
+        <button className="btn btn-ghost icon-only" onClick={() => setOpen(true)} aria-label="Open menu"><Menu size={18} /></button>
+        <i className="mobile-progress" style={{ width: `${progress * 100}%` }} />
+      </header>
+      {open && (
+        <div className="drawer-backdrop" onClick={() => setOpen(false)}>
+          <div className="drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-head">
+              <b>{PROFILE.name}</b>
+              <button className="btn btn-ghost icon-only" onClick={() => setOpen(false)} aria-label="Close menu"><X size={18} /></button>
+            </div>
+            <NavList active={active} onGo={() => setOpen(false)} />
+            <a className="btn btn-solid wide" href={CV} download><Download size={15} /> Download CV</a>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ---------- building blocks ---------- */
+
+function QuoteBand({ q }) {
+  return (
+    <figure className="quote-band reveal">
+      <Quote className="quote-mark" size={30} />
+      <blockquote>{q.text}</blockquote>
+      <figcaption>— {q.by}</figcaption>
+    </figure>
+  );
+}
+
+function SectionHead({ num, kicker, title, lead }) {
+  return (
+    <header className="section-head reveal">
+      <p className="eyebrow"><span>{num}</span>{kicker}</p>
+      <h2>{title}</h2>
+      {lead && <p className="lead">{lead}</p>}
+    </header>
+  );
+}
+
+/* ---------- sections ---------- */
+
+function Hero() {
+  return (
+    <section id="home" className="hero">
+      <div className="hero-copy reveal">
+        <div className="pill"><span className="dot" /> {PROFILE.role}</div>
+        <h1>People. Systems.<br /><em>Purpose.</em></h1>
+        <p className="lead">A journey from HR fundamentals and multi-state operations to leading both HR and project delivery for a defence technology organisation.</p>
+        <div className="hero-actions">
+          <a className="btn btn-solid big" href="#journey">Explore the journey <ChevronRight size={17} /></a>
+          <a className="btn btn-ghost big" href={CV} download><Download size={16} /> Download CV</a>
+        </div>
+        <div className="hero-meta">
+          <span><MapPin size={14} /> {PROFILE.location}</span>
+          <span><Briefcase size={14} /> {PROFILE.org}</span>
+        </div>
+      </div>
+      <div className="hero-art reveal"><HeroVenn /></div>
+      <div className="stat-strip reveal">
+        {[['600+', 'employees managed', Users], ['93%+', 'compliance before deadline', ShieldCheck], ['200', 'luxury tents coordinated', Tent], ['3', 'step-ups in 8 months', Trophy]].map(([v, l, Icon]) => (
+          <div key={l}><Icon size={18} /><strong>{v}</strong><span>{l}</span></div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Journey() {
+  const [active, setActive] = useState(CAREER.length - 1);
+  const c = CAREER[active];
+  return (
+    <section id="journey" className="section">
+      <SectionHead num="01" kicker="The Journey" title="Not a list of jobs. A progression of responsibility." lead="Each chapter grew the size of the problem being solved. Tap a step to read that chapter." />
+      <div className="card stairs-card reveal">
+        <div className="card-label">SCOPE OF RESPONSIBILITY, CHAPTER BY CHAPTER</div>
+        <div className="scroll-x"><GrowthStairs active={active} onPick={setActive} /></div>
+      </div>
+      <div className="chapter reveal">
+        <div className="chapter-tabs" role="tablist">
+          {CAREER.map((x, i) => (
+            <button key={x.tag} role="tab" aria-selected={i === active} className={i === active ? 'on' : ''} onClick={() => setActive(i)}>
+              <span>{String(i + 1).padStart(2, '0')}</span>{x.tag}
+            </button>
+          ))}
+        </div>
+        <article className="card chapter-card" key={active}>
+          <div className="chapter-top"><span>{c.when}</span><b>{c.tag}</b></div>
+          <h3>{c.title}</h3>
+          <p className="chapter-where">{c.where}</p>
+          <p>{c.body}</p>
+          <div className="why"><span>WHY IT MATTERS</span><p>{c.why}</p></div>
+          <div className="chapter-nav">
+            <span>Chapter {active + 1} / {CAREER.length}</span>
+            <button className="btn btn-ghost" onClick={() => setActive((active + 1) % CAREER.length)}>Next chapter <ChevronRight size={15} /></button>
+          </div>
+        </article>
+      </div>
+      <div className="card ladder-card reveal">
+        <div className="card-label">THE FAST RISE AT IG DEFENCE · 2026</div>
+        <ol className="ladder">
+          {LADDER.map((l, i) => (
+            <li key={l.title} style={{ '--i': i }}>
+              <span className="ladder-month">{l.month}</span>
+              <b>{l.title}</b>
+              <small>{l.note}</small>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <QuoteBand q={QUOTES.journey} />
+    </section>
+  );
+}
+
+function Impact() {
+  return (
+    <section id="impact" className="section">
+      <SectionHead num="02" kicker="Impact in Numbers" title="What the work actually moved." lead="Compliance, scale and span of control — shown, not just stated." />
+      <div className="impact-grid">
+        <div className="card reveal">
+          <div className="card-label"><ShieldCheck size={14} /> STATUTORY COMPLIANCE · KASPER INFRASTRUCTURE</div>
+          <ComplianceBars />
+          <p className="card-note">From 30% to 93%+ before the deadline, and 100% on time by project close.</p>
+        </div>
+        <div className="card reveal">
+          <div className="card-label"><Users size={14} /> WORKFORCE MANAGED · MULTI-STATE SITES</div>
+          <WorkforceGrid />
+          <p className="card-note"><b className="big-num">600+</b> employees — each figure above represents ten people.</p>
+        </div>
+        <div className="card wheel-card reveal">
+          <div className="card-label"><Network size={14} /> SPAN OF OWNERSHIP TODAY</div>
+          <FunctionWheel />
+          <ul className="fn-chips">{FUNCTIONS.map((f) => <li key={f}>{f}</li>)}</ul>
+          <p className="card-note">Twelve functional areas and teams report into one combined HR and delivery role.</p>
+        </div>
+      </div>
+      <QuoteBand q={QUOTES.impact} />
+    </section>
+  );
+}
+
+function CaseStudies() {
+  return (
+    <section id="case-studies" className="section">
+      <SectionHead num="03" kicker="Case Studies" title="Two projects that changed the operating lens." />
+      <article className="case card reveal">
+        <div className="case-text">
+          <span className="tag"><Factory size={14} /> TURNING POINT · IG DEFENCE</span>
+          <h3>Building Production & Manufacturing from scratch.</h3>
+          <p>The obvious path was hiring highly paid engineers for basic assembly. Instead, a blue-collar workforce — many without formal technical education — was trained for assembly, and engineers were kept where precision matters most: testing and quality control.</p>
+          <p>The first weeks meant real adjustment. Within weeks the workforce had adapted, the training became a repeatable system, and production costs fell sharply without compromising quality.</p>
+          <div className="formula"><b>Train</b><ChevronRight size={14} /><b>Systemise</b><ChevronRight size={14} /><b>Scale</b></div>
+        </div>
+        <div className="case-art"><DroneArt /></div>
+        <div className="case-wide">
+          <div className="card-label">OPERATING MODEL · BEFORE AND AFTER</div>
+          <ProductionModel />
+        </div>
+      </article>
+      <article className="case card reveal">
+        <div className="case-art"><TentCity /></div>
+        <div className="case-text">
+          <span className="tag"><Tent size={14} /> MAHAKUMBH 2025 · KASPER INFRASTRUCTURE</span>
+          <h3>Tent City: where HR first met live delivery.</h3>
+          <p>Coordinating HR and operations for a 200-luxury-tent city with many stakeholders meant workforce decisions had immediate, visible consequences for a live project — the first time HR and project delivery sat side by side.</p>
+          <div className="mini-stats">
+            <div><strong>200</strong><span>luxury tents</span></div>
+            <div><strong>2025</strong><span>Mahakumbh</span></div>
+            <div><strong>HR + Ops</strong><span>side by side</span></div>
+          </div>
+        </div>
+      </article>
+      <QuoteBand q={QUOTES.cases} />
+    </section>
+  );
+}
+
+function Expertise() {
+  return (
+    <section id="expertise" className="section">
+      <SectionHead num="04" kicker="Expertise" title="The toolkit behind the work." lead="How HR and project delivery connect in one lifecycle — then the skills that power each step." />
+      <div className="card reveal">
+        <div className="card-label">THE PEOPLE-TO-DELIVERY LIFECYCLE</div>
+        <ol className="flow">
+          {DELIVERY_FLOW.map((f, i) => (
+            <li key={f.step} style={{ '--i': i }}>
+              <span className="flow-num">{i + 1}</span>
+              <b>{f.step}</b>
+              <small>{f.text}</small>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div className="skill-grid">
+        {SKILLS.map(([t, d], i) => {
+          const Icon = SKILL_ICONS[i];
+          return (
+            <article className="card skill reveal" key={t}>
+              <span className="skill-icon"><Icon size={18} /></span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </article>
+          );
+        })}
+      </div>
+      <QuoteBand q={QUOTES.expertise} />
+    </section>
+  );
+}
+
+function Education() {
+  return (
+    <section id="education" className="section">
+      <SectionHead num="05" kicker="Education & Credentials" title="Formal learning, connected to practice." />
+      <div className="edu-grid">
+        <div className="card reveal">
+          <div className="card-label"><GraduationCap size={14} /> ACADEMIC PATH</div>
+          <ol className="timeline">
+            {EDU.map((e) => (
+              <li key={e.title}>
+                <span className="tl-year">{e.year}</span>
+                <div><b>{e.title}</b><small>{e.where}</small></div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="card reveal">
+          <div className="card-label"><Award size={14} /> CERTIFICATIONS</div>
+          <div className="cert-grid">
+            {CERTS.map(([t, by]) => (
+              <div className="cert" key={t}>
+                <svg viewBox="0 0 40 40" className="badge" aria-hidden="true">
+                  <path d="M20 2 L35 10 V24 Q35 34 20 38 Q5 34 5 24 V10 Z" />
+                  <path d="M13 20 l5 5 l9 -10" className="tick" />
+                </svg>
+                <span><b>{t}</b><small>{by}</small></span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <QuoteBand q={QUOTES.education} />
+    </section>
+  );
+}
+
+function Beyond() {
+  return (
+    <section id="beyond" className="section">
+      <SectionHead num="06" kicker="Beyond Work" title="The same instincts, off the clock." />
+      <div className="beyond-grid">
+        {BEYOND.map(([t, d], i) => {
+          const Icon = BEYOND_ICONS[i];
+          return (
+            <article className="card beyond reveal" key={t}>
+              <span className="beyond-art"><Icon size={34} strokeWidth={1.5} /></span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </article>
+          );
+        })}
+      </div>
+      <QuoteBand q={QUOTES.beyond} />
+    </section>
+  );
+}
+
+function Contact() {
+  const [name, setName] = useState('');
+  const [msg, setMsg] = useState('');
+  const send = (e) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(`Portfolio note from ${name || 'a visitor'}`);
+    const body = encodeURIComponent(`${msg}\n\n— ${name}`);
+    window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
+  };
+  return (
+    <section id="contact" className="section contact">
+      <SectionHead num="07" kicker="Connect" title="Let's talk people, process and delivery." lead="For opportunities, collaboration or a professional conversation." />
+      <div className="contact-grid">
+        <div className="card reveal contact-links">
+          <a href={`mailto:${PROFILE.email}`}><Mail size={18} /><span><small>Email</small>{PROFILE.email}</span></a>
+          <a href={`tel:${PROFILE.phone}`}><Phone size={18} /><span><small>Phone</small>{PROFILE.phoneDisplay}</span></a>
+          <div><MapPin size={18} /><span><small>Based in</small>{PROFILE.location}</span></div>
+          <div><BookOpen size={18} /><span><small>Languages</small>{PROFILE.languages}</span></div>
+          <a className="btn btn-solid wide" href={CV} download><Download size={15} /> Download CV</a>
+        </div>
+        <form className="card reveal note-form" onSubmit={send}>
+          <div className="card-label">LEAVE A NOTE</div>
+          <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" aria-label="Your name" />
+          <textarea required rows="5" value={msg} onChange={(e) => setMsg(e.target.value)} placeholder="Your message" aria-label="Your message" />
+          <button className="btn btn-solid" type="submit"><Send size={15} /> Send via email</button>
+          <small className="muted">Opens your email app with the note ready to send.</small>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- app ---------- */
+
+const IDS = NAV.map((n) => n.id);
+
+export default function App() {
+  const active = useActiveSection(IDS);
+  const progress = useScrollProgress();
+  const [theme, toggleTheme] = useTheme();
+  useReveal();
+  return (
+    <div className="shell">
+      <Sidebar active={active} progress={progress} theme={theme} toggleTheme={toggleTheme} />
+      <MobileBar active={active} progress={progress} theme={theme} toggleTheme={toggleTheme} />
+      <main className="content">
+        <Hero />
+        <Journey />
+        <Impact />
+        <CaseStudies />
+        <Expertise />
+        <Education />
+        <Beyond />
+        <Contact />
+        <footer className="footer">© {new Date().getFullYear()} {PROFILE.name} · People, Systems & Purpose.</footer>
+      </main>
+    </div>
+  );
+}
