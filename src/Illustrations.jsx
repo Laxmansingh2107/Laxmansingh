@@ -116,7 +116,7 @@ export function FunctionWheel() {
       })}
       <circle cx={cx} cy={cy} r="54" fill="var(--surface)" stroke="var(--accent)" strokeWidth="2" />
       <text x={cx} y={cy - 2} textAnchor="middle" className="wheel-core">HR Lead</text>
-      <text x={cx} y={cy + 16} textAnchor="middle" className="wheel-sub">+ Delivery HOD</text>
+      <text x={cx} y={cy + 16} textAnchor="middle" className="wheel-sub">+ Project Delivery</text>
     </svg>
   );
 }

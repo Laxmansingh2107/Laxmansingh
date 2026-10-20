@@ -1,28 +1,93 @@
+# Builds public/assets/Laxman_Singh_Jadon_CV.pdf. Edit the text below, then run:
+#   pip install reportlab && python scripts/build_cv.py
 from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable, KeepTogether
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.units import mm
 
-OUT='public/assets/Laxman_Singh_Jadon_CV.pdf'
-doc=SimpleDocTemplate(OUT,pagesize=A4,rightMargin=18*mm,leftMargin=18*mm,topMargin=17*mm,bottomMargin=17*mm)
-styles=getSampleStyleSheet()
-styles.add(ParagraphStyle(name='NameX',fontName='Helvetica-Bold',fontSize=25,leading=29,textColor=colors.HexColor('#171717'),spaceAfter=3))
-styles.add(ParagraphStyle(name='Tag',fontName='Helvetica-Oblique',fontSize=10,leading=13,textColor=colors.HexColor('#6b4f2a'),spaceAfter=7))
-styles.add(ParagraphStyle(name='Contact',fontName='Helvetica',fontSize=8.5,leading=11,textColor=colors.HexColor('#444444')))
-styles.add(ParagraphStyle(name='Intro',fontName='Helvetica',fontSize=10.2,leading=15,spaceBefore=10,spaceAfter=10,textColor=colors.HexColor('#333333')))
-styles.add(ParagraphStyle(name='Head',fontName='Helvetica-Bold',fontSize=13,leading=16,textColor=colors.HexColor('#6b4f2a'),spaceBefore=7,spaceAfter=7))
-styles.add(ParagraphStyle(name='Chapter',fontName='Helvetica-Bold',fontSize=11.3,leading=14,textColor=colors.HexColor('#1e1e1e'),spaceBefore=6,spaceAfter=3))
-styles.add(ParagraphStyle(name='BodyX',fontName='Helvetica',fontSize=9.6,leading=13.7,textColor=colors.HexColor('#333333'),spaceAfter=7))
-styles.add(ParagraphStyle(name='SmallHead',fontName='Helvetica-Bold',fontSize=10.5,leading=13,textColor=colors.HexColor('#333333'),spaceBefore=5,spaceAfter=3))
-story=[Paragraph('Laxman Singh Jadon',styles['NameX']),Paragraph('A journey through people, policy, and purpose',styles['Tag']),Paragraph('+91 8383842382  ·  luckysingh0508.lsj@gmail.com  ·  Greater Noida, India – 201318',styles['Contact']),Spacer(1,4)]
-story.append(Paragraph("Every career is a story before it's a résumé. This one begins with a curiosity about how people and systems work — economics, sociology, literature, an early aim at the civil services — and moves, chapter by chapter, from learning HR's fundamentals to now leading both HR and Project Delivery for a defence technology company. The pages that follow trace how one led to the next.",styles['Intro']))
-story.append(Paragraph('THE JOURNEY',styles['Head']))
-chapters=[('2014 – 2018','Foundations — Learning How People and Systems Work','The story starts not in an office, but in a classroom. A Bachelor’s in Economics, Sociology and English Literature, followed by a Master’s in Rural Development and a foundation aimed at the UPSC civil services, built a mind trained to read people, policy, and systems together — not as separate subjects, but as one continuous fabric. That habit of thinking never really left.'),('Dec 2019 – Jan 2024','First Steps — Building Discipline in HR','The first real chapter began at Tricornio Technologies as an HR Officer, learning HR from the ground up: employee records, payroll, statutory documentation, the unglamorous groundwork that everything else is built on. Four years of getting the fundamentals right — with zero compliance deviations — earned recognition as Best Employee of the Year, and something more lasting: a reputation for reliability.'),('Jul 2024 – Jul 2025','Scaling Up — From HR to Multi-State Operations','At Kasper Infrastructure, the scale changed overnight — from a single site to HR leadership across 600+ employees on multi-state infrastructure projects. This chapter also planted a quiet seed: coordinating HR and operations for the Mahakumbh 2025 Tent City Project, 200 luxury tents, dozens of stakeholders. It was the first time HR work and project delivery sat side by side — a pairing that would return later, this time by design.'),('Jul 2025 – Oct 2025','Full Ownership — Running a Plant, End to End','A short but intense stint as Plant Manager at Kasper Engineering meant owning everything under one roof — HR, admin, security, vendors, housekeeping, discipline. It was a compressed lesson in what it takes to run a complete operation single-handedly, and it rounded out a skill set that had, until then, mostly lived inside HR alone.'),('Jan 2026 – Aug 2026','A Fast Rise — Trust Earned in Months','Joining IG Strategic Systems Pvt Ltd (IG Defence, formerly IG Drones) as HR Associate-II in January 2026 marked the start of the fastest chapter yet — promoted to HR Associate-III that April, then to HR Lead by June. Years of groundwork, compressed into months of recognition.'),('Aug 2026 – Present','Today — Where HR Meets Project Delivery','In August 2026, a second charge arrived: Project Delivery Department HOD, held alongside HR Lead. This is the point where the story’s threads finally meet — the compliance rigor from Tricornio, the multi-state scale from Kasper Infrastructure, the end-to-end ownership from the plant, and that early taste of project coordination at Mahakumbh, all converging into one role. Today that means leading hiring and HR policy for the organisation, and directly coordinating with Business Development on demos, trials, on-site delivery, ATP and client training for defence products — HR and delivery, no longer separate stories.')]
-for d,t,b in chapters: story += [Paragraph(f'{d}  ·  {t}',styles['Chapter']),Paragraph(b,styles['BodyX'])]
-story += [PageBreak(),Paragraph('THREADS THAT CONNECT',styles['Head'])]
-for h,b in [('People First','A sociology and rural-development background shows up daily in how grievances are heard and policies are written — with the person, not just the process, in view.'),('Discipline & Compliance','The UPSC-oriented foundation left behind a habit of rigor: 100% statutory documentation accuracy, audit-ready records, and compliance governance pushed from 30% to 93%+ pre-deadline at Kasper Infrastructure.'),('Operations at Scale','From a 60-person plant to 600+ employees across multi-state projects to now a full HR-and-delivery function — each chapter added a layer of scale the last one didn’t have.'),('Curiosity & Continuous Improvement','Chess, coding, and an interest in AI in HR aren’t side notes — they’re the same instinct that led to implementing HRMS platforms, Lean Six Sigma thinking, and automation wherever HR operations could run smarter.')]: story += [Paragraph(h,styles['SmallHead']),Paragraph(b,styles['BodyX'])]
-story += [Paragraph('WHERE I AM NOW',styles['Head']),Paragraph('Today, as HR Lead and Project Delivery Department HOD at IG Strategic Systems Pvt Ltd (IG Defence), the two sides of this journey run in parallel. On the HR side: end-to-end hiring across niche technical, white-collar and blue-collar roles; HR and organisational policy development; general administration, SOP design and security protocol enforcement; and direct oversight of IT, Admin, Talent Acquisition, HR Operations, Policy & Governance, Payroll & Compliance, Housekeeping, Kitchen & Cafeteria, Security & Movement Control, Facility Management, Asset Management, and external vendor teams. On the Project Delivery side: coordinating closely with Business Development on demos, TEC, trials and product showcases; leading on-site delivery and testing, ATP, and post-delivery client training; and stepping in wherever technical, mechanical or software support is needed to get a project across the line.',styles['BodyX']),Paragraph('An MBA in HR & Operations, currently underway at LPU, is the next deliberate step — formalising what the last six years have taught through practice, and pointing toward where people strategy and operational delivery can go next.',styles['BodyX']),PageBreak(),Paragraph('A TURNING POINT — BUILDING FROM SCRATCH',styles['Head']),Paragraph("One piece of this journey stands apart from the rest: setting up IG Defence's Production & Manufacturing department from the ground up. The obvious path would have been hiring highly-paid engineers for basic assembly work — instead, the model was rethought entirely. A large blue-collar workforce, many with little formal technical education, was trained for assembly work, while engineers were reserved for testing and quality control, where precision and zero-fault outcomes matter most.",styles['BodyX']),Paragraph("The shift wasn't instant — the first few weeks meant real adjustment. But within weeks, that same workforce had adapted, and the training programmes built around them turned into a repeatable system. The outcome: production costs fell drastically without compromising on quality, and a workforce once considered unsuited to precision work began building highly technical, world-class drones — a first-of-its-kind approach, and proof that the right training can turn an overlooked workforce into a genuine competitive advantage.",styles['BodyX']),Paragraph('THE DETAILS',styles['Head'])]
-for h,b in [('EDUCATION','MBA, HR & Operations Management — LPU · 2026<br/>MA, Rural Development — IGNOU · 2018<br/>BA, Economics, Sociology, English Literature — JU · 2016<br/>Diploma in Computer Application — MMYVV, M.P. · 2014'),('CERTIFICATIONS','Lean Six Sigma White Belt · CSSC<br/>AI in HR · Keka Academy<br/>POSH Certification · Keka Academy<br/>Crafting Payroll in India · Keka Academy<br/>Compensation & Benefits · Keka Academy<br/>Employee Engagement Course · Keka Academy<br/>People Analytics · Keka Academy<br/>Emergency Preparedness · Knights of Safety Academy'),('LANGUAGES','English · Hindi'),('BEYOND WORK','Chess & puzzles · Cinema & documentaries · Badminton & cricket · Coding & AI exploration')]: story += [Paragraph(h,styles['SmallHead']),Paragraph(b,styles['BodyX'])]
+OUT = 'public/assets/Laxman_Singh_Jadon_CV.pdf'
+ACC, INK, BODY = colors.HexColor('#6b4f2a'), colors.HexColor('#171717'), colors.HexColor('#333333')
+doc = SimpleDocTemplate(OUT, pagesize=A4, rightMargin=18*mm, leftMargin=18*mm, topMargin=16*mm, bottomMargin=16*mm,
+                        title='Laxman Singh Jadon — CV', author='Laxman Singh Jadon')
+ss = getSampleStyleSheet()
+def S(name, **k): ss.add(ParagraphStyle(name=name, **k)); return ss[name]
+NAME = S('NameX', fontName='Helvetica-Bold', fontSize=24, leading=28, textColor=INK)
+ROLE = S('Role', fontName='Helvetica-Bold', fontSize=10.5, leading=14, textColor=ACC, spaceBefore=2)
+TAG = S('Tag', fontName='Helvetica-Oblique', fontSize=9.5, leading=12, textColor=colors.HexColor('#7a6a55'), spaceAfter=4)
+CONTACT = S('Contact', fontName='Helvetica', fontSize=8.5, leading=11, textColor=colors.HexColor('#444444'))
+INTRO = S('Intro', fontName='Helvetica', fontSize=10, leading=14.5, textColor=BODY, spaceBefore=8, spaceAfter=4)
+HEAD = S('Head', fontName='Helvetica-Bold', fontSize=11.5, leading=14, textColor=ACC, spaceBefore=10, spaceAfter=5)
+ROLEH = S('RoleH', fontName='Helvetica-Bold', fontSize=10.3, leading=13, textColor=INK, spaceBefore=5)
+SUB = S('Sub', fontName='Helvetica-Oblique', fontSize=9, leading=12, textColor=ACC, spaceAfter=2)
+B = S('BodyX', fontName='Helvetica', fontSize=9.3, leading=13.2, textColor=BODY, spaceAfter=5)
+BUL = S('Bul', parent=B, leftIndent=10, bulletIndent=0, spaceAfter=2)
+SMALL = S('SmallHead', fontName='Helvetica-Bold', fontSize=9.8, leading=12.5, textColor=INK, spaceBefore=4, spaceAfter=2)
+
+story = [
+    Paragraph('Laxman Singh Jadon', NAME),
+    Paragraph('HR Lead · IG Strategic Systems Pvt Ltd (IG Defence)', ROLE),
+    Paragraph('People, policy, and purpose', TAG),
+    Paragraph('+91 83838 42382  ·  luckysingh0508.lsj@gmail.com  ·  Greater Noida, India', CONTACT),
+    Spacer(1, 6), HRFlowable(width='100%', thickness=0.6, color=ACC),
+    Paragraph('Six years of HR, built from the ground up: statutory records and payroll first, then 600+ people across multi-state projects, then a whole plant, and now HR Lead at a defence technology company, with Project Delivery added to the role. The thread running through all of it started earlier, in years of serious preparation for the UPSC civil services, with a curiosity about how people, policy and systems work.', INTRO),
+    Paragraph('THE JOURNEY', HEAD),
+]
+JOURNEY = [
+    ('2014 – 2018', 'Foundations — The Civil Services Years', None, [
+        'The plan was never HR at first. It was the UPSC civil services, pursued as a serious aspirant. A BA in Economics, Sociology and English Literature and an MA in Rural Development were chosen with that goal in mind, and the preparation that followed meant long hours with polity, governance, economics and public administration: how laws are written, how institutions run, and how policy lands on real people.',
+        'The exam path eventually gave way to a career in HR, but the preparation never went to waste. It left a discipline for long, structured effort, a habit of reading people, policy and systems as one fabric, and a public-service instinct to see the person behind every process.']),
+    ('Dec 2019 – Jan 2024', 'HR Officer, Tricornio Technologies', 'First Steps — Building Discipline in HR', [
+        'Learned HR from the ground up: employee records, payroll and statutory documentation, the groundwork everything else depends on. Four years with zero compliance deviations, recognised as Best Employee of the Year, and a reputation for reliability that carried forward.']),
+    ('Jul 2024 – Jul 2025', 'HR Manager &amp; Project Coordinator, Kasper Infrastructure', 'Scaling Up — From One Site to Multi-State Operations', [
+        'HR leadership for 600+ employees across multi-state infrastructure projects. Raised compliance governance from 30% to 93%+ ahead of deadline. Coordinated HR and operations for the Mahakumbh 2025 Tent City Project (200 luxury tents, dozens of stakeholders), the first time HR and live project delivery sat side by side.']),
+    ('Jul 2025 – Oct 2025', 'Plant Manager, Kasper Engineering', 'Full Ownership — Running a Plant End to End', [
+        'Sole charge of a 60-person plant: HR, admin, security, vendors, housekeeping and discipline under one roof. A compressed lesson in running a complete operation, and the step that took the skill set beyond HR.']),
+    ('Jan 2026 – Aug 2026', 'IG Strategic Systems Pvt Ltd (IG Defence, formerly IG Drones)', 'A Fast Rise — Three Roles in Six Months', [
+        'Joined as HR Associate-II in January, promoted to HR Associate-III in April and to HR Lead in June.']),
+    ('Aug 2026 – Present', 'HR Lead, IG Defence (with additional charge of Project Delivery Department)', 'Where HR Meets Project Delivery', [
+        'As HR Lead, took on the Project Delivery Department as an additional charge. Every earlier chapter feeds this role: Tricornio’s compliance rigour, Kasper’s multi-state scale, the plant’s end-to-end ownership, and the Mahakumbh taste of delivery.']),
+]
+for when, title, sub, paras in JOURNEY:
+    block = [Paragraph(f'<font color="#6b4f2a">{when}</font>  ·  {title}', ROLEH)]
+    if sub: block.append(Paragraph(sub, SUB))
+    block += [Paragraph(p, B) for p in paras]
+    story.append(KeepTogether(block))
+
+def bullets(items): return [Paragraph(i, BUL, bulletText='•') for i in items]
+story += [KeepTogether([Paragraph('WHAT THE ROLE COVERS TODAY', HEAD), Paragraph('HR &amp; Administration', SMALL)] + bullets([
+    'End-to-end hiring across niche technical, white-collar and blue-collar roles',
+    'HR and organisational policy, SOP design and security protocol enforcement',
+    'Oversight of IT, Admin, Talent Acquisition, HR Operations, Policy &amp; Governance, Payroll &amp; Compliance, Housekeeping, Kitchen &amp; Cafeteria, Security &amp; Movement Control, Facility Management, Asset Management and external vendors'])),
+  KeepTogether([Paragraph('Project Delivery', SMALL)] + bullets([
+    'Working with Business Development on demos, TEC, trials and product showcases',
+    'Leading on-site delivery, testing and ATP for defence products',
+    'Post-delivery client training, and hands-on technical, mechanical or software support where a project needs it']))]
+
+story += [KeepTogether([Paragraph('A TURNING POINT — BUILDING PRODUCTION FROM SCRATCH', HEAD),
+    Paragraph("Set up IG Defence's Production &amp; Manufacturing department from the ground up. Instead of hiring highly paid engineers for basic assembly, the model was redesigned: a blue-collar workforce, many with little formal technical education, was trained for assembly, and engineers were focused on testing and quality control, where zero-fault precision matters most.", B),
+    Paragraph('The first weeks took real adjustment. Within weeks the workforce had adapted, and the training became a repeatable programme. Production costs fell sharply with no loss in quality, and a workforce once seen as unsuited to precision work now builds advanced drones. It showed that the right training can turn an overlooked workforce into a real competitive advantage.', B)])]
+
+story.append(Paragraph('THREADS THAT CONNECT', HEAD))
+for h, t in [
+    ('People First', 'A sociology and rural-development background shapes how grievances are heard and policies are written: the person in view, not just the process.'),
+    ('Discipline &amp; Compliance', 'The rigour of UPSC preparation became a working habit: 100% statutory documentation accuracy, audit-ready records, and compliance raised from 30% to 93%+ ahead of deadline.'),
+    ('Operations at Scale', 'From a 60-person plant to 600+ employees across states to a combined HR-and-delivery function, each chapter added scale.'),
+    ('Curiosity &amp; Continuous Improvement', 'Chess, coding and AI in HR feed the same instinct behind HRMS implementations, Lean Six Sigma thinking and automation wherever HR can run smarter.')]:
+    story.append(Paragraph(f'<b>{h}</b> — {t}', B))
+
+DETAILS = [
+    ('EDUCATION', ['<b>MBA, HR &amp; Operations Management</b> — Lovely Professional University · 2026',
+                   '<b>MA, Rural Development</b> — IGNOU · 2018',
+                   '<b>BA, Economics, Sociology &amp; English Literature</b> — JU · 2016',
+                   '<b>Diploma in Computer Application</b> — MMYVV, M.P. · 2014']),
+    ('CERTIFICATIONS', ['Lean Six Sigma White Belt — CSSC', 'Emergency Preparedness — Knights of Safety Academy',
+                        'Keka Academy: AI in HR · POSH · Crafting Payroll in India · Compensation &amp; Benefits · Employee Engagement · People Analytics']),
+    ('LANGUAGES', ['English · Hindi']),
+    ('BEYOND WORK', ['Chess &amp; puzzles · Cinema &amp; documentaries · Badminton &amp; cricket · Coding &amp; AI exploration']),
+]
+for h, items in DETAILS:
+    story.append(KeepTogether([Paragraph(h, HEAD)] + bullets(items)))
+
 doc.build(story)
 print(OUT)

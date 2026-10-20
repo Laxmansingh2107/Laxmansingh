@@ -1,6 +1,6 @@
 # Laxman Singh Jadon — Professional Portfolio
 
-Personal portfolio for **Laxman Singh Jadon**, HR Lead and Project Delivery Department HOD at IG Strategic Systems Pvt Ltd (IG Defence).
+Personal portfolio for **Laxman Singh Jadon**, HR Lead at IG Strategic Systems Pvt Ltd (IG Defence).
 
 The site is designed as a digital extension of the professional CV, presenting the career journey, measurable impact, operating capabilities, education and certifications through an interactive interface.
 

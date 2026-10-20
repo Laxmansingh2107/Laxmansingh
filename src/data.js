@@ -3,7 +3,7 @@
 export const PROFILE = {
   name: 'Laxman Singh Jadon',
   short: 'LSJ',
-  role: 'HR Lead + Project Delivery HOD',
+  role: 'HR Lead · IG Defence',
   org: 'IG Strategic Systems Pvt Ltd (IG Defence)',
   location: 'Greater Noida, India',
   email: 'luckysingh0508.lsj@gmail.com',
@@ -26,10 +26,10 @@ export const NAV = [
 // scope = relative size of responsibility (1–6), used only to draw the growth staircase.
 export const CAREER = [
   {
-    when: '2014–2018', tag: 'Foundations', title: 'Learning how people & systems work',
-    where: 'BA · MA Rural Development · UPSC preparation', scope: 1, scopeLabel: 'Learning',
-    body: 'The story begins with a broad academic foundation rather than a conventional HR path. A BA spanning Economics, Sociology and English Literature, followed by an MA in Rural Development and a UPSC-oriented preparation phase, built an interest in how people, institutions, policy and systems interact.',
-    why: 'It established the lens that stayed: organisations are human systems shaped by incentives, institutions, policy and behaviour.',
+    when: '2014–2018', tag: 'Foundations', title: 'The civil services years',
+    where: 'Serious UPSC aspirant · BA · MA Rural Development', scope: 1, scopeLabel: 'Learning',
+    body: 'The plan was never HR at first — it was the UPSC civil services, pursued as a serious aspirant. A BA in Economics, Sociology and English Literature and an MA in Rural Development were chosen with that goal in mind, and the preparation meant long hours with polity, governance, economics and public administration: how laws are written, how institutions run, and how policy lands on real people.',
+    why: 'The exam path gave way to HR, but the preparation never went to waste: a discipline for long, structured effort, and a public-service instinct to see the person behind every process.',
   },
   {
     when: 'Dec 2019–Jan 2024', tag: 'First Steps', title: 'Building discipline in HR',
@@ -57,8 +57,8 @@ export const CAREER = [
   },
   {
     when: 'Aug 2026–Present', tag: 'Convergence', title: 'Where HR meets project delivery',
-    where: 'HR Lead + Project Delivery HOD · IG Defence', scope: 6, scopeLabel: 'HR + Delivery',
-    body: 'Project Delivery Department HOD responsibility added alongside HR Lead. Hiring, HR policy and governance, payroll and compliance, facilities, security and vendors on one side — demos, TEC, trials, on-site delivery, ATP and client training on the other.',
+    where: 'HR Lead · IG Defence (additional charge: Project Delivery)', scope: 6, scopeLabel: 'HR + Delivery',
+    body: 'As HR Lead, took on the Project Delivery Department as an additional charge. Hiring, HR policy and governance, payroll and compliance, facilities, security and vendors on one side — demos, TEC, trials, on-site delivery, ATP and client training on the other.',
     why: 'Every thread meets here: people systems and project execution, both required to deliver the outcome.',
   },
 ];
@@ -67,7 +67,7 @@ export const LADDER = [
   { month: 'Jan 2026', title: 'HR Associate-II', note: 'Joined IG Defence' },
   { month: 'Apr 2026', title: 'HR Associate-III', note: 'First promotion' },
   { month: 'Jun 2026', title: 'HR Lead', note: 'Leading the HR function' },
-  { month: 'Aug 2026', title: '+ Project Delivery HOD', note: 'Second department added' },
+  { month: 'Aug 2026', title: '+ Project Delivery', note: 'Additional charge as HR Lead' },
 ];
 
 export const COMPLIANCE = [
@@ -106,7 +106,7 @@ export const EDU = [
   { year: '2014', title: 'Diploma in Computer Application', where: 'MMYVV, M.P.' },
   { year: '2016', title: 'BA — Economics, Sociology & English Literature', where: 'JU' },
   { year: '2018', title: 'MA — Rural Development', where: 'IGNOU' },
-  { year: '2026', title: 'MBA — HR & Operations Management', where: 'LPU · In progress' },
+  { year: '2026', title: 'MBA — HR & Operations Management', where: 'LPU · Completed' },
 ];
 
 export const CERTS = [
