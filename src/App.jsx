@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Award, BookOpen, Briefcase, BrainCircuit, Building2, ChevronRight, Clapperboard, Code2, Compass,
   Crown, Download, Factory, GraduationCap, Home, Layers, Mail, MapPin, Menu, Moon, Network,
-  Phone, Quote, Send, ShieldCheck, Sparkles, Sun, Target, Tent, Trophy, Users, X,
-} from 'lucide-react';
+  Phone, Quote, Send, ShieldCheck, Sparkles, Sun, Target, Tent, Trophy, Users, X, Linkedin } from 'lucide-react';
 import {
   PROFILE, NAV, CAREER, LADDER, FUNCTIONS, DELIVERY_FLOW, SKILLS, EDU, CERTS, BEYOND, QUOTES,
 } from './data';
@@ -171,7 +170,7 @@ function Hero() {
     <section id="home" className="hero">
       <div className="hero-copy reveal">
         <div className="pill"><span className="dot" /> {PROFILE.role}</div>
-        <h1>People. Systems.<br /><em>Purpose.</em></h1>
+        <h1>People. Policy.<br /><em>Purpose.</em></h1>
         <p className="lead">A journey from HR fundamentals and multi-state operations to leading both HR and project delivery for a defence technology organisation.</p>
         <div className="hero-actions">
           <a className="btn btn-solid big" href="#journey">Explore the journey <ChevronRight size={17} /></a>
@@ -408,6 +407,7 @@ function Contact() {
         <div className="card reveal contact-links">
           <a href={`mailto:${PROFILE.email}`}><Mail size={18} /><span><small>Email</small>{PROFILE.email}</span></a>
           <a href={`tel:${PROFILE.phone}`}><Phone size={18} /><span><small>Phone</small>{PROFILE.phoneDisplay}</span></a>
+          <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer"><Linkedin size={18} /><span><small>LinkedIn</small>linkedin.com/in/laxmansinghj</span></a>
           <div><MapPin size={18} /><span><small>Based in</small>{PROFILE.location}</span></div>
           <div><BookOpen size={18} /><span><small>Languages</small>{PROFILE.languages}</span></div>
           <a className="btn btn-solid wide" href={CV} download><Download size={15} /> Download CV</a>
@@ -446,7 +446,7 @@ export default function App() {
         <Education />
         <Beyond />
         <Contact />
-        <footer className="footer">© {new Date().getFullYear()} {PROFILE.name} · People, Systems & Purpose.</footer>
+        <footer className="footer">© {new Date().getFullYear()} {PROFILE.name} · People. Policy. Purpose.</footer>
       </main>
     </div>
   );

@@ -10,6 +10,7 @@ export const PROFILE = {
   phone: '+918383842382',
   phoneDisplay: '+91 83838 42382',
   languages: 'English · Hindi',
+  linkedin: 'https://www.linkedin.com/in/laxmansinghj/',
 };
 
 export const NAV = [

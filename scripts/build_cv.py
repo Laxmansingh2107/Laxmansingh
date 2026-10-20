@@ -28,8 +28,8 @@ PHONE = '+91 8383842382'
 EMAIL = 'luckysingh0508.lsj@gmail.com'
 PLACE = 'Noida, India'
 PORTFOLIO = 'https://laxmansingh2107.github.io/Laxmansingh/'
-LINKEDIN = None          # e.g. 'https://www.linkedin.com/in/<profile>/' — adds a second QR code when set
-TAGLINE = 'People. Systems. Purpose.'
+LINKEDIN = 'https://www.linkedin.com/in/laxmansinghj/'
+TAGLINE = 'People. Policy. Purpose.'
 
 FONTS = ['Inter-Regular', 'Inter-Medium', 'Inter-SemiBold', 'Inter-Bold', 'Inter-ExtraBold', 'Inter-Italic',
          'SourceSerif-SemiBold', 'SourceSerif-Bold', 'SourceSerif-Italic']
@@ -192,9 +192,9 @@ story += [Hair(before=8, after=9), grid_row(P('THE STORY', label_s), P(
     'fundamentals to leading HR at IG Defence, where Project Delivery and a new MRO vertical have since been added. '
     'Each chapter carried something into the next, and that thread is what the timeline below follows.', intro_s))]
 
-quote = tbl([[[P('“Nothing here was done alone. Most of the time, I’m the one supporting someone else.”',
+quote = tbl([[[P('“Policies work when people trust them. Systems work when people own them.”',
                  S('q', fontName='SourceSerif-Italic', fontSize=12.5, leading=17, textColor=colors.white)),
-               Spacer(1, 4), P('IN MY OWN WORDS', S('qa', fontName='Inter-Bold', fontSize=7, leading=9, textColor=ACCENT_L))]]],
+               Spacer(1, 4), P('WHAT I WORK BY', S('qa', fontName='Inter-Bold', fontSize=7, leading=9, textColor=ACCENT_L))]]],
             [COL], [('BACKGROUND', (0, 0), (-1, -1), INK), ('LEFTPADDING', (0, 0), (-1, -1), 14),
                     ('RIGHTPADDING', (0, 0), (-1, -1), 14), ('TOPPADDING', (0, 0), (-1, -1), 8),
                     ('BOTTOMPADDING', (0, 0), (-1, -1), 9), ('LINEBEFORE', (0, 0), (0, -1), 3, ACCENT_L)])
@@ -228,15 +228,14 @@ STAGES = [
     ('Jan 2026', 'HR Associate-II — clearing the backlog',
      'Took charge of compliance and, with the team, closed every outstanding PF, ESIC and NOC matter; then factory HR operations.'),
     ('Apr 2026', 'HR Associate-III — the factory’s people and premises',
-     'First promotion: HR operations and recruitment, factory administration, security and movement protocols, facilities, '
-     'cafeteria and pantry planning, and every visit from high-profile delegations to routine ones.'),
+     'First promotion: HR operations, recruitment, factory administration, security and movement, facilities, cafeteria '
+     'and pantry, and every visit from high-profile delegations to routine ones.'),
     ('Jun 2026', 'HR Lead — end to end, factory and corporate',
      'Corporate side added: end-to-end HR and operations, a 12-member team reporting directly (each with their own teams), '
      'single point of contact for service-provider vendors, and close support to audit and legal teams.'),
     ('Aug 2026', 'Project Delivery, now with MRO — building what comes next',
-     'Additional charge of Project Delivery: demos, TEC, trials, on-site delivery, ATP and client training with Business '
-     'Development. Now expanded to MRO (Maintenance, Repair &amp; Operations): setting up an MRO vertical within PD, planned '
-     'to grow into a separate, recurring source of revenue.'),
+     'Demos, TEC, trials, on-site delivery, ATP and client training with Business Development. Now expanded to MRO '
+     '(Maintenance, Repair &amp; Operations): setting up a vertical planned to become a separate, recurring revenue stream.'),
 ]
 
 
@@ -253,9 +252,7 @@ for d, t, m, b, br in CHAPTERS:
                                            'major', True, 9)))
 ig_head = timeline_row('Jan 2026 –<br/>Present', [P('A Fast Rise — Where Every Thread Meets', ch_s),
                                                  P('IG Strategic Systems Pvt Ltd (IG Defence, formerly IG Drones) · Noida', meta_s),
-                                                 P('Every earlier chapter feeds this one: Tricornio’s rigour, Kasper’s scale, the '
-                                                   'plant’s ownership. Three step-ups in eight months, each earned by taking on '
-                                                   'what the organisation needed.', body_s)],
+                                                 P('Every earlier chapter feeds this one: three step-ups in eight months, each earned on the job.', body_s)],
                        'major', True, 8)
 for i, (d, t, b) in enumerate(STAGES):
     last = i == len(STAGES) - 1
@@ -266,8 +263,8 @@ for i, (d, t, b) in enumerate(STAGES):
 panel = tbl([[[P('Stepping in where the organisation needed it', ch_s), Spacer(1, 4),
                P('On the way to HR Lead, an important production task came up that wasn’t part of the role. Stepping in on '
                  'it, as part of the team that set up the Production &amp; Manufacturing department, led to a different model: '
-                 'instead of highly paid engineers on basic assembly, a blue-collar workforce, many with little formal technical '
-                 'education, was trained for assembly, and engineers focused on testing and quality control.',
+                 'a blue-collar workforce, many with little formal technical education, trained for assembly, and engineers '
+                 'focused on testing and quality control instead of basic assembly.',
                  body_s), Spacer(1, 4),
                P('Within weeks the training became a repeatable system: production costs fell sharply with no loss in quality, '
                  'and that workforce now builds advanced drones. It is also what led to Project Delivery and the MRO vertical.',
@@ -284,7 +281,7 @@ CW2 = (COL - 4 * mm) / 2
 def card(children, width, accent=ACCENT):
     return tbl([[children]], [width], [('BACKGROUND', (0, 0), (-1, -1), SOFT), ('LINEABOVE', (0, 0), (-1, 0), 2, accent),
                                     ('LEFTPADDING', (0, 0), (-1, -1), 10), ('RIGHTPADDING', (0, 0), (-1, -1), 10),
-                                    ('TOPPADDING', (0, 0), (-1, -1), 7), ('BOTTOMPADDING', (0, 0), (-1, -1), 8)])
+                                    ('TOPPADDING', (0, 0), (-1, -1), 6), ('BOTTOMPADDING', (0, 0), (-1, -1), 6)])
 
 
 yr_s = S('yr', fontName='Inter-ExtraBold', fontSize=14, leading=16, textColor=ACCENT)
@@ -300,23 +297,27 @@ def edu_card(y, d, i):
                 [('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
     return card(inner, CW2)
 edu_cards = tbl([[edu_card(*e) for e in EDU[k:k + 2]] for k in (0, 2)], [CW2 + 4 * mm, CW2],
-                [('RIGHTPADDING', (0, 0), (0, -1), 4 * mm), ('BOTTOMPADDING', (0, 0), (-1, 0), 3 * mm)])
+                [('RIGHTPADDING', (0, 0), (0, -1), 4 * mm), ('BOTTOMPADDING', (0, 0), (-1, 0), 2 * mm)])
 story.append(KeepTogether([Hair(before=10, after=8), grid_row(P('EDUCATION', label_s), edu_cards)]))
 
 # =========================== CERTIFICATIONS ===========================
 iss_s = S('iss', fontName='Inter-Bold', fontSize=7.2, leading=10, textColor=ACCENT)
-cert_s = S('cert', fontName='Inter-SemiBold', fontSize=8.6, leading=13, textColor=INK)
-keka = ['AI in HR', 'POSH Certification', 'Crafting Payroll in India', 'Compensation &amp; Benefits',
-        'Employee Engagement', 'People Analytics']
-KC = COL * 0.6                    # Keka card width
-SC = COL - KC - 4 * mm            # side cards width
-kw = (KC - 20) / 2
-keka_grid = tbl([[P(a, cert_s), P(b, cert_s)] for a, b in zip(keka[0::2], keka[1::2])], [kw, kw])
-keka_card = card([P('KEKA ACADEMY  ·  6 COURSES', iss_s), Spacer(1, 4), keka_grid], KC)
-side = [card([P(iss, iss_s), Spacer(1, 3), P(name, cert_s)], SC)
-        for iss, name in [('CSSC', 'Lean Six Sigma White Belt'), ('KNIGHTS OF SAFETY ACADEMY', 'Emergency Preparedness')]]
-right = tbl([[side[0]], [side[1]]], [SC], [('BOTTOMPADDING', (0, 0), (0, 0), 3 * mm)])
-certs = tbl([[keka_card, right]], [KC + 4 * mm, SC], [('RIGHTPADDING', (0, 0), (0, -1), 4 * mm)])
+cname_s = S('cname', fontName='Inter-SemiBold', fontSize=8.4, leading=10.5, textColor=INK)
+cfrom_s = S('cfrom', fontName='Inter-Regular', fontSize=7.6, leading=10, textColor=MUTED)
+CERTS = [('Lean Six Sigma White Belt', 'CSSC'), ('Emergency Preparedness', 'Knights of Safety Academy'),
+         ('AI in HR', 'Keka Academy'), ('POSH Certification', 'Keka Academy'),
+         ('Crafting Payroll in India', 'Keka Academy'), ('Compensation &amp; Benefits', 'Keka Academy'),
+         ('Employee Engagement', 'Keka Academy'), ('People Analytics', 'Keka Academy')]
+
+def cert_card(name, issuer):
+    c = tbl([[[P(name, cname_s), P(issuer, cfrom_s)]]], [CW2],
+            [('BACKGROUND', (0, 0), (-1, -1), SOFT), ('LINEBEFORE', (0, 0), (0, -1), 2, ACCENT),
+             ('LEFTPADDING', (0, 0), (-1, -1), 10), ('RIGHTPADDING', (0, 0), (-1, -1), 10),
+             ('TOPPADDING', (0, 0), (-1, -1), 4), ('BOTTOMPADDING', (0, 0), (-1, -1), 4.5)])
+    return c
+
+certs = tbl([[cert_card(*CERTS[k]), cert_card(*CERTS[k + 1])] for k in range(0, 8, 2)], [CW2 + 4 * mm, CW2],
+            [('RIGHTPADDING', (0, 0), (0, -1), 4 * mm), ('BOTTOMPADDING', (0, 0), (-1, 2), 2 * mm)])
 story.append(KeepTogether([Hair(before=10, after=8), grid_row(P('CERTIFICATIONS', label_s), certs)]))
 
 # =========================== LANGUAGES & BEYOND WORK ===========================
