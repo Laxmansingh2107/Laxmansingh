@@ -1,7 +1,10 @@
 # Builds public/assets/Laxman_Singh_Jadon_CV.pdf
 #   pip install reportlab && python scripts/build_cv.py
-# Layout: dark identity sidebar (photo, contact, numbers, strengths) + main column.
-# Fonts (Fraunces + Inter, SIL OFL) match the portfolio site and live in scripts/fonts.
+#
+# Narrative "journey" CV on a strict two-line grid:
+#   - everything starts either at the page margin (labels, dates) or at one content column (all text)
+#   - one vertical rhythm: 4pt base unit, sections separated by a hairline + 16pt
+# Fonts: Fraunces + Inter (SIL OFL), the same as the portfolio site, in scripts/fonts.
 import os
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
@@ -9,8 +12,7 @@ from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import (BaseDocTemplate, PageTemplate, Frame, Paragraph, Spacer, Table, TableStyle,
-                                Image, KeepTogether, FrameBreak, NextPageTemplate, PageBreak)
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, KeepTogether, CondPageBreak
 from reportlab.platypus.flowables import Flowable
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -18,285 +20,232 @@ OUT = os.path.join(HERE, '..', 'public', 'assets', 'Laxman_Singh_Jadon_CV.pdf')
 for n in ['Fraunces-Bold', 'Fraunces-SemiBold', 'Fraunces-Italic', 'Inter-Regular', 'Inter-Medium',
           'Inter-SemiBold', 'Inter-Bold', 'Inter-Italic']:
     pdfmetrics.registerFont(TTFont(n, os.path.join(HERE, 'fonts', n + '.ttf')))
-pdfmetrics.registerFontFamily('Inter', normal='Inter-Regular', bold='Inter-SemiBold', italic='Inter-Italic', boldItalic='Inter-SemiBold')
+pdfmetrics.registerFontFamily('Inter', normal='Inter-Regular', bold='Inter-SemiBold', italic='Inter-Italic',
+                              boldItalic='Inter-SemiBold')
 
 # ---------- palette ----------
-INK = colors.HexColor('#1c1914')        # sidebar
-INK2 = colors.HexColor('#2a251d')       # sidebar cards
-AMBER = colors.HexColor('#f0a830')      # accent on dark
-AMBER_D = colors.HexColor('#a8700f')    # accent on white
-TEXT = colors.HexColor('#2b2823')
-MUTED = colors.HexColor('#7c7366')
-SOFT = colors.HexColor('#f8f2e7')
-LINE = colors.HexColor('#e6d8bf')
-ON_DARK = colors.HexColor('#ece6dc')
-ON_DARK_M = colors.HexColor('#a89f90')
+HEAD_C = colors.HexColor('#16140f')
+TEXT = colors.HexColor('#33302a')
+MUTED = colors.HexColor('#80776a')
+ACCENT = colors.HexColor('#a8700f')
+SOFT = colors.HexColor('#f8f3ea')
+HAIR = colors.HexColor('#e5dccd')
 
-PW, PH = A4
-SIDE = 64 * mm
-PAD = 8 * mm
-MAIN_X = SIDE + 11 * mm
-MAIN_W = PW - MAIN_X - 13 * mm
+# ---------- grid ----------
+M = 18 * mm                       # page margin (left/right)
+W = A4[0] - 2 * M - 12          # text width (frame has 6pt inner padding each side)
+LABEL = 31 * mm                   # label / date column
+GUT = 6 * mm
+COL = W - LABEL - GUT             # content column
 
 
-def st(name, **k):
+def S(name, **k):
     k.setdefault('fontName', 'Inter-Regular'); k.setdefault('textColor', TEXT)
     return ParagraphStyle(name, **k)
 
 
-# sidebar styles
-s_label = st('sl', fontName='Inter-Bold', fontSize=7.2, leading=9, textColor=AMBER, spaceBefore=11, spaceAfter=5)
-s_side = st('ss', fontSize=8.2, leading=11.6, textColor=ON_DARK)
-s_side_m = st('ssm', fontSize=7.5, leading=10.2, textColor=ON_DARK_M)
-s_side_b = st('ssb', fontName='Inter-SemiBold', fontSize=8.2, leading=11, textColor=colors.white)
-s_num = st('sn', fontName='Fraunces-Bold', fontSize=19, leading=20, textColor=AMBER)
-s_numl = st('snl', fontSize=7.2, leading=9, textColor=ON_DARK_M)
-s_quote = st('sq', fontName='Fraunces-Italic', fontSize=11, leading=14.5, textColor=colors.white)
-# main styles
-s_name = st('nm', fontName='Fraunces-Bold', fontSize=30, leading=33, textColor=colors.HexColor('#171512'))
-s_role = st('rl', fontName='Inter-Bold', fontSize=9, leading=12, textColor=AMBER_D, spaceBefore=3)
-s_tag = st('tg', fontName='Fraunces-Italic', fontSize=12, leading=15, textColor=MUTED, spaceBefore=4)
-s_h = st('h', fontName='Inter-Bold', fontSize=8, leading=10, textColor=AMBER_D, spaceBefore=11, spaceAfter=2)
-s_h2 = st('h2', fontName='Fraunces-SemiBold', fontSize=15, leading=18, textColor=colors.HexColor('#171512'), spaceAfter=2)
-s_meta = st('mt', fontSize=8, leading=10.5, textColor=MUTED, spaceAfter=6)
-s_body = st('b', fontSize=8.9, leading=13, textColor=TEXT)
-s_lead = st('ld', fontSize=9.6, leading=14.2, textColor=TEXT)
-s_stage_t = st('stt', fontName='Inter-Bold', fontSize=9.6, leading=12, textColor=colors.HexColor('#171512'))
-s_stage_s = st('sts', fontName='Fraunces-Italic', fontSize=9.6, leading=12, textColor=AMBER_D)
-s_stage_d = st('std', fontName='Inter-SemiBold', fontSize=7.4, leading=9, textColor=MUTED)
-s_bul = st('bu', fontSize=8.6, leading=12.2, textColor=TEXT, leftIndent=9, bulletIndent=0, spaceAfter=1.5)
-s_role_h = st('rh', fontName='Inter-Bold', fontSize=9.4, leading=12, textColor=colors.HexColor('#171512'))
-s_role_m = st('rm', fontName='Inter-Medium', fontSize=7.8, leading=10, textColor=AMBER_D, spaceAfter=3)
-s_panel_h = st('ph', fontName='Fraunces-SemiBold', fontSize=13, leading=16, textColor=colors.HexColor('#171512'), spaceAfter=4)
-s_note = st('nt', fontName='Inter-Italic', fontSize=8.4, leading=12, textColor=MUTED)
-
+name_s = S('name', fontName='Fraunces-Bold', fontSize=30, leading=32, textColor=HEAD_C)
+role_s = S('role', fontName='Inter-SemiBold', fontSize=9.5, leading=12, textColor=ACCENT)
+tag_s = S('tag', fontName='Fraunces-Italic', fontSize=11.5, leading=14, textColor=MUTED)
+contact_s = S('contact', fontSize=7.9, leading=12, textColor=TEXT)
+label_s = S('label', fontName='Inter-Bold', fontSize=7.4, leading=12, textColor=ACCENT)       # section labels (margin)
+date_s = S('date', fontName='Inter-SemiBold', fontSize=8, leading=12, textColor=ACCENT)        # dates (margin)
+intro_s = S('intro', fontName='Fraunces-Italic', fontSize=10.6, leading=15, textColor=HEAD_C)
+ch_s = S('ch', fontName='Fraunces-SemiBold', fontSize=11.5, leading=14, textColor=HEAD_C)     # chapter title
+meta_s = S('meta', fontName='Inter-Medium', fontSize=7.8, leading=12, textColor=MUTED)       # role / org line
+body_s = S('body', fontSize=8.8, leading=12.6, textColor=TEXT)
+stage_s = S('stage', fontName='Inter-SemiBold', fontSize=9, leading=13, textColor=HEAD_C)
+small_s = S('small', fontSize=8.3, leading=12, textColor=TEXT)
+smallb_s = S('smallb', fontName='Inter-Medium', fontSize=8.3, leading=12, textColor=HEAD_C)
+thr_h = S('thrh', fontName='Fraunces-SemiBold', fontSize=10, leading=13, textColor=ACCENT)
 P = Paragraph
+esc = lambda t: t.replace('&', '&amp;')
 
 
-def bullets(items, style=s_bul):
-    return [P(i, style, bulletText='–') for i in items]
+def row(left, right, top=0, bottom=0, left_w=LABEL):
+    """One line of the grid: something at the margin, something in the content column."""
+    t = Table([[left, right]], colWidths=[left_w, W - left_w])
+    t.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                           ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+                           ('LEFTPADDING', (1, 0), (1, 0), GUT if left_w == LABEL else 0),
+                           ('TOPPADDING', (0, 0), (-1, -1), top), ('BOTTOMPADDING', (0, 0), (-1, -1), bottom)]))
+    return t
 
 
-class Rule(Flowable):
-    def __init__(self, w, color=LINE, thick=0.7, space=4):
-        super().__init__(); self.w, self.color, self.thick, self.space = w, color, thick, space
-    def wrap(self, aw, ah): return self.w, self.space * 2
+class Hair(Flowable):
+    def __init__(self, color=HAIR, weight=0.6, before=8, after=8):
+        super().__init__(); self.c, self.w, self.b, self.a = color, weight, before, after
+    def wrap(self, aw, ah): self.aw = aw; return aw, self.b + self.a
     def draw(self):
-        self.canv.setStrokeColor(self.color); self.canv.setLineWidth(self.thick); self.canv.line(0, self.space, self.w, self.space)
+        self.canv.setStrokeColor(self.c); self.canv.setLineWidth(self.w); self.canv.line(0, self.a, self.aw, self.a)
 
 
-class StageNode(Flowable):
-    """Numbered node on the growth ladder with a line down to the next stage."""
-    def __init__(self, num, last=False): super().__init__(); self.num, self.last, self.length = num, last, 0
-    def wrap(self, aw, ah): self.aw = aw; return aw, 18
-    def draw(self):
-        c = self.canv; x, y = self.aw / 2, 9
-        if not self.last:
-            c.setStrokeColor(LINE); c.setLineWidth(1.2); c.line(x, y - 9, x, 18 - self.length)
-        c.setFillColor(INK); c.circle(x, y, 9, fill=1, stroke=0)
-        c.setFillColor(AMBER); c.setFont('Inter-Bold', 7.5); c.drawCentredString(x, y - 2.6, self.num)
+def section(label, flowables, first=False):
+    """Hairline, then the label at the margin beside the first block of the section."""
+    out = [] if first else [Hair(before=10, after=10)]
+    head, rest = flowables[0], flowables[1:]
+    out.append(row(P(label, label_s), head))
+    out += [row('', f) for f in rest]
+    return out
 
 
-class Chips(Flowable):
-    """Wrapped tag chips for the sidebar."""
-    def __init__(self, items, width): super().__init__(); self.items, self.width = items, width
-    def _layout(self):
-        rows, x, y, h = [], 0, 0, 13.5
-        for t in self.items:
-            w = pdfmetrics.stringWidth(t, 'Inter-Medium', 7.2) + 11
-            if x + w > self.width: x, y = 0, y + h + 3.5
-            rows.append((t, x, y, w)); x += w + 4
-        return rows, y + h
-    def wrap(self, aw, ah): self.rows, self.h = self._layout(); return self.width, self.h
-    def draw(self):
-        c = self.canv
-        for t, x, y, w in self.rows:
-            yy = self.h - y - 13.5
-            c.setFillColor(INK2); c.setStrokeColor(colors.HexColor('#4a4032')); c.setLineWidth(0.6)
-            c.roundRect(x, yy, w, 13.5, 6.75, fill=1, stroke=1)
-            c.setFillColor(ON_DARK); c.setFont('Inter-Medium', 7.2); c.drawCentredString(x + w / 2, yy + 4.3, t)
-
-
-def decorate(c, doc):
+def footer(c, doc):
     c.saveState()
-    c.setFillColor(INK); c.rect(0, 0, SIDE, PH, fill=1, stroke=0)
-    c.setFillColor(AMBER); c.rect(0, PH - 3, PW, 3, fill=1, stroke=0)
-    # LSJ monogram watermark in the sidebar foot
-    c.setFillColor(colors.HexColor('#26211a')); c.setFont('Fraunces-Bold', 64); c.drawString(PAD - 2, 14 * mm, 'LSJ')
-    c.setFont('Inter-Medium', 7); c.setFillColor(MUTED)
-    c.drawRightString(PW - 13 * mm, 9 * mm, f'Laxman Singh Jadon  ·  Curriculum Vitae  ·  {doc.page} / 2')
+    c.setStrokeColor(HAIR); c.setLineWidth(0.6); c.line(M + 6, 12 * mm, A4[0] - M - 6, 12 * mm)
+    c.setFont('Fraunces-SemiBold', 8); c.setFillColor(ACCENT); c.drawString(M + 6, 8 * mm, 'LSJ')
+    c.setFont('Inter-Regular', 7); c.setFillColor(MUTED)
+    c.drawString(M + 6 + 9 * mm, 8 * mm, 'Laxman Singh Jadon  ·  People. Systems. Purpose.')
+    c.drawRightString(A4[0] - M - 6, 8 * mm, f'{doc.page} / 2')
     c.restoreState()
 
 
-doc = BaseDocTemplate(OUT, pagesize=A4, leftMargin=0, rightMargin=0, topMargin=0, bottomMargin=0,
-                      title='Laxman Singh Jadon — CV', author='Laxman Singh Jadon',
-                      subject='HR Lead · IG Strategic Systems Pvt Ltd (IG Defence)')
-side_frame = lambda: Frame(PAD, 30 * mm, SIDE - 2 * PAD, PH - 30 * mm - 12 * mm, 0, 0, 0, 0, id='side')
-main_frame = lambda: Frame(MAIN_X, 15 * mm, MAIN_W, PH - 15 * mm - 13 * mm, 0, 0, 0, 0, id='main')
-doc.addPageTemplates([PageTemplate('pg', frames=[side_frame(), main_frame()], onPage=decorate)])
-SW = SIDE - 2 * PAD
-
-# =====================================================================
-# PAGE 1 · SIDEBAR
-# =====================================================================
+doc = SimpleDocTemplate(OUT, pagesize=A4, leftMargin=M, rightMargin=M, topMargin=16 * mm, bottomMargin=17 * mm,
+                        title='Laxman Singh Jadon — CV', author='Laxman Singh Jadon',
+                        subject='HR Lead · IG Strategic Systems Pvt Ltd (IG Defence)')
 story = []
-photo = Image(os.path.join(HERE, 'cv-photo-round.png'), width=34 * mm, height=34 * mm)
-ring = Table([[photo]], colWidths=[SW], rowHeights=[37 * mm])
-ring.setStyle(TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER'), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                          ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0)]))
-story += [ring, Spacer(1, 2)]
 
-story += [P('CONTACT', s_label),
-          P('+91 8383842382', s_side), P('luckysingh0508.lsj@gmail.com', s_side),
-          P('Greater Noida, India – 201318', s_side),
-          P('laxmansingh2107.github.io/Laxmansingh', st('url', fontSize=6.9, leading=10, textColor=ON_DARK_M))]
+# =========================== HEADER ===========================
+PH_W, PH_H = 25 * mm, 33.3 * mm
+photo = Image(os.path.join(HERE, 'cv-photo.png'), width=PH_W, height=PH_H)
+name_block = [P('Laxman Singh Jadon', name_s), Spacer(1, 5),
+              P('HR LEAD  ·  IG STRATEGIC SYSTEMS PVT LTD (IG DEFENCE)', role_s), Spacer(1, 3),
+              P('A journey through people, policy, and purpose', tag_s)]
+hdr = Table([[name_block, photo]], colWidths=[W - PH_W, PH_W], rowHeights=[PH_H])
+hdr.setStyle(TableStyle([('VALIGN', (0, 0), (0, 0), 'BOTTOM'), ('VALIGN', (1, 0), (1, 0), 'TOP'),
+                         ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+                         ('TOPPADDING', (0, 0), (-1, -1), 0), ('BOTTOMPADDING', (0, 0), (-1, -1), 0)]))
+story += [hdr, Hair(color=ACCENT, weight=1.1, before=10, after=8)]
 
-story.append(P('AT A GLANCE', s_label))
-nums = [('600+', 'employees managed across multi-state sites'), ('12', 'direct reports, each leading their own teams'),
-        ('3', 'step-ups in 8 months at IG Defence'), ('93%+', 'compliance achieved ahead of deadline')]
-cells = [[[P(n, s_num), P(l, s_numl)] for n, l in nums[i:i + 2]] for i in (0, 2)]
-g = Table(cells, colWidths=[SW / 2] * 2)
-g.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'), ('LEFTPADDING', (0, 0), (-1, -1), 0),
-                       ('RIGHTPADDING', (0, 0), (-1, -1), 6), ('BOTTOMPADDING', (0, 0), (-1, -1), 8), ('TOPPADDING', (0, 0), (-1, -1), 0)]))
-story.append(g)
+contacts = ['+91 8383842382', 'luckysingh0508.lsj@gmail.com', 'Greater Noida, India – 201318',
+            'laxmansingh2107.github.io/Laxmansingh']
+story += [P('<font color="#a8700f">  ·  </font>'.join(contacts), contact_s)]
 
-story += [P('CORE STRENGTHS', s_label), Chips([
-    'HR Operations', 'Statutory Compliance', 'PF · ESIC · NOCs', 'Recruitment', 'Factory Administration',
-    'Security & Movement', 'Facility Management', 'Cafeteria & Pantry', 'Visits & Protocol', 'Vendor Management',
-    'Audit & Legal Support', 'Policy & SOPs', 'Project Delivery', 'MRO Setup', 'Team Leadership'], SW)]
+# =========================== INTRO ===========================
+story += section('THE STORY', [P(
+    'Every career is a story before it’s a résumé. This one begins with years of serious preparation for the UPSC '
+    'civil services and a curiosity about how people, policy and systems work. It moves, chapter by chapter, from HR’s '
+    'fundamentals to leading HR at a defence technology company, where Project Delivery and a new MRO vertical have '
+    'since been added. None of it was done alone; most of the time, it meant supporting someone else.', intro_s)])
 
-story += [P('EDUCATION', s_label)]
-for t, w in [('MBA, HR & Operations Management', 'Lovely Professional University · 2026'),
-             ('MA, Rural Development', 'IGNOU · 2018'),
-             ('BA, Economics, Sociology & English Literature', 'JU · 2016'),
-             ('Diploma in Computer Application', 'MMYVV, M.P. · 2014')]:
-    story += [P(t.replace('&', '&amp;'), s_side_b), P(w, s_side_m), Spacer(1, 4)]
+# =========================== JOURNEY ===========================
+def chapter(when, title, meta, body):
+    return row(P(when, date_s), [P(title, ch_s), P(meta, meta_s), Spacer(1, 2), P(body, body_s)], bottom=9)
 
-story.append(FrameBreak())
+story += [Hair(before=10, after=10), row(P('THE JOURNEY', label_s), P('', body_s), bottom=2)]
+story += [
+    chapter('2014 – 2018', 'Foundations — The Civil Services Years',
+            'BA · MA Rural Development · Serious UPSC aspirant',
+            'The plan was never HR at first. It was the UPSC civil services, pursued as a serious aspirant. A BA in '
+            'Economics, Sociology and English Literature and an MA in Rural Development were chosen with that goal in '
+            'mind, and the preparation meant long hours with polity, governance, economics and public administration. '
+            'The exam path gave way to HR, but the preparation stayed: a discipline for structured effort, a habit of '
+            'seeing people, policy and systems as one, and an instinct to see the person behind every process.'),
+    chapter('Dec 2019 –<br/>Jan 2024', 'First Steps — Building Discipline in HR', 'HR Officer · Tricornio Technologies',
+            'Learning HR from the ground up: employee records, payroll and statutory documentation, the unglamorous '
+            'groundwork everything else is built on. Four years with zero compliance deviations earned recognition as '
+            'Best Employee of the Year, and something more lasting: a reputation for reliability.'),
+    chapter('Jul 2024 –<br/>Jul 2025', 'Scaling Up — From HR to Multi-State Operations',
+            'HR Manager &amp; Project Coordinator · Kasper Infrastructure',
+            'HR across 600+ employees on multi-state infrastructure projects, with compliance governance raised from '
+            '30% to 93%+ ahead of deadline. Coordinating HR and operations for the Mahakumbh 2025 Tent City Project '
+            '(200 luxury tents, dozens of stakeholders) was the first time HR and project delivery sat side by side.'),
+    chapter('Jul 2025 –<br/>Oct 2025', 'Full Ownership — Running a Plant, End to End', 'Plant Manager · Kasper Engineering',
+            'Full charge of a 60-person plant: HR, administration, security, vendors, housekeeping and discipline under '
+            'one roof. A compressed lesson in running a complete operation, and the step beyond HR alone.'),
+]
 
-# =====================================================================
-# PAGE 1 · MAIN
-# =====================================================================
-story += [P('Laxman Singh Jadon', s_name),
-          P('HR LEAD  ·  IG STRATEGIC SYSTEMS PVT LTD (IG DEFENCE)', s_role),
-          P('People. Systems. Purpose.', s_tag), Spacer(1, 6), Rule(MAIN_W, AMBER_D, 1, 3)]
-
-story += [P('PROFILE', s_h), P(
-    'An HR leader who grew up in operations. Six years from statutory records and payroll to leading HR at a defence '
-    'technology company, now also carrying Project Delivery and a new MRO vertical. Trained first for the UPSC civil '
-    'services, so people, policy and compliance are read as one system. Known for taking on what the organisation needs, '
-    'even when it isn’t in the job description, and for working through teams rather than around them. '
-    'More often than not, the one supporting someone else.', s_lead)]
-
-story += [P('CURRENT ROLE', s_h), P('IG Defence — a year of growth', s_h2),
-          P('IG Strategic Systems Pvt Ltd (formerly IG Drones)  ·  Jan 2026 – Present', s_meta)]
-
+# IG Defence: one chapter, four stages, each stage's date on the margin
+ig_head = row(P('Jan 2026 –<br/>Present', date_s),
+              [P('A Fast Rise — Trust Earned in Months', ch_s),
+               P('IG Strategic Systems Pvt Ltd (IG Defence, formerly IG Drones) · Greater Noida', meta_s)], bottom=5)
 STAGES = [
-    ('01', 'Jan 2026', 'HR Associate-II', 'Clearing the backlog', [
-        'Took charge of compliance soon after joining and, with the team, closed every outstanding PF, ESIC and NOC matter',
-        'Moved on to HR operations for the factory']),
-    ('02', 'Apr 2026  ·  first promotion', 'HR Associate-III', 'Running the factory’s people and premises', [
-        'All HR operations and recruitment',
-        'Factory administration, security and movement protocols, and facility management',
-        'Cafeteria, meals, snacks and pantry planning',
-        'Arrangements for every visit, from high-profile delegations to routine ones']),
-    ('03', 'Jun 2026', 'HR Lead', 'End to end, factory and corporate', [
-        'Corporate side added: now responsible for end-to-end HR and operations management',
-        'Leads a 12-member team reporting directly, each with their own execution teams',
-        'Single point of contact for a wide network of service-provider vendors',
-        'Works closely with the audit and legal teams']),
-    ('04', 'Aug 2026  ·  additional charge', '+ Project Delivery, now with MRO', 'Building what comes next', [
-        'Given the Project Delivery portfolio after stepping in on production (see Beyond the Brief)',
-        'Works with Business Development on demos, TEC, trials, on-site delivery, ATP and client training',
-        'Portfolio expanded to MRO (Maintenance, Repair &amp; Operations): now setting up an MRO vertical within PD, '
-        'planned to grow into a separate, recurring source of revenue']),
+    ('Jan 2026', 'HR Associate-II — clearing the backlog',
+     'Took charge of compliance soon after joining and, with the team, closed every outstanding PF, ESIC and NOC '
+     'matter, then moved into HR operations for the factory.'),
+    ('Apr 2026', 'HR Associate-III — the factory’s people and premises',
+     'First promotion: all HR operations and recruitment, factory administration, security and movement protocols, '
+     'facility management, cafeteria, meals and pantry planning, and arrangements for every visit, from high-profile '
+     'delegations to routine ones.'),
+    ('Jun 2026', 'HR Lead — end to end, factory and corporate',
+     'The corporate side was added, making the role end-to-end HR and operations management: a 12-member team reporting '
+     'directly, each with their own execution teams; the single point of contact for a wide network of service-provider '
+     'vendors; and close support to the audit and legal teams.'),
+    ('Aug 2026', 'Project Delivery, now with MRO — building what comes next',
+     'Additional charge of Project Delivery: working with Business Development on demos, TEC, trials, on-site delivery, '
+     'ATP and client training. The portfolio has since expanded to MRO (Maintenance, Repair &amp; Operations), with a new '
+     'MRO vertical being set up within PD, planned to grow into a separate, recurring source of revenue.'),
 ]
-NW = 9 * mm
-for i, (num, when, title, sub, items) in enumerate(STAGES):
-    node = StageNode(num, last=i == len(STAGES) - 1)
-    right = [P(f'{title}  <font name="Fraunces-Italic" color="#a8700f" size="9.6">— {sub}</font>', s_stage_t),
-             P(when.upper(), s_stage_d), Spacer(1, 3)] + bullets(items)
-    row = Table([[node, right]], colWidths=[NW, MAIN_W - NW])
-    row.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'), ('LEFTPADDING', (0, 0), (-1, -1), 0),
-                             ('RIGHTPADDING', (0, 0), (-1, -1), 0), ('LEFTPADDING', (1, 0), (1, 0), 6),
-                             ('TOPPADDING', (0, 0), (-1, -1), 0), ('BOTTOMPADDING', (0, 0), (-1, -1), 9)]))
-    node.length = row.wrap(MAIN_W, 2000)[1]
-    story.append(row)
+for i, (when, title, body) in enumerate(STAGES):
+    r = row(P(when, S('d2', parent=date_s, fontName='Inter-Medium', textColor=MUTED)),
+            [P(title, stage_s), P(body, body_s)], bottom=9 if i == len(STAGES) - 1 else 6)
+    story.append(KeepTogether([ig_head, r]) if i == 0 else r)
 
-story.append(PageBreak())
-
-# =====================================================================
-# PAGE 2 · SIDEBAR
-# =====================================================================
-story += [P('CERTIFICATIONS', st('sl0', parent=s_label, textColor=AMBER, fontName='Inter-Bold', spaceBefore=2))]
-for t, w in [('Lean Six Sigma White Belt', 'CSSC'), ('AI in HR', 'Keka Academy'), ('POSH Certification', 'Keka Academy'),
-             ('Crafting Payroll in India', 'Keka Academy'), ('Compensation & Benefits', 'Keka Academy'),
-             ('Employee Engagement', 'Keka Academy'), ('People Analytics', 'Keka Academy'),
-             ('Emergency Preparedness', 'Knights of Safety Academy')]:
-    story += [P(t.replace('&', '&amp;'), s_side_b), P(w, s_side_m), Spacer(1, 3)]
-story += [P('LANGUAGES', s_label), P('English  ·  Hindi', s_side),
-          P('BEYOND WORK', s_label), Chips(['Chess & puzzles', 'Cinema', 'Documentaries', 'Badminton', 'Cricket',
-                                            'Coding', 'AI exploration'], SW),
-          P('HOW I WORK', s_label),
-          P('“Nothing here was done alone. Most of the time, I’m the one supporting someone else.”', s_quote)]
-story.append(FrameBreak())
-
-# =====================================================================
-# PAGE 2 · MAIN
-# =====================================================================
-panel = Table([[[P('BEYOND THE BRIEF', st('h0', parent=s_h, textColor=AMBER_D, fontName='Inter-Bold', spaceBefore=0)),
-                 P('Stepping in where the organisation needed it', s_panel_h),
-                 P('On the way to HR Lead, an important production task came up that wasn’t part of the role. '
-                   'Stepping in on it, and then contributing to the setup of the <b>Production &amp; Manufacturing department</b>, '
-                   'led to a different model: rather than hiring highly paid engineers for basic assembly, a blue-collar '
-                   'workforce, many with little formal technical education, was trained for assembly, while engineers '
-                   'focused on testing and quality control.', s_body), Spacer(1, 4),
+# =========================== TURNING POINT ===========================
+panel = Table([[[P('Stepping in where the organisation needed it', ch_s), Spacer(1, 4),
+                 P('On the way to HR Lead, an important production task came up that wasn’t part of the role. Stepping in '
+                   'on it, and then contributing to the setup of the Production &amp; Manufacturing department, led to a '
+                   'different model: instead of hiring highly paid engineers for basic assembly, a blue-collar workforce, '
+                   'many with little formal technical education, was trained for assembly, while engineers focused on '
+                   'testing and quality control.', body_s), Spacer(1, 4),
                  P('After a few weeks of adjustment, the training became a repeatable system. Production costs fell sharply '
-                   'with no loss in quality, and that workforce now builds advanced drones. This is what led to the Project '
-                   'Delivery portfolio and the MRO vertical now being built.', s_body),
-                 Spacer(1, 5),
-                 P('Part of a team effort throughout: always with support, and often supporting others.', s_note)]]],
-              colWidths=[MAIN_W])
-panel.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, -1), SOFT), ('LINEBEFORE', (0, 0), (0, -1), 3, AMBER_D),
+                   'with no loss in quality, and that workforce now builds advanced drones. It is also what led to the '
+                   'Project Delivery portfolio, and the MRO vertical now being built.', body_s), Spacer(1, 4),
+                 P('A team effort throughout: always with support, and often supporting others.',
+                   S('note', fontName='Inter-Italic', fontSize=8.2, leading=12, textColor=MUTED))]]],
+              colWidths=[COL])
+panel.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, -1), SOFT), ('LINEBEFORE', (0, 0), (0, -1), 2.5, ACCENT),
                            ('LEFTPADDING', (0, 0), (-1, -1), 12), ('RIGHTPADDING', (0, 0), (-1, -1), 12),
-                           ('TOPPADDING', (0, 0), (-1, -1), 10), ('BOTTOMPADDING', (0, 0), (-1, -1), 11)]))
-story.append(panel)
+                           ('TOPPADDING', (0, 0), (-1, -1), 9), ('BOTTOMPADDING', (0, 0), (-1, -1), 10)]))
+story.append(KeepTogether(section('TURNING POINT', [panel])))
 
-story += [P('EARLIER CAREER', s_h), P('Where the groundwork was laid', s_h2), Spacer(1, 4)]
-EARLIER = [
-    ('Plant Manager', 'Kasper Engineering  ·  Jul 2025 – Oct 2025', [
-        'Full charge of a 60-person plant: HR, administration, security, vendors, housekeeping and discipline',
-        'The step that took the skill set beyond HR into running a complete operation']),
-    ('HR Manager &amp; Project Coordinator', 'Kasper Infrastructure  ·  Jul 2024 – Jul 2025', [
-        'HR for 600+ employees across multi-state infrastructure projects',
-        'Raised compliance governance from 30% to 93%+ ahead of deadline, with audit-ready records',
-        'Coordinated HR and operations for the Mahakumbh 2025 Tent City Project: 200 luxury tents, dozens of stakeholders']),
-    ('HR Officer', 'Tricornio Technologies  ·  Dec 2019 – Jan 2024', [
-        'Employee records, payroll and statutory documentation',
-        'Four years with zero compliance deviations; Best Employee of the Year']),
-]
-for t, m, items in EARLIER:
-    story.append(KeepTogether([P(t, s_role_h), P(m, s_role_m)] + bullets(items) + [Spacer(1, 5)]))
+# =========================== THREADS ===========================
+threads = [('People first', 'A sociology and rural-development background shows in how grievances are heard and '
+                            'policies are written: the person in view, not just the process.'),
+           ('Discipline &amp; compliance', 'UPSC-trained rigour: 100% statutory documentation accuracy, audit-ready '
+                                           'records, and compliance raised from 30% to 93%+ ahead of deadline.'),
+           ('Operations at scale', 'From a 60-person plant to 600+ employees to a combined HR, delivery and MRO '
+                                   'portfolio, each chapter added scale.'),
+           ('Curiosity', 'Chess, coding and AI in HR feed the same instinct behind HRMS rollouts, Lean Six Sigma '
+                         'thinking and automation.')]
+half = (COL - 8 * mm) / 2
+grid = Table([[[P(h, thr_h), P(b, small_s)] for h, b in threads[i:i + 2]] for i in (0, 2)],
+             colWidths=[half + 8 * mm, half])
+grid.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'), ('LEFTPADDING', (0, 0), (-1, -1), 0),
+                          ('RIGHTPADDING', (0, 0), (0, -1), 8 * mm), ('RIGHTPADDING', (1, 0), (1, -1), 0),
+                          ('TOPPADDING', (0, 0), (-1, -1), 0), ('BOTTOMPADDING', (0, 0), (-1, 0), 9),
+                          ('BOTTOMPADDING', (0, 1), (-1, 1), 0)]))
+story.append(KeepTogether(section('WHAT CONNECTS IT', [grid])))
 
-story += [P('FOUNDATIONS', s_h), P('The civil services years', s_h2),
-          P('2014 – 2018  ·  BA · MA Rural Development · Serious UPSC aspirant', s_meta),
-          P('The plan was never HR at first. It was the UPSC civil services, pursued as a serious aspirant through long '
-            'hours of polity, governance, economics and public administration. The exam path gave way to HR, but the '
-            'preparation stayed: a discipline for structured effort, a habit of seeing people, policy and systems as one, '
-            'and a public-service instinct to see the person behind every process.', s_body)]
+# =========================== DETAILS ===========================
+muted_s = S('mut', parent=small_s, textColor=MUTED)
 
-story += [P('WHAT CONNECTS IT ALL', s_h), Spacer(1, 3)]
-threads = [('People first', 'Grievances heard and policies written with the person in view, not just the process.'),
-           ('Discipline', '100% statutory documentation accuracy and audit-ready records, every role.'),
-           ('Scale', 'From one site to 600+ people to a combined HR, delivery and MRO portfolio.'),
-           ('Curiosity', 'HRMS rollouts, Lean Six Sigma thinking and automation wherever HR can run smarter.')]
-tc = [[[P(h, st('t' + h, fontName='Fraunces-SemiBold', fontSize=10.5, leading=13, textColor=AMBER_D)),
-        P(b, st('tb' + h, fontSize=8.2, leading=11.5))] for h, b in threads[i:i + 2]] for i in (0, 2)]
-tt = Table(tc, colWidths=[MAIN_W / 2] * 2)
-tt.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'), ('LEFTPADDING', (0, 0), (-1, -1), 0),
-                        ('RIGHTPADDING', (0, 0), (-1, -1), 12), ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
-                        ('LINEABOVE', (0, 0), (-1, -1), 0.7, LINE), ('TOPPADDING', (0, 0), (-1, -1), 6)]))
-story.append(tt)
+def grid_rows(rows, widths):
+    t = Table(rows, colWidths=widths)
+    t.setStyle(TableStyle([('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+                           ('RIGHTPADDING', (0, 0), (0, -1), 5 * mm),
+                           ('TOPPADDING', (0, 0), (-1, -1), 0), ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+                           ('VALIGN', (0, 0), (-1, -1), 'TOP')]))
+    return t
 
-doc.build(story)
+edu = grid_rows([[P(a, smallb_s), P(b, muted_s)] for a, b in [
+    ('MBA, HR &amp; Operations Management', 'Lovely Professional University · 2026'),
+    ('MA, Rural Development', 'IGNOU · 2018'),
+    ('BA, Economics, Sociology &amp; English Literature', 'JU · 2016'),
+    ('Diploma in Computer Application', 'MMYVV, M.P. · 2014')]], [half + 8 * mm, half])
+cert = grid_rows([[P(a, smallb_s), P(b, muted_s)] for a, b in [
+    ('Lean Six Sigma White Belt', 'CSSC'),
+    ('Emergency Preparedness', 'Knights of Safety Academy'),
+    ('AI in HR  ·  POSH  ·  Crafting Payroll in India  ·  Compensation &amp; Benefits  ·  Employee Engagement  ·  '
+     'People Analytics', 'Keka Academy')]], [half + 8 * mm, half])
+
+def detail(label, flow, last=False):
+    return row(P(label, label_s), flow, bottom=0 if last else 8)
+
+story += [CondPageBreak(45 * mm), Hair(before=10, after=10),
+          detail('EDUCATION', edu), detail('CERTIFICATIONS', cert),
+          detail('LANGUAGES', P('English  ·  Hindi', small_s)),
+          detail('BEYOND WORK', P('Chess &amp; puzzles  ·  Cinema &amp; documentaries  ·  Badminton &amp; cricket  ·  '
+                                  'Coding &amp; AI exploration', small_s), last=True)]
+
+doc.build(story, onFirstPage=footer, onLaterPages=footer)
 print(os.path.normpath(OUT))
