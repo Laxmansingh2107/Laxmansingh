@@ -331,3 +331,9 @@ story.append(KeepTogether([Hair(before=10, after=8), grid_row(P('PERSONAL', labe
 
 doc.build(story, onFirstPage=footer, onLaterPages=footer)
 print(os.path.normpath(OUT))
+
+# Page previews shown in the site's CV section (needs poppler's pdftoppm).
+import shutil, subprocess
+if shutil.which('pdftoppm'):
+    subprocess.run(['pdftoppm', '-r', '110', '-jpeg', '-jpegopt', 'quality=82', OUT,
+                    os.path.join(HERE, '..', 'public', 'assets', 'cv-page')], check=True)

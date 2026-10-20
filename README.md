@@ -52,3 +52,14 @@ npm run deploy
 ```
 
 > Note: The public portfolio intentionally does not expose Aadhaar, PAN, driving licence or other confidential identity documents. A client-side PIN is not a security boundary for sensitive files.
+
+## Visitor book
+
+Notes from the visitor book are emailed to the address in `PROFILE.email` via FormSubmit (formsubmit.co).
+The very first note triggers a one-time activation email to that inbox; click the link in it and every later
+note arrives directly. If sending fails, visitors are offered an email draft instead.
+
+## QR codes and CV previews
+
+`public/assets/qr-*.svg` are generated with `segno`; `public/assets/cv-page-*.jpg` are rendered by
+`scripts/build_cv.py` whenever the CV is rebuilt.

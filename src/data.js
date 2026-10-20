@@ -11,6 +11,7 @@ export const PROFILE = {
   phoneDisplay: '+91 83838 42382',
   languages: 'English · Hindi',
   linkedin: 'https://www.linkedin.com/in/laxmansinghj/',
+  portfolio: 'https://laxmansingh2107.github.io/Laxmansingh/',
 };
 
 export const NAV = [
@@ -21,6 +22,7 @@ export const NAV = [
   { id: 'expertise', label: 'Expertise' },
   { id: 'education', label: 'Education' },
   { id: 'beyond', label: 'Beyond Work' },
+  { id: 'cv', label: 'CV' },
   { id: 'contact', label: 'Contact' },
 ];
 

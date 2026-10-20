@@ -394,3 +394,44 @@ p { margin: 0; }
   .reveal, .spoke, .tent, .flow li { opacity: 1 !important; transform: none !important; }
   .bar-fill { width: var(--w) !important; }
 }
+
+/* ---------- CV section ---------- */
+.cv-pages { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.cv-page { position: relative; display: block; border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); transition: transform .25s, box-shadow .25s; }
+.cv-page:hover { transform: translateY(-4px); }
+.cv-page img { display: block; width: 100%; height: auto; }
+.cv-page-tag { position: absolute; top: 12px; right: 12px; padding: 5px 10px; border-radius: 999px; background: rgba(22,20,16,.82); color: #fff; font-size: 12px; font-weight: 600; }
+.cv-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+/* ---------- contact: QR + visitor book ---------- */
+.contact-side { display: grid; gap: 18px; align-content: start; }
+.card-label { display: flex; align-items: center; gap: 8px; }
+.qr-row { display: flex; gap: 18px; margin-top: 14px; flex-wrap: wrap; }
+.qr-tile { display: grid; justify-items: center; gap: 8px; padding: 12px; border-radius: 16px; background: #fff; border: 1px solid var(--line); transition: transform .2s; }
+.qr-tile:hover { transform: translateY(-3px); }
+.qr-tile img { width: 120px; height: 120px; display: block; }
+.qr-tile span { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #161410; }
+.book-card p { margin: 10px 0 16px; color: var(--muted); }
+
+/* ---------- visitor book modal ---------- */
+.vb-backdrop { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgba(0,0,0,.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.vb-modal { position: relative; width: min(520px, 100%); max-height: calc(100vh - 32px); overflow: auto; }
+.vb-close { position: absolute; top: 14px; right: 14px; }
+.vb-icon { color: var(--accent); }
+.vb-modal h3 { margin: 10px 0 4px; font-size: 26px; }
+.vb-form { display: grid; gap: 12px; margin-top: 18px; }
+.vb-form input, .vb-form textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong); background: var(--surface-2); color: inherit; font: inherit; resize: vertical; }
+.vb-form button[disabled] { opacity: .65; cursor: progress; }
+.vb-error { color: var(--warn); }
+.vb-error a { text-decoration: underline; }
+.vb-done { display: grid; gap: 12px; margin-top: 18px; padding: 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface-2); }
+.vb-done svg { color: var(--good); }
+.vb-done small { display: block; color: var(--muted); }
+.vb-done .btn { justify-self: start; }
+
+@media (max-width: 860px) {
+  .cv-pages { grid-template-columns: 1fr; }
+  .qr-tile img { width: 104px; height: 104px; }
+}
+.side-foot { gap: 8px; }
+.side-foot .btn-solid { flex: 1; white-space: nowrap; padding-left: 12px; padding-right: 12px; }

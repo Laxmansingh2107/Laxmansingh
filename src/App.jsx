@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import {
   Award, BookOpen, Briefcase, BrainCircuit, Building2, ChevronRight, Clapperboard, Code2, Compass,
   Crown, Download, Factory, GraduationCap, Home, Layers, Mail, MapPin, Menu, Moon, Network,
-  Phone, Quote, Send, ShieldCheck, Sparkles, Sun, Target, Tent, Trophy, Users, X, Linkedin } from 'lucide-react';
+  Phone, Quote, Send, ShieldCheck, Sparkles, Sun, Target, Tent, Trophy, Users, X, Linkedin,
+  FileText, ExternalLink, NotebookPen, CheckCircle2, ScanLine } from 'lucide-react';
 import {
   PROFILE, NAV, CAREER, LADDER, FUNCTIONS, DELIVERY_FLOW, SKILLS, EDU, CERTS, BEYOND, QUOTES,
 } from './data';
@@ -10,8 +11,11 @@ import {
   HeroVenn, GrowthStairs, ComplianceBars, WorkforceGrid, FunctionWheel, ProductionModel, DroneArt, TentCity,
 } from './Illustrations';
 
-const CV = `${import.meta.env.BASE_URL}assets/Laxman_Singh_Jadon_CV.pdf`;
-const NAV_ICONS = { home: Home, journey: Compass, impact: Target, 'case-studies': Factory, expertise: Layers, education: GraduationCap, beyond: Sparkles, contact: Mail };
+const ASSET = (f) => `${import.meta.env.BASE_URL}assets/${f}`;
+const CV = ASSET('Laxman_Singh_Jadon_CV.pdf');
+// Visitor-book notes are delivered to this inbox by FormSubmit (first note triggers a one-time activation email).
+const VISITOR_BOOK_ENDPOINT = `https://formsubmit.co/ajax/${PROFILE.email}`;
+const NAV_ICONS = { home: Home, journey: Compass, impact: Target, 'case-studies': Factory, expertise: Layers, education: GraduationCap, beyond: Sparkles, cv: FileText, contact: Mail };
 const SKILL_ICONS = [Users, Briefcase, ShieldCheck, Network, Target, Building2, Factory, BrainCircuit];
 const BEYOND_ICONS = [Crown, Clapperboard, Trophy, Code2];
 
@@ -89,7 +93,7 @@ function NavList({ active, onGo }) {
   );
 }
 
-function Sidebar({ active, progress, theme, toggleTheme }) {
+function Sidebar({ active, progress, theme, toggleTheme, openBook }) {
   return (
     <aside className="sidebar" aria-label="Section navigation">
       <a href="#home" className="brand">
@@ -102,6 +106,7 @@ function Sidebar({ active, progress, theme, toggleTheme }) {
       </nav>
       <div className="side-foot">
         <a className="btn btn-solid" href={CV} download><Download size={15} /> Download CV</a>
+        <button className="btn btn-ghost icon-only" onClick={openBook} aria-label="Sign the visitor book" title="Visitor book"><NotebookPen size={16} /></button>
         <button className="btn btn-ghost icon-only" onClick={toggleTheme} aria-label="Toggle light / dark mode">
           {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
         </button>
@@ -110,7 +115,7 @@ function Sidebar({ active, progress, theme, toggleTheme }) {
   );
 }
 
-function MobileBar({ active, progress, theme, toggleTheme }) {
+function MobileBar({ active, progress, theme, toggleTheme, openBook }) {
   const [open, setOpen] = useState(false);
   const label = NAV.find((n) => n.id === active)?.label;
   useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; }, [open]);
@@ -134,6 +139,7 @@ function MobileBar({ active, progress, theme, toggleTheme }) {
             </div>
             <NavList active={active} onGo={() => setOpen(false)} />
             <a className="btn btn-solid wide" href={CV} download><Download size={15} /> Download CV</a>
+            <button className="btn btn-ghost wide" onClick={() => { setOpen(false); openBook(); }}><NotebookPen size={15} /> Visitor Book</button>
           </div>
         </div>
       )}
@@ -391,18 +397,94 @@ function Beyond() {
   );
 }
 
-function Contact() {
-  const [name, setName] = useState('');
-  const [msg, setMsg] = useState('');
-  const send = (e) => {
+function CvSection() {
+  const pages = [ASSET('cv-page-1.jpg'), ASSET('cv-page-2.jpg')];
+  return (
+    <section id="cv" className="section">
+      <SectionHead num="07" kicker="Curriculum Vitae" title="The whole story, on two pages." lead="The journey above, written as a CV. Tap a page to open the PDF." />
+      <div className="cv-pages">
+        {pages.map((src, i) => (
+          <a key={src} className="cv-page reveal" href={CV} target="_blank" rel="noopener noreferrer" aria-label={`Open CV page ${i + 1}`}>
+            <img src={src} alt={`CV of ${PROFILE.name}, page ${i + 1}`} loading="lazy" width="909" height="1286" />
+            <span className="cv-page-tag">Page {i + 1}</span>
+          </a>
+        ))}
+      </div>
+      <div className="cv-actions reveal">
+        <a className="btn btn-solid big" href={CV} download><Download size={16} /> Download CV (PDF)</a>
+        <a className="btn btn-ghost big" href={CV} target="_blank" rel="noopener noreferrer"><ExternalLink size={16} /> Open in new tab</a>
+      </div>
+    </section>
+  );
+}
+
+function VisitorBook({ open, onClose }) {
+  const [form, setForm] = useState({ name: '', org: '', message: '' });
+  const [state, setState] = useState('idle'); // idle | sending | sent | error
+  useEffect(() => {
+    if (!open) return undefined;
+    const esc = (e) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', esc);
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', esc); document.body.style.overflow = ''; };
+  }, [open, onClose]);
+  if (!open) return null;
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  const submit = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Portfolio note from ${name || 'a visitor'}`);
-    const body = encodeURIComponent(`${msg}\n\n— ${name}`);
-    window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
+    setState('sending');
+    try {
+      const res = await fetch(VISITOR_BOOK_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `Visitor book: ${form.name}`, _template: 'table', _captcha: 'false',
+          Name: form.name, 'Organisation / role': form.org || '—', Note: form.message,
+        }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      setState('sent');
+      setForm({ name: '', org: '', message: '' });
+    } catch {
+      setState('error');
+    }
   };
+  const mailto = `mailto:${PROFILE.email}?subject=${encodeURIComponent(`Visitor book: ${form.name || 'a visitor'}`)}&body=${encodeURIComponent(`${form.message}\n\n— ${form.name}${form.org ? `, ${form.org}` : ''}`)}`;
+  return (
+    <div className="vb-backdrop" onMouseDown={onClose}>
+      <div className="vb-modal card" role="dialog" aria-modal="true" aria-labelledby="vb-title" onMouseDown={(e) => e.stopPropagation()}>
+        <button className="btn btn-ghost icon-only vb-close" onClick={onClose} aria-label="Close visitor book"><X size={18} /></button>
+        <NotebookPen size={26} className="vb-icon" />
+        <h3 id="vb-title">Visitor Book</h3>
+        <p className="muted">Passing through? Leave a line — a hello, a thought, or an opportunity. Every note reaches Laxman directly.</p>
+        {state === 'sent' ? (
+          <div className="vb-done">
+            <CheckCircle2 size={22} />
+            <div><b>Thank you — your note is on its way.</b><small>Laxman reads every entry personally.</small></div>
+            <button className="btn btn-ghost" onClick={() => setState('idle')}>Write another</button>
+          </div>
+        ) : (
+          <form className="vb-form" onSubmit={submit}>
+            <input required value={form.name} onChange={set('name')} placeholder="Your name" aria-label="Your name" maxLength={80} />
+            <input value={form.org} onChange={set('org')} placeholder="Organisation or role (optional)" aria-label="Organisation or role" maxLength={120} />
+            <textarea required rows="5" value={form.message} onChange={set('message')} placeholder="Your note" aria-label="Your note" maxLength={2000} />
+            <button className="btn btn-solid" type="submit" disabled={state === 'sending'}>
+              <Send size={15} /> {state === 'sending' ? 'Signing…' : 'Sign the book'}
+            </button>
+            {state === 'error' && (
+              <small className="vb-error">Couldn't send just now. <a href={mailto}>Send it by email instead</a>.</small>
+            )}
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Contact({ openBook }) {
   return (
     <section id="contact" className="section contact">
-      <SectionHead num="07" kicker="Connect" title="Let's talk people, process and delivery." lead="For opportunities, collaboration or a professional conversation." />
+      <SectionHead num="08" kicker="Connect" title="Let's talk people, process and delivery." lead="For opportunities, collaboration or a professional conversation." />
       <div className="contact-grid">
         <div className="card reveal contact-links">
           <a href={`mailto:${PROFILE.email}`}><Mail size={18} /><span><small>Email</small>{PROFILE.email}</span></a>
@@ -410,15 +492,27 @@ function Contact() {
           <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer"><Linkedin size={18} /><span><small>LinkedIn</small>linkedin.com/in/laxmansinghj</span></a>
           <div><MapPin size={18} /><span><small>Based in</small>{PROFILE.location}</span></div>
           <div><BookOpen size={18} /><span><small>Languages</small>{PROFILE.languages}</span></div>
-          <a className="btn btn-solid wide" href={CV} download><Download size={15} /> Download CV</a>
         </div>
-        <form className="card reveal note-form" onSubmit={send}>
-          <div className="card-label">LEAVE A NOTE</div>
-          <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" aria-label="Your name" />
-          <textarea required rows="5" value={msg} onChange={(e) => setMsg(e.target.value)} placeholder="Your message" aria-label="Your message" />
-          <button className="btn btn-solid" type="submit"><Send size={15} /> Send via email</button>
-          <small className="muted">Opens your email app with the note ready to send.</small>
-        </form>
+        <div className="contact-side">
+          <div className="card reveal qr-card">
+            <div className="card-label"><ScanLine size={14} /> SCAN TO CONNECT</div>
+            <div className="qr-row">
+              <a href={PROFILE.portfolio} className="qr-tile" aria-label="Portfolio QR code">
+                <img src={ASSET('qr-portfolio.svg')} alt="QR code for this portfolio" width="120" height="120" />
+                <span>Portfolio</span>
+              </a>
+              <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" className="qr-tile" aria-label="LinkedIn QR code">
+                <img src={ASSET('qr-linkedin.svg')} alt="QR code for Laxman's LinkedIn profile" width="120" height="120" />
+                <span>LinkedIn</span>
+              </a>
+            </div>
+          </div>
+          <div className="card reveal book-card">
+            <div className="card-label"><NotebookPen size={14} /> VISITOR BOOK</div>
+            <p>Passing through? Sign the visitor book with a line or two — it goes straight to Laxman.</p>
+            <button className="btn btn-solid" onClick={openBook}><NotebookPen size={15} /> Sign the visitor book</button>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -430,13 +524,15 @@ const IDS = NAV.map((n) => n.id);
 
 export default function App() {
   const active = useActiveSection(IDS);
+  const [book, setBook] = useState(false);
+  const openBook = () => setBook(true);
   const progress = useScrollProgress();
   const [theme, toggleTheme] = useTheme();
   useReveal();
   return (
     <div className="shell">
-      <Sidebar active={active} progress={progress} theme={theme} toggleTheme={toggleTheme} />
-      <MobileBar active={active} progress={progress} theme={theme} toggleTheme={toggleTheme} />
+      <Sidebar active={active} progress={progress} theme={theme} toggleTheme={toggleTheme} openBook={openBook} />
+      <MobileBar active={active} progress={progress} theme={theme} toggleTheme={toggleTheme} openBook={openBook} />
       <main className="content">
         <Hero />
         <Journey />
@@ -445,9 +541,11 @@ export default function App() {
         <Expertise />
         <Education />
         <Beyond />
-        <Contact />
+        <CvSection />
+        <Contact openBook={openBook} />
         <footer className="footer">© {new Date().getFullYear()} {PROFILE.name} · People. Policy. Purpose.</footer>
       </main>
+      <VisitorBook open={book} onClose={() => setBook(false)} />
     </div>
   );
 }
