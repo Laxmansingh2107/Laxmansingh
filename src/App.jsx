@@ -8,10 +8,20 @@ import {
   PROFILE, NAV, CAREER, LADDER, FUNCTIONS, DELIVERY_FLOW, SKILLS, EDU, CERTS, BEYOND, QUOTES,
 } from './data';
 import {
-  HeroVenn, GrowthStairs, ComplianceBars, WorkforceGrid, FunctionWheel, ProductionModel, DroneArt, TentCity,
+  GrowthStairs, ComplianceBars, WorkforceGrid, FunctionWheel, ProductionModel, DroneArt, TentCity,
 } from './Illustrations';
 
 const CV = `${import.meta.env.BASE_URL}assets/Laxman_Singh_Jadon_CV.pdf`;
+const IMG = (f) => `${import.meta.env.BASE_URL}assets/${f}`;
+
+function Themed({ base, className, alt }) {
+  return (
+    <>
+      <img className={`${className} only-dark`} src={IMG(`${base}-dark.jpg`)} alt={alt} />
+      <img className={`${className} only-light`} src={IMG(`${base}-light.jpg`)} alt="" aria-hidden="true" />
+    </>
+  );
+}
 const NAV_ICONS = { home: Home, journey: Compass, impact: Target, 'case-studies': Factory, expertise: Layers, education: GraduationCap, beyond: Sparkles, contact: Mail };
 const SKILL_ICONS = [Users, Briefcase, ShieldCheck, Network, Target, Building2, Factory, BrainCircuit];
 const BEYOND_ICONS = [Crown, Clapperboard, Trophy, Code2];
@@ -182,7 +192,10 @@ function Hero() {
           <span><Briefcase size={14} /> {PROFILE.org}</span>
         </div>
       </div>
-      <div className="hero-art reveal"><HeroVenn /></div>
+      <figure className="hero-art hero-portrait reveal">
+        <Themed base="portrait" className="portrait-img" alt="Portrait of Laxman Singh Jadon" />
+        <figcaption><strong>{PROFILE.name}</strong><span>{PROFILE.role}</span></figcaption>
+      </figure>
       <div className="stat-strip reveal">
         {[['600+', 'employees managed', Users], ['93%+', 'compliance before deadline', ShieldCheck], ['200', 'luxury tents coordinated', Tent], ['3', 'step-ups in 8 months', Trophy]].map(([v, l, Icon]) => (
           <div key={l}><Icon size={18} /><strong>{v}</strong><span>{l}</span></div>
@@ -406,6 +419,7 @@ function Contact() {
       <SectionHead num="07" kicker="Connect" title="Let's talk people, process and delivery." lead="For opportunities, collaboration or a professional conversation." />
       <div className="contact-grid">
         <div className="card reveal contact-links">
+          <div className="contact-id"><Themed base="avatar" className="avatar" alt="Laxman Singh Jadon" /><span><strong>{PROFILE.name}</strong><small>{PROFILE.role}</small></span></div>
           <a href={`mailto:${PROFILE.email}`}><Mail size={18} /><span><small>Email</small>{PROFILE.email}</span></a>
           <a href={`tel:${PROFILE.phone}`}><Phone size={18} /><span><small>Phone</small>{PROFILE.phoneDisplay}</span></a>
           <div><MapPin size={18} /><span><small>Based in</small>{PROFILE.location}</span></div>

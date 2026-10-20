@@ -1,7 +1,7 @@
 # Builds public/assets/Laxman_Singh_Jadon_CV.pdf. Edit the text below, then run:
 #   pip install reportlab && python scripts/build_cv.py
 from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable, KeepTogether
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable, KeepTogether, Table, TableStyle, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.units import mm
@@ -24,11 +24,18 @@ B = S('BodyX', fontName='Helvetica', fontSize=9.3, leading=13.2, textColor=BODY,
 BUL = S('Bul', parent=B, leftIndent=10, bulletIndent=0, spaceAfter=2)
 SMALL = S('SmallHead', fontName='Helvetica-Bold', fontSize=9.8, leading=12.5, textColor=INK, spaceBefore=4, spaceAfter=2)
 
-story = [
+header_text = [
     Paragraph('Laxman Singh Jadon', NAME),
     Paragraph('HR Lead · IG Strategic Systems Pvt Ltd (IG Defence)', ROLE),
     Paragraph('People, policy, and purpose', TAG),
     Paragraph('+91 83838 42382  ·  luckysingh0508.lsj@gmail.com  ·  Greater Noida, India', CONTACT),
+]
+photo = Image('public/assets/cv-photo.jpg', width=26*mm, height=32.5*mm)
+header = Table([[header_text, photo]], colWidths=[doc.width - 30*mm, 30*mm])
+header.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'MIDDLE'), ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+                            ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0)]))
+story = [
+    header,
     Spacer(1, 6), HRFlowable(width='100%', thickness=0.6, color=ACC),
     Paragraph('Six years of HR, built from the ground up: statutory records and payroll first, then 600+ people across multi-state projects, then a whole plant, and now HR Lead at a defence technology company, with Project Delivery added to the role. The thread running through all of it started earlier, in years of serious preparation for the UPSC civil services, with a curiosity about how people, policy and systems work.', INTRO),
     Paragraph('THE JOURNEY', HEAD),
