@@ -52,22 +52,22 @@ export const CAREER = [
   {
     when: 'Jan 2026–Jun 2026', tag: 'Fast Rise', title: 'Trust earned in months',
     where: 'IG Strategic Systems · IG Defence', scope: 5, scopeLabel: 'HR Lead',
-    body: 'Joined as HR Associate-II in January 2026, promoted to HR Associate-III in April and to HR Lead by June — the fastest progression of the journey, built on the discipline of every earlier chapter.',
-    why: 'It showed that earlier operating discipline translates into accelerated responsibility in a fast-moving technology environment.',
+    body: 'Joined as HR Associate-II and took charge of compliance first, closing every outstanding PF, ESIC and NOC matter with the team, then moved into factory HR operations. Promoted to HR Associate-III in April: HR operations, recruitment, factory administration, security and movement protocols, facility management, cafeteria and pantry planning, and every visit from high-profile delegations to routine ones. HR Lead by June, with the corporate side added: end-to-end HR and operations, a 12-member team reporting directly, sole point of contact for service-provider vendors, and close support to audit and legal teams.',
+    why: 'Each step came from taking on what the organisation needed — and never alone: always with support, and often supporting others.',
   },
   {
     when: 'Aug 2026–Present', tag: 'Convergence', title: 'Where HR meets project delivery',
-    where: 'HR Lead · IG Defence (additional charge: Project Delivery)', scope: 6, scopeLabel: 'HR + Delivery',
-    body: 'As HR Lead, took on the Project Delivery Department as an additional charge. Hiring, HR policy and governance, payroll and compliance, facilities, security and vendors on one side — demos, TEC, trials, on-site delivery, ATP and client training on the other.',
+    where: 'HR Lead · IG Defence (additional charge: Project Delivery)', scope: 6, scopeLabel: 'HR + Delivery + MRO',
+    body: 'Stepping in on an important production task that was outside the role, and contributing to the Production & Manufacturing setup, led to the Project Delivery portfolio as an additional charge — demos, TEC, trials, on-site delivery, ATP and client training. It has since expanded to MRO (Maintenance, Repair & Operations), with a new MRO vertical now being set up within PD, planned to grow into a separate, recurring source of revenue.',
     why: 'Every thread meets here: people systems and project execution, both required to deliver the outcome.',
   },
 ];
 
 export const LADDER = [
-  { month: 'Jan 2026', title: 'HR Associate-II', note: 'Joined IG Defence' },
-  { month: 'Apr 2026', title: 'HR Associate-III', note: 'First promotion' },
-  { month: 'Jun 2026', title: 'HR Lead', note: 'Leading the HR function' },
-  { month: 'Aug 2026', title: '+ Project Delivery', note: 'Additional charge as HR Lead' },
+  { month: 'Jan 2026', title: 'HR Associate-II', note: 'Cleared the compliance backlog' },
+  { month: 'Apr 2026', title: 'HR Associate-III', note: 'Factory HR, admin & security' },
+  { month: 'Jun 2026', title: 'HR Lead', note: 'End-to-end HR · team of 12' },
+  { month: 'Aug 2026', title: '+ Project Delivery & MRO', note: 'Building a new vertical' },
 ];
 
 export const COMPLIANCE = [
