@@ -413,14 +413,17 @@ p { margin: 0; }
 .qr-tile span { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #161410; }
 .book-card p { margin: 10px 0 16px; color: var(--muted); }
 
-/* ---------- visitor book modal ---------- */
-.vb-backdrop { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgba(0,0,0,.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.vb-modal { position: relative; width: min(520px, 100%); max-height: calc(100vh - 32px); overflow: auto; }
-.vb-close { position: absolute; top: 14px; right: 14px; }
-.vb-icon { color: var(--accent); }
-.vb-modal h3 { margin: 10px 0 4px; font-size: 26px; }
-.vb-form { display: grid; gap: 12px; margin-top: 18px; }
-.vb-form input, .vb-form textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong); background: var(--surface-2); color: inherit; font: inherit; resize: vertical; }
+/* ---------- visitor book (inline) ---------- */
+.vb-card { align-self: start; scroll-margin: 24px; }
+.vb-title { margin: 10px 0 4px; font-size: 24px; }
+.vb-lead { margin: 0 0 4px; }
+.vb-form { display: grid; gap: 14px; margin-top: 16px; }
+.vb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vb-form label { display: grid; gap: 6px; }
+.vb-form label > span { font-size: 12px; font-weight: 600; color: var(--muted); }
+.vb-form label em { font-style: normal; font-weight: 400; }
+.vb-form input, .vb-form textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong); background: var(--surface-2); color: inherit; font: inherit; resize: vertical; transition: border-color .2s, box-shadow .2s; }
+.vb-form input:focus, .vb-form textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
 .vb-form button[disabled] { opacity: .65; cursor: progress; }
 .vb-error { color: var(--warn); }
 .vb-error a { text-decoration: underline; }
@@ -432,6 +435,7 @@ p { margin: 0; }
 @media (max-width: 860px) {
   .cv-pages { grid-template-columns: 1fr; }
   .qr-tile img { width: 104px; height: 104px; }
+  .vb-grid { grid-template-columns: 1fr; }
 }
 .side-foot { gap: 8px; }
 .side-foot .btn-solid { flex: 1; white-space: nowrap; padding-left: 12px; padding-right: 12px; }

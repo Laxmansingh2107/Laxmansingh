@@ -418,17 +418,18 @@ function CvSection() {
   );
 }
 
-function VisitorBook({ open, onClose }) {
-  const [form, setForm] = useState({ name: '', org: '', message: '' });
+function openVisitorBook() {
+  const el = document.getElementById('visitor-book');
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  window.setTimeout(() => document.getElementById('vb-name')?.focus({ preventScroll: true }), 450);
+}
+
+const EMPTY_NOTE = { name: '', designation: '', contact: '', message: '' };
+
+function VisitorBook() {
+  const [form, setForm] = useState(EMPTY_NOTE);
   const [state, setState] = useState('idle'); // idle | sending | sent | error
-  useEffect(() => {
-    if (!open) return undefined;
-    const esc = (e) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', esc);
-    document.body.style.overflow = 'hidden';
-    return () => { window.removeEventListener('keydown', esc); document.body.style.overflow = ''; };
-  }, [open, onClose]);
-  if (!open) return null;
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
   const submit = async (e) => {
     e.preventDefault();
@@ -439,61 +440,67 @@ function VisitorBook({ open, onClose }) {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           _subject: `Visitor book: ${form.name}`, _template: 'table', _captcha: 'false',
-          Name: form.name, 'Organisation / role': form.org || '—', Note: form.message,
+          Name: form.name, 'Designation / organisation': form.designation || '—',
+          'Contact (optional)': form.contact || '—', Note: form.message,
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
       setState('sent');
-      setForm({ name: '', org: '', message: '' });
+      setForm(EMPTY_NOTE);
     } catch {
       setState('error');
     }
   };
-  const mailto = `mailto:${PROFILE.email}?subject=${encodeURIComponent(`Visitor book: ${form.name || 'a visitor'}`)}&body=${encodeURIComponent(`${form.message}\n\n— ${form.name}${form.org ? `, ${form.org}` : ''}`)}`;
+  const mailto = `mailto:${PROFILE.email}?subject=${encodeURIComponent(`Visitor book: ${form.name || 'a visitor'}`)}&body=${encodeURIComponent(
+    `${form.message}\n\n— ${form.name}${form.designation ? `, ${form.designation}` : ''}${form.contact ? `\n${form.contact}` : ''}`)}`;
   return (
-    <div className="vb-backdrop" onMouseDown={onClose}>
-      <div className="vb-modal card" role="dialog" aria-modal="true" aria-labelledby="vb-title" onMouseDown={(e) => e.stopPropagation()}>
-        <button className="btn btn-ghost icon-only vb-close" onClick={onClose} aria-label="Close visitor book"><X size={18} /></button>
-        <NotebookPen size={26} className="vb-icon" />
-        <h3 id="vb-title">Visitor Book</h3>
-        <p className="muted">Passing through? Leave a line — a hello, a thought, or an opportunity. Every note reaches Laxman directly.</p>
-        {state === 'sent' ? (
-          <div className="vb-done">
-            <CheckCircle2 size={22} />
-            <div><b>Thank you — your note is on its way.</b><small>Laxman reads every entry personally.</small></div>
-            <button className="btn btn-ghost" onClick={() => setState('idle')}>Write another</button>
+    <div id="visitor-book" className="card reveal vb-card">
+      <div className="card-label"><NotebookPen size={14} /> VISITOR BOOK</div>
+      <h3 className="vb-title">Sign the visitor book</h3>
+      <p className="muted vb-lead">A hello, a thought or an opportunity. Every note reaches Laxman directly.</p>
+      {state === 'sent' ? (
+        <div className="vb-done" role="status">
+          <CheckCircle2 size={22} />
+          <div><b>Thank you, your note is on its way.</b><small>Laxman reads every entry personally.</small></div>
+          <button className="btn btn-ghost" onClick={() => setState('idle')}>Write another</button>
+        </div>
+      ) : (
+        <form className="vb-form" onSubmit={submit}>
+          <div className="vb-grid">
+            <label><span>Name *</span>
+              <input id="vb-name" required value={form.name} onChange={set('name')} placeholder="Your name" maxLength={80} autoComplete="name" /></label>
+            <label><span>Designation / organisation</span>
+              <input value={form.designation} onChange={set('designation')} placeholder="e.g. HR Manager, ABC Ltd" maxLength={120} autoComplete="organization-title" /></label>
           </div>
-        ) : (
-          <form className="vb-form" onSubmit={submit}>
-            <input required value={form.name} onChange={set('name')} placeholder="Your name" aria-label="Your name" maxLength={80} />
-            <input value={form.org} onChange={set('org')} placeholder="Organisation or role (optional)" aria-label="Organisation or role" maxLength={120} />
-            <textarea required rows="5" value={form.message} onChange={set('message')} placeholder="Your note" aria-label="Your note" maxLength={2000} />
-            <button className="btn btn-solid" type="submit" disabled={state === 'sending'}>
-              <Send size={15} /> {state === 'sending' ? 'Signing…' : 'Sign the book'}
-            </button>
-            {state === 'error' && (
-              <small className="vb-error">Couldn't send just now. <a href={mailto}>Send it by email instead</a>.</small>
-            )}
-          </form>
-        )}
-      </div>
+          <label><span>Message *</span>
+            <textarea required rows="4" value={form.message} onChange={set('message')} placeholder="Write your note" maxLength={2000} /></label>
+          <label><span>Email or phone <em>(optional, if you'd like a reply)</em></span>
+            <input value={form.contact} onChange={set('contact')} placeholder="you@example.com or +91…" maxLength={120} autoComplete="email" /></label>
+          <button className="btn btn-solid" type="submit" disabled={state === 'sending'}>
+            <Send size={15} /> {state === 'sending' ? 'Signing…' : 'Sign the book'}
+          </button>
+          {state === 'error' && (
+            <small className="vb-error">Couldn't send just now. <a href={mailto}>Send it by email instead</a>.</small>
+          )}
+        </form>
+      )}
     </div>
   );
 }
 
-function Contact({ openBook }) {
+function Contact() {
   return (
     <section id="contact" className="section contact">
-      <SectionHead num="08" kicker="Connect" title="Let's talk people, process and delivery." lead="For opportunities, collaboration or a professional conversation." />
+      <SectionHead num="08" kicker="Connect" title="Let's talk people, process and delivery." lead="For opportunities, collaboration or a professional conversation, or simply sign the visitor book." />
       <div className="contact-grid">
-        <div className="card reveal contact-links">
-          <a href={`mailto:${PROFILE.email}`}><Mail size={18} /><span><small>Email</small>{PROFILE.email}</span></a>
-          <a href={`tel:${PROFILE.phone}`}><Phone size={18} /><span><small>Phone</small>{PROFILE.phoneDisplay}</span></a>
-          <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer"><Linkedin size={18} /><span><small>LinkedIn</small>linkedin.com/in/laxmansinghj</span></a>
-          <div><MapPin size={18} /><span><small>Based in</small>{PROFILE.location}</span></div>
-          <div><BookOpen size={18} /><span><small>Languages</small>{PROFILE.languages}</span></div>
-        </div>
         <div className="contact-side">
+          <div className="card reveal contact-links">
+            <a href={`mailto:${PROFILE.email}`}><Mail size={18} /><span><small>Email</small>{PROFILE.email}</span></a>
+            <a href={`tel:${PROFILE.phone}`}><Phone size={18} /><span><small>Phone</small>{PROFILE.phoneDisplay}</span></a>
+            <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer"><Linkedin size={18} /><span><small>LinkedIn</small>linkedin.com/in/laxmansinghj</span></a>
+            <div><MapPin size={18} /><span><small>Based in</small>{PROFILE.location}</span></div>
+            <div><BookOpen size={18} /><span><small>Languages</small>{PROFILE.languages}</span></div>
+          </div>
           <div className="card reveal qr-card">
             <div className="card-label"><ScanLine size={14} /> SCAN TO CONNECT</div>
             <div className="qr-row">
@@ -507,12 +514,8 @@ function Contact({ openBook }) {
               </a>
             </div>
           </div>
-          <div className="card reveal book-card">
-            <div className="card-label"><NotebookPen size={14} /> VISITOR BOOK</div>
-            <p>Passing through? Sign the visitor book with a line or two — it goes straight to Laxman.</p>
-            <button className="btn btn-solid" onClick={openBook}><NotebookPen size={15} /> Sign the visitor book</button>
-          </div>
         </div>
+        <VisitorBook />
       </div>
     </section>
   );
@@ -524,8 +527,7 @@ const IDS = NAV.map((n) => n.id);
 
 export default function App() {
   const active = useActiveSection(IDS);
-  const [book, setBook] = useState(false);
-  const openBook = () => setBook(true);
+  const openBook = openVisitorBook;
   const progress = useScrollProgress();
   const [theme, toggleTheme] = useTheme();
   useReveal();
@@ -542,10 +544,9 @@ export default function App() {
         <Education />
         <Beyond />
         <CvSection />
-        <Contact openBook={openBook} />
+        <Contact />
         <footer className="footer">© {new Date().getFullYear()} {PROFILE.name} · People. Policy. Purpose.</footer>
       </main>
-      <VisitorBook open={book} onClose={() => setBook(false)} />
     </div>
   );
 }
