@@ -394,18 +394,3 @@ p { margin: 0; }
   .reveal, .spoke, .tent, .flow li { opacity: 1 !important; transform: none !important; }
   .bar-fill { width: var(--w) !important; }
 }
-
-/* ---------- portrait ---------- */
-.only-light { display: none; }
-:root[data-theme="light"] .only-light { display: block; }
-:root[data-theme="light"] .only-dark { display: none; }
-.hero-portrait { position: relative; margin: 0; justify-self: center; width: 100%; max-width: 340px; }
-.portrait-img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 28px; border: 1px solid var(--line, rgba(255,255,255,.12)); box-shadow: 0 30px 70px -30px rgba(0,0,0,.6); }
-.hero-portrait figcaption { display: flex; flex-direction: column; gap: 2px; padding: 14px 4px 0; text-align: center; }
-.hero-portrait figcaption strong { font-size: 15px; color: var(--ink); }
-.hero-portrait figcaption span { font-size: 12.5px; color: var(--accent); }
-.contact-id { display: flex; align-items: center; gap: 14px; padding-bottom: 6px; }
-.contact-id .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); flex: none; }
-.contact-id span { display: flex; flex-direction: column; }
-.contact-id small { color: var(--muted); }
-@media (max-width: 860px) { .hero-portrait { max-width: 320px; } }

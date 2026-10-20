@@ -5,7 +5,7 @@ export const PROFILE = {
   short: 'LSJ',
   role: 'HR Lead · IG Defence',
   org: 'IG Strategic Systems Pvt Ltd (IG Defence)',
-  location: 'Greater Noida, India',
+  location: 'Noida, India',
   email: 'luckysingh0508.lsj@gmail.com',
   phone: '+918383842382',
   phoneDisplay: '+91 83838 42382',
